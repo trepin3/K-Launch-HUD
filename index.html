@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Launch HUD</title>
+  <style>
+    :root{--bg:#f5f5f7;--card:#fff;--text:#1d1d1f;--text-secondary:#6e6e73;--primary:#0071e3;--success:#30d158;--warning:#ff9f0a;--border:#e5e5ea;--shadow:0 2px 12px rgba(0,0,0,0.08);--radius:16px;--radius-sm:10px;--input-bg:rgba(0,0,0,0.05);}
+    [data-theme="dark"]{--bg:#000;--card:#1c1c1e;--text:#f5f5f7;--text-secondary:#98989d;--primary:#0a84ff;--border:#38383a;--shadow:0 2px 12px rgba(0,0,0,0.3);--input-bg:rgba(255,255,255,0.08);}
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;transition:background 0.3s,color 0.3s;}
+    .view{display:none;min-height:100vh;}
+
+    /* HEADER */
+    .hud-header{background:var(--card);border-bottom:1px solid var(--border);padding:14px 16px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10;}
+    .hud-logo{display:flex;align-items:center;gap:8px;}
+    .logo-icon{width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,#0071e3,#30d158);display:flex;align-items:center;justify-content:center;font-size:16px;}
+    .logo-text{font-size:17px;font-weight:800;letter-spacing:-0.3px;color:var(--text);}
+    .logo-text span{color:var(--primary);}
+    .header-right{display:flex;align-items:center;gap:8px;}
+    .icon-btn{width:34px;height:34px;border-radius:50%;border:none;background:var(--input-bg);color:var(--text);font-size:16px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:transform 0.15s;}
+    .icon-btn:active{transform:scale(0.9);}
+    .back-btn{display:flex;align-items:center;gap:5px;padding:7px 14px;border-radius:20px;border:1.5px solid var(--border);background:var(--card);color:var(--text);font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;}
+
+    /* HOME */
+    .home-body{max-width:480px;margin:0 auto;padding:40px 16px;}
+    .home-hero{text-align:center;margin-bottom:40px;}
+    .home-hero-icon{font-size:60px;display:block;margin-bottom:18px;}
+    .home-title{font-size:28px;font-weight:800;letter-spacing:-0.5px;margin-bottom:10px;}
+    .home-sub{font-size:16px;color:var(--text-secondary);line-height:1.5;}
+    .home-question{font-size:17px;font-weight:700;text-align:center;margin-bottom:18px;}
+    .choice-card{display:flex;align-items:center;gap:16px;padding:22px 20px;border-radius:var(--radius);border:1.5px solid var(--border);background:var(--card);cursor:pointer;transition:all 0.2s;box-shadow:var(--shadow);margin-bottom:14px;text-align:left;width:100%;font-family:inherit;}
+    .choice-card:active{transform:scale(0.98);}
+    .choice-card.primary{border-color:var(--primary);background:linear-gradient(135deg,rgba(0,113,227,0.08),rgba(0,113,227,0.02));}
+    .choice-card.success{border-color:var(--success);background:linear-gradient(135deg,rgba(48,209,88,0.08),rgba(48,209,88,0.02));}
+    .choice-icon{font-size:36px;flex-shrink:0;}
+    .choice-info{flex:1;}
+    .choice-title{font-size:18px;font-weight:800;letter-spacing:-0.2px;margin-bottom:4px;}
+    .choice-card.primary .choice-title{color:var(--primary);}
+    .choice-card.success .choice-title{color:var(--success);}
+    .choice-sub{font-size:13px;color:var(--text-secondary);line-height:1.4;}
+    .choice-arrow{font-size:26px;flex-shrink:0;}
+    .choice-card.primary .choice-arrow{color:var(--primary);}
+    .choice-card.success .choice-arrow{color:var(--success);}
+
+    /* DASHBOARD */
+    .dash-body{max-width:680px;margin:0 auto;padding:16px 14px 40px;}
+    .section-label{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--text);opacity:0.5;margin:20px 0 10px 2px;}
+    .tile-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:4px;}
+    .hud-tile{background:var(--card);border-radius:var(--radius);padding:20px 18px;border:1.5px solid var(--border);box-shadow:var(--shadow);cursor:pointer;text-decoration:none;display:block;transition:all 0.2s;position:relative;overflow:hidden;font-family:inherit;text-align:left;}
+    .hud-tile:active{transform:scale(0.97);}
+    .hud-tile.primary{border-color:var(--primary);background:linear-gradient(135deg,rgba(0,113,227,0.08),rgba(0,113,227,0.02));}
+    .hud-tile.warning{border-color:var(--warning);background:linear-gradient(135deg,rgba(255,159,10,0.08),rgba(255,159,10,0.02));}
+    .hud-tile.success{border-color:var(--success);background:linear-gradient(135deg,rgba(48,209,88,0.08),rgba(48,209,88,0.02));}
+    .hud-tile.purple{border-color:#7c4dff;background:linear-gradient(135deg,rgba(124,77,255,0.08),rgba(124,77,255,0.02));}
+    .hud-tile.span2{grid-column:1/-1;}
+    .tile-arrow{position:absolute;top:14px;right:14px;font-size:13px;color:var(--border);}
+    .hud-tile.primary .tile-arrow{color:var(--primary);}
+    .hud-tile.warning .tile-arrow{color:var(--warning);}
+    .hud-tile.success .tile-arrow{color:var(--success);}
+    .hud-tile.purple .tile-arrow{color:#7c4dff;}
+    .tile-icon{font-size:28px;display:block;margin-bottom:10px;}
+    .tile-title{font-size:15px;font-weight:800;color:var(--text);margin-bottom:3px;letter-spacing:-0.2px;}
+    .hud-tile.primary .tile-title{color:var(--primary);}
+    .hud-tile.warning .tile-title{color:var(--warning);}
+    .hud-tile.success .tile-title{color:var(--success);}
+    .hud-tile.purple .tile-title{color:#7c4dff;}
+    .tile-sub{font-size:12px;color:var(--text-secondary);line-height:1.4;}
+
+    /* CTA TILE */
+    .cta-tile{background:linear-gradient(135deg,#0055c4,#0a84ff);border:none;border-radius:var(--radius);padding:22px 20px;cursor:pointer;display:flex;align-items:center;gap:16px;box-shadow:0 4px 20px rgba(0,85,196,0.4);transition:all 0.2s;width:100%;font-family:inherit;text-align:left;}
+    .cta-tile:active{transform:scale(0.98);}
+    .cta-icon{font-size:32px;flex-shrink:0;}
+    .cta-info{flex:1;}
+    .cta-title{font-size:17px;font-weight:800;color:#fff;letter-spacing:-0.2px;margin-bottom:3px;}
+    .cta-sub{font-size:13px;color:rgba(255,255,255,0.85);}
+    .cta-arrow{font-size:22px;color:rgba(255,255,255,0.8);flex-shrink:0;}
+
+    /* MODALS */
+    .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:100;backdrop-filter:blur(4px);flex-direction:column;overflow-y:auto;}
+    .modal-overlay.open{display:flex;}
+    .modal-wrap{background:var(--bg);border-radius:20px 20px 0 0;margin-top:auto;min-height:55vh;max-height:92vh;overflow-y:auto;width:100%;}
+    .modal-header{display:flex;align-items:center;gap:12px;padding:16px 16px 12px;background:var(--card);border-bottom:1px solid var(--border);border-radius:20px 20px 0 0;position:sticky;top:0;z-index:10;}
+    .modal-back{width:34px;height:34px;border-radius:50%;border:none;background:var(--input-bg);color:var(--text);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+    .modal-title{font-size:17px;font-weight:800;color:var(--text);}
+    .modal-body{max-width:680px;width:100%;margin:0 auto;padding:16px 14px 48px;}
+
+    /* PERSON CARD */
+    .person-card{background:var(--card);border-radius:var(--radius);padding:16px;border:1px solid var(--border);box-shadow:var(--shadow);margin-bottom:12px;}
+    .person-header{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+    .person-avatar{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+    .person-name{font-size:16px;font-weight:800;color:var(--text);}
+    .person-role{font-size:11px;color:var(--text-secondary);font-weight:600;margin-top:1px;}
+    .full-btn{display:flex;align-items:center;justify-content:center;gap:8px;padding:14px;border-radius:10px;font-size:15px;font-weight:800;text-decoration:none;border:none;cursor:pointer;font-family:inherit;width:100%;transition:opacity 0.2s;}
+    .full-btn:active{opacity:0.8;}
+    .full-btn.primary{background:var(--primary);color:#fff;}
+
+    /* CHECKLIST */
+    .checklist{list-style:none;display:flex;flex-direction:column;gap:10px;}
+    .checklist-item{display:flex;align-items:flex-start;gap:12px;background:var(--card);border-radius:var(--radius-sm);padding:14px;border:1px solid var(--border);}
+    .c-num{width:26px;height:26px;min-width:26px;border-radius:50%;background:var(--primary);color:#fff;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;}
+    .c-text{font-size:14px;color:var(--text);line-height:1.45;}
+    .c-text strong{display:block;font-weight:800;margin-bottom:3px;}
+
+    /* STATE GRID */
+    .state-search{width:100%;padding:12px 14px;border:2px solid var(--border);border-radius:var(--radius-sm);font-size:15px;background:var(--input-bg);color:var(--text);outline:none;font-family:inherit;margin-bottom:12px;transition:border-color 0.2s;}
+    .state-search:focus{border-color:var(--primary);}
+    .state-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+    .state-btn{padding:10px 6px;border-radius:var(--radius-sm);border:1.5px solid var(--border);background:var(--card);color:var(--text);font-size:13px;font-weight:700;cursor:pointer;transition:all 0.15s;font-family:inherit;text-align:center;}
+    .state-btn:hover{border-color:var(--primary);color:var(--primary);}
+    .state-btn:active{transform:scale(0.96);}
+    .state-btn.hidden{display:none;}
+
+    /* WHY CARD */
+    .why-card{background:linear-gradient(135deg,#0055c4,#1a7a3e);border-radius:var(--radius);padding:24px 20px;margin-bottom:16px;}
+    .why-card p{font-size:15px;color:#fff;line-height:1.65;margin-bottom:14px;}
+    .why-card p:last-child{margin-bottom:0;}
+    .why-bullets{list-style:none;display:flex;flex-direction:column;gap:8px;margin:4px 0 14px;}
+    .why-bullets li{display:flex;align-items:flex-start;gap:10px;font-size:14px;color:rgba(255,255,255,0.95);line-height:1.4;}
+    .why-bullets li::before{content:'✓';width:22px;height:22px;min-width:22px;border-radius:50%;background:rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;margin-top:1px;}
+
+    /* INFO BANNER */
+    .info-banner{background:var(--card);border-radius:var(--radius);padding:16px;border:1px solid var(--border);margin-bottom:14px;}
+    .info-banner-title{font-size:14px;font-weight:800;color:var(--text);margin-bottom:6px;}
+    .info-banner-body{font-size:13px;color:var(--text-secondary);line-height:1.5;}
+
+    @media(max-width:400px){
+      .tile-grid{grid-template-columns:1fr;}
+      .state-grid{grid-template-columns:repeat(2,1fr);}
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── HOME VIEW ─────────────────────────────────── -->
+<div id="homeView" class="view">
+  <div class="hud-header">
+    <div class="hud-logo">
+      <div class="logo-icon">🚀</div>
+      <div class="logo-text">Launch <span>HUD</span></div>
+    </div>
+    <div class="header-right">
+      <button class="icon-btn" onclick="toggleTheme()">🌙</button>
+    </div>
+  </div>
+  <div class="home-body">
+    <div class="home-hero">
+      <span class="home-hero-icon">🛡️</span>
+      <div class="home-title">Welcome to Launch HUD</div>
+      <div class="home-sub">Your gateway to building a life insurance career with The Wolsey Organization</div>
+    </div>
+    <div class="home-question">Are you currently licensed?</div>
+    <button class="choice-card primary" onclick="show('licensedView')">
+      <div class="choice-icon">📋</div>
+      <div class="choice-info">
+        <div class="choice-title">Yes, I'm Licensed</div>
+        <div class="choice-sub">View contract levels, carrier payouts &amp; book your discovery call</div>
+      </div>
+      <span class="choice-arrow">›</span>
+    </button>
+    <button class="choice-card success" onclick="show('unlicensedView')">
+      <div class="choice-icon">🎯</div>
+      <div class="choice-info">
+        <div class="choice-title">Not Licensed Yet</div>
+        <div class="choice-sub">Start your pre-licensing course, see the checklist &amp; explore the opportunity</div>
+      </div>
+      <span class="choice-arrow">›</span>
+    </button>
+  </div>
+</div>
+
+<!-- ── LICENSED VIEW ──────────────────────────────── -->
+<div id="licensedView" class="view">
+  <div class="hud-header">
+    <button class="back-btn" onclick="show('homeView')">← Back</button>
+    <div class="logo-text">Licensed <span>Tools</span></div>
+    <button class="icon-btn" onclick="toggleTheme()">🌙</button>
+  </div>
+  <div class="dash-body">
+    <div class="section-label">Resources</div>
+    <div class="tile-grid">
+      <a class="hud-tile primary" href="https://a02a41c004c75ffe8d91-b19a28bfebdacc37eb56f25bc81c2f2f.ssl.cf1.rackcdn.com/documents/arcnaaleads/header/Agent%20Levels%20Chart%20v2023-05-01%201307%20p1_2.pdf" target="_blank" rel="noopener">
+        <span class="tile-arrow">↗</span>
+        <span class="tile-icon">📊</span>
+        <div class="tile-title">Contract Levels</div>
+        <div class="tile-sub">Requirements to unlock higher contracts</div>
+      </a>
+      <a class="hud-tile warning" href="https://a02a41c004c75ffe8d91-b19a28bfebdacc37eb56f25bc81c2f2f.ssl.cf1.rackcdn.com/documents/arcnaaleads/header/PayoutGrid_20260414.pdf" target="_blank" rel="noopener">
+        <span class="tile-arrow">↗</span>
+        <span class="tile-icon">💰</span>
+        <div class="tile-title">Top Carrier Contracts</div>
+        <div class="tile-sub">Commission rates &amp; payout breakdown</div>
+      </a>
+    </div>
+    <div class="section-label">Next Step</div>
+    <button class="cta-tile" onclick="openModal('discoveryModal')">
+      <div class="cta-icon">📅</div>
+      <div class="cta-info">
+        <div class="cta-title">Book a Discovery Call</div>
+        <div class="cta-sub">Talk to <span id="ctaAgentName"></span> about contracting &amp; getting started</div>
+      </div>
+      <span class="cta-arrow">›</span>
+    </button>
+  </div>
+</div>
+
+<!-- ── UNLICENSED VIEW ───────────────────────────── -->
+<div id="unlicensedView" class="view">
+  <div class="hud-header">
+    <button class="back-btn" onclick="show('homeView')">← Back</button>
+    <div class="logo-text">Get <span>Started</span></div>
+    <button class="icon-btn" onclick="toggleTheme()">🌙</button>
+  </div>
+  <div class="dash-body">
+    <div class="section-label">Your Path to Getting Licensed</div>
+    <div class="tile-grid">
+      <button class="hud-tile success" onclick="openModal('checklistModal')">
+        <span class="tile-arrow">›</span>
+        <span class="tile-icon">✅</span>
+        <div class="tile-title">Licensing Checklist</div>
+        <div class="tile-sub">Step-by-step path to your license</div>
+      </button>
+      <button class="hud-tile primary" onclick="openModal('stateModal')">
+        <span class="tile-arrow">›</span>
+        <span class="tile-icon">🎓</span>
+        <div class="tile-title">Pre-Licensing Course</div>
+        <div class="tile-sub">Start your state's required education</div>
+      </button>
+      <button class="hud-tile purple span2" onclick="openModal('whyModal')">
+        <span class="tile-arrow">›</span>
+        <span class="tile-icon">💡</span>
+        <div class="tile-title">Why Get Licensed?</div>
+        <div class="tile-sub">Discover what this opportunity could mean for your life</div>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ── DISCOVERY CALL MODAL ──────────────────────── -->
+<div id="discoveryModal" class="modal-overlay">
+  <div class="modal-wrap">
+    <div class="modal-header">
+      <button class="modal-back" onclick="closeModal('discoveryModal')">←</button>
+      <div class="modal-title">📅 Book a Discovery Call</div>
+    </div>
+    <div class="modal-body">
+      <div style="background:linear-gradient(135deg,#0055c4,#0a84ff);border-radius:var(--radius);padding:18px;margin-bottom:16px;box-shadow:0 4px 20px rgba(0,85,196,0.4);">
+        <div style="font-size:16px;font-weight:800;color:#fff;margin-bottom:6px;">Ready to take the next step?</div>
+        <div style="font-size:14px;color:rgba(255,255,255,0.9);line-height:1.55;">Book a call with <strong id="modalAgentName" style="color:#fff;"></strong> to go over what it looks like to join our organization as a licensed agent — contracts, commission levels, and how to hit the ground running.</div>
+      </div>
+      <div class="person-card">
+        <div class="person-header">
+          <div class="person-avatar" id="modalAgentAvatar" style="background:rgba(255,159,10,0.12);"></div>
+          <div>
+            <div class="person-name" id="modalAgentNameCard"></div>
+            <div class="person-role" id="modalAgentRole"></div>
+          </div>
+        </div>
+        <a id="modalCalBtn" href="#" target="_blank" rel="noopener" class="full-btn primary">📅 Book Now &nbsp;↗</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── LICENSING CHECKLIST MODAL ─────────────────── -->
+<div id="checklistModal" class="modal-overlay">
+  <div class="modal-wrap">
+    <div class="modal-header">
+      <button class="modal-back" onclick="closeModal('checklistModal')">←</button>
+      <div class="modal-title">✅ Licensing Checklist</div>
+    </div>
+    <div class="modal-body">
+      <div class="info-banner">
+        <div class="info-banner-title">Your Path to a Life Insurance License</div>
+        <div class="info-banner-body">Follow these steps in order. Most people complete the process in 2–6 weeks.</div>
+      </div>
+      <ul class="checklist">
+        <li class="checklist-item">
+          <div class="c-num">1</div>
+          <div class="c-text"><strong>Complete Pre-Licensing Education</strong>Finish your state's required hours of life &amp; health insurance education. (Usually 20–40 hours depending on your state.) Use the Pre-Licensing Course button on the previous screen.</div>
+        </li>
+        <li class="checklist-item">
+          <div class="c-num">2</div>
+          <div class="c-text"><strong>Schedule &amp; Pass Your State Exam</strong>Register for your state's life &amp; health licensing exam through Pearson VUE or Prometric. Study your pre-licensing materials and pass with a 70% or higher.</div>
+        </li>
+        <li class="checklist-item">
+          <div class="c-num">3</div>
+          <div class="c-text"><strong>Complete Fingerprinting &amp; Background Check</strong>Most states require fingerprinting as part of your application. Schedule this at an approved location in your state.</div>
+        </li>
+        <li class="checklist-item">
+          <div class="c-num">4</div>
+          <div class="c-text"><strong>Apply for Your State License</strong>Submit your application through your state's Department of Insurance (NIPR.com works for most states) and pay the licensing fee.</div>
+        </li>
+        <li class="checklist-item">
+          <div class="c-num">5</div>
+          <div class="c-text"><strong>Complete Contracting with NAA</strong>Once licensed, submit your contracting paperwork with National Agents Alliance to get appointed with carriers.</div>
+        </li>
+        <li class="checklist-item">
+          <div class="c-num">6</div>
+          <div class="c-text"><strong>Book Your Onboarding Class &amp; Get Started</strong>Get plugged into your onboarding training, set up backoffice access, and start your first sales week.</div>
+        </li>
+      </ul>
+      <div style="margin-top:20px;">
+        <button class="full-btn primary" onclick="closeModal('checklistModal');openModal('stateModal')">🎓 Start Pre-Licensing Course →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── STATE SELECTOR MODAL ──────────────────────── -->
+<div id="stateModal" class="modal-overlay">
+  <div class="modal-wrap">
+    <div class="modal-header">
+      <button class="modal-back" onclick="closeModal('stateModal')">←</button>
+      <div class="modal-title">🎓 Pre-Licensing Course</div>
+    </div>
+    <div class="modal-body">
+      <div class="info-banner" style="margin-bottom:14px;">
+        <div class="info-banner-title">Select Your State</div>
+        <div class="info-banner-body">We'll take you to the NAA-partnered pre-licensing course for your state. Tap your state to open it in a new tab.</div>
+      </div>
+      <input class="state-search" type="text" placeholder="Search states…" oninput="filterStates(this.value)">
+      <div class="state-grid" id="stateGrid"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── WHY GET LICENSED MODAL ────────────────────── -->
+<div id="whyModal" class="modal-overlay">
+  <div class="modal-wrap">
+    <div class="modal-header">
+      <button class="modal-back" onclick="closeModal('whyModal')">←</button>
+      <div class="modal-title">💡 Why Get Licensed?</div>
+    </div>
+    <div class="modal-body">
+      <div class="why-card">
+        <p>Picture this — you wake up <strong>when you decide</strong>, work from wherever you want, and your income is limited only by your effort and ambition. No ceiling. No clock to punch. Just you, a phone, and the ability to change lives.</p>
+        <p>When a family loses someone they love, one of the first calls they make is to an insurance agent. <strong>You become the person who shows up when it matters most</strong> — the one who hands them a check that keeps the lights on, the mortgage paid, and the kids in school. You become the reason they made it through the hardest year of their life.</p>
+        <p>Most American families are <strong>one emergency away from financial disaster</strong> — and most of them don't know it yet. You do. That's not just a career opportunity. That's a calling.</p>
+        <p>Your license unlocks:</p>
+        <ul class="why-bullets">
+          <li>Unlimited earning potential — top agents earn $10K–$30K+ per month</li>
+          <li>True time freedom — set your own schedule, work from anywhere</li>
+          <li>A career with purpose — protect real families at their most vulnerable moments</li>
+          <li>A proven system — leads, training, and a team behind you from day one</li>
+          <li>A path to agency ownership — build a team and unlock higher contracts</li>
+        </ul>
+        <p>The only thing standing between you and that life is a licensing exam. <strong>And we will walk you through every single step to get there.</strong></p>
+        <p>The question isn't whether you can do this. The question is — <strong>how soon do you want to start?</strong></p>
+      </div>
+      <button class="full-btn primary" onclick="closeModal('whyModal');openModal('checklistModal')">✅ See How to Get Licensed →</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── AGENT CONFIG (change this for K vs J version) ──────────────────────────
+const AGENT = {
+  name: 'Kepler',
+  avatar: '⚡',
+  role: 'Onboarding Staff',
+  calLink: 'https://link.dashlypro.com/widget/booking/jyH883DaodoyKQZsDo4G'
+};
+
+// ── THEME ──────────────────────────────────────────────────────────────────
+function toggleTheme(){
+  const html = document.documentElement;
+  const dark = html.getAttribute('data-theme') === 'dark';
+  html.setAttribute('data-theme', dark ? 'light' : 'dark');
+  const icon = dark ? '🌙' : '☀️';
+  document.querySelectorAll('.icon-btn').forEach(b => {
+    if(b.textContent.trim()==='🌙'||b.textContent.trim()==='☀️') b.textContent = icon;
+  });
+}
+
+// ── VIEWS ──────────────────────────────────────────────────────────────────
+function show(id){
+  document.querySelectorAll('.view').forEach(v => v.style.display = 'none');
+  document.getElementById(id).style.display = 'block';
+  window.scrollTo(0,0);
+}
+
+// ── MODALS ─────────────────────────────────────────────────────────────────
+function openModal(id){
+  if(id === 'discoveryModal'){
+    document.getElementById('modalAgentName').textContent = AGENT.name;
+    document.getElementById('modalAgentNameCard').textContent = AGENT.name;
+    document.getElementById('modalAgentAvatar').textContent = AGENT.avatar;
+    document.getElementById('modalAgentRole').textContent = AGENT.role;
+    document.getElementById('modalCalBtn').href = AGENT.calLink;
+  }
+  document.getElementById(id).classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal(id){
+  document.getElementById(id).classList.remove('open');
+  const modals = ['discoveryModal','checklistModal','stateModal','whyModal'];
+  if(!modals.some(m => document.getElementById(m).classList.contains('open'))){
+    document.body.style.overflow = '';
+  }
+}
+
+document.querySelectorAll('.modal-overlay').forEach(overlay => {
+  overlay.addEventListener('click', e => {
+    if(e.target === overlay){
+      overlay.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+  });
+});
+
+// ── STATE SELECTOR ─────────────────────────────────────────────────────────
+const STATES = [
+  {n:'Alabama',s:'alabama'},{n:'Alaska',s:'alaska'},{n:'Arizona',s:'arizona'},
+  {n:'Arkansas',s:'arkansas'},{n:'California',s:'california'},{n:'Colorado',s:'colorado'},
+  {n:'Connecticut',s:'connecticut'},{n:'Delaware',s:'delaware'},{n:'Florida',s:'florida'},
+  {n:'Georgia',s:'georgia'},{n:'Hawaii',s:'hawaii'},{n:'Idaho',s:'idaho'},
+  {n:'Illinois',s:'illinois'},{n:'Indiana',s:'indiana'},{n:'Iowa',s:'iowa'},
+  {n:'Kansas',s:'kansas'},{n:'Kentucky',s:'kentucky'},{n:'Louisiana',s:'louisiana'},
+  {n:'Maine',s:'maine'},{n:'Maryland',s:'maryland'},{n:'Massachusetts',s:'massachusetts'},
+  {n:'Michigan',s:'michigan'},{n:'Minnesota',s:'minnesota'},{n:'Mississippi',s:'mississippi'},
+  {n:'Missouri',s:'missouri'},{n:'Montana',s:'montana'},{n:'Nebraska',s:'nebraska'},
+  {n:'Nevada',s:'nevada'},{n:'New Hampshire',s:'new-hampshire'},{n:'New Jersey',s:'new-jersey'},
+  {n:'New Mexico',s:'new-mexico'},{n:'New York',s:'new-york'},{n:'North Carolina',s:'north-carolina'},
+  {n:'North Dakota',s:'north-dakota'},{n:'Ohio',s:'ohio'},{n:'Oklahoma',s:'oklahoma'},
+  {n:'Oregon',s:'oregon'},{n:'Pennsylvania',s:'pennsylvania'},{n:'Rhode Island',s:'rhode-island'},
+  {n:'South Carolina',s:'south-carolina'},{n:'South Dakota',s:'south-dakota'},{n:'Tennessee',s:'tennessee'},
+  {n:'Texas',s:'texas'},{n:'Utah',s:'utah'},{n:'Vermont',s:'vermont'},
+  {n:'Virginia',s:'virginia'},{n:'Washington',s:'washington'},{n:'West Virginia',s:'west-virginia'},
+  {n:'Wisconsin',s:'wisconsin'},{n:'Wyoming',s:'wyoming'},{n:'Washington D.C.',s:'district-of-columbia'}
+];
+
+function buildStateGrid(){
+  document.getElementById('stateGrid').innerHTML = STATES.map(st =>
+    `<button class="state-btn" onclick="openState('${st.s}')" data-name="${st.n.toLowerCase()}">${st.n}</button>`
+  ).join('');
+}
+
+function openState(slug){
+  window.open(`https://partners.xcelsolutions.com/${slug}/insurance-license/life-and-health?partner=naa100`,'_blank','noopener');
+}
+
+function filterStates(q){
+  q = q.toLowerCase().trim();
+  document.querySelectorAll('.state-btn').forEach(b =>
+    b.classList.toggle('hidden', !!q && !b.dataset.name.includes(q))
+  );
+}
+
+// ── INIT ───────────────────────────────────────────────────────────────────
+document.getElementById('ctaAgentName').textContent = AGENT.name;
+buildStateGrid();
+show('homeView');
+</script>
+</body>
+</html>
