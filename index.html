@@ -105,6 +105,7 @@
     /* STATE GRID */
     .state-search{width:100%;padding:12px 14px;border:2px solid var(--border);border-radius:var(--radius-sm);font-size:15px;background:var(--input-bg);color:var(--text);outline:none;font-family:inherit;margin-bottom:12px;transition:border-color 0.2s;}
     .state-search:focus{border-color:var(--primary);}
+    .state-search::placeholder{color:rgba(255,255,255,0.6);}
     .state-grid{display:grid;grid-template-columns:1fr;gap:8px;}
     .state-btn{padding:22px 12px;border-radius:var(--radius-sm);border:1.5px solid var(--border);background:var(--card);color:var(--text);font-size:17px;font-weight:700;cursor:pointer;transition:all 0.15s;font-family:inherit;text-align:center;}
     .state-btn:hover{border-color:var(--primary);color:var(--primary);}
@@ -323,11 +324,12 @@
       <div class="modal-title">🎓 Pre-Licensing Course</div>
     </div>
     <div class="modal-body">
-      <div class="info-banner" style="margin-bottom:14px;">
-        <div class="info-banner-title">Select Your State</div>
-        <div class="info-banner-body">We'll take you to the NAA-partnered pre-licensing course for your state. Tap your state to open it in a new tab.</div>
+      <div style="background:linear-gradient(135deg,#0055c4,#0a84ff);border-radius:var(--radius);padding:20px;margin-bottom:16px;box-shadow:0 4px 20px rgba(0,85,196,0.4);">
+        <div style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,0.7);margin-bottom:6px;">🎓 Pre-Licensing Course</div>
+        <div style="font-size:20px;font-weight:800;color:#fff;letter-spacing:-0.3px;margin-bottom:6px;">Select Your State</div>
+        <div style="font-size:14px;color:rgba(255,255,255,0.88);line-height:1.5;margin-bottom:16px;">Search for your state below — we'll open the NAA-partnered pre-licensing course for you in a new tab.</div>
+        <input class="state-search" type="text" placeholder="🔍  Search states…" oninput="filterStates(this.value)" style="background:rgba(255,255,255,0.15);border:1.5px solid rgba(255,255,255,0.35);color:#fff;margin-bottom:0;">
       </div>
-      <input class="state-search" type="text" placeholder="Search states…" oninput="filterStates(this.value)">
       <div class="state-grid" id="stateGrid"></div>
     </div>
   </div>
