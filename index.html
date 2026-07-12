@@ -105,7 +105,7 @@
     /* STATE GRID */
     .state-search{width:100%;padding:12px 14px;border:2px solid var(--border);border-radius:var(--radius-sm);font-size:15px;background:var(--input-bg);color:var(--text);outline:none;font-family:inherit;margin-bottom:12px;transition:border-color 0.2s;}
     .state-search:focus{border-color:var(--primary);}
-    .state-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+    .state-grid{display:grid;grid-template-columns:1fr;gap:8px;}
     .state-btn{padding:10px 6px;border-radius:var(--radius-sm);border:1.5px solid var(--border);background:var(--card);color:var(--text);font-size:13px;font-weight:700;cursor:pointer;transition:all 0.15s;font-family:inherit;text-align:center;}
     .state-btn:hover{border-color:var(--primary);color:var(--primary);}
     .state-btn:active{transform:scale(0.96);}
@@ -126,7 +126,6 @@
 
     @media(max-width:400px){
       .tile-grid{grid-template-columns:1fr;}
-      .state-grid{grid-template-columns:repeat(2,1fr);}
     }
   </style>
 </head>
@@ -445,7 +444,7 @@ function openState(slug){
 function filterStates(q){
   q = q.toLowerCase().trim();
   document.querySelectorAll('.state-btn').forEach(b =>
-    b.classList.toggle('hidden', !!q && !b.dataset.name.includes(q))
+    b.classList.toggle('hidden', !q || !b.dataset.name.includes(q))
   );
 }
 
