@@ -233,6 +233,15 @@
         <div class="tile-sub">Discover what this opportunity could mean for your life</div>
       </button>
     </div>
+    <div class="section-label">Have Questions?</div>
+    <button class="cta-tile" onclick="openModal('discoveryModal')">
+      <div class="cta-icon">📅</div>
+      <div class="cta-info">
+        <div class="cta-title">Book a Discovery Call</div>
+        <div class="cta-sub">Talk to <span id="ctaAgentNameUnlicensed"></span> — get your questions answered</div>
+      </div>
+      <span class="cta-arrow">›</span>
+    </button>
   </div>
 </div>
 
@@ -450,6 +459,7 @@ function filterStates(q){
 
 // ── INIT ───────────────────────────────────────────────────────────────────
 document.getElementById('ctaAgentName').textContent = AGENT.name;
+document.getElementById('ctaAgentNameUnlicensed').textContent = AGENT.name;
 buildStateGrid();
 show('homeView');
 </script>
