@@ -579,13 +579,17 @@ const FP_DATA = {
     {n:4,t:'<strong>Bring a valid government-issued photo ID</strong> to your appointment.'},
     {n:5,t:'<strong>Your fingerprints are submitted electronically</strong> to the Missouri DOI through the state system.'}
   ],note:'Missouri requires registration through MACHS (run by the Missouri State Highway Patrol) before connecting you to IdentoGO. Register at MACHS first — do not go directly to IdentoGO.'},
-  'nevada':{type:'other',scheduleUrl:'https://doi.nv.gov/uploadedFiles/doinvgov/Content/Licensing/Fingerprints_and_Background_Reports/DOI%20Fingerprint%20Background%20Waiver%205.13.25.pdf',scheduleBtnLabel:'📋 Download Background Waiver (NV DOI) ↗',doiUrl:'https://doi.nv.gov/Licensing/Fingerprints_and_Background_Reports/',doiBtnLabel:'🏛️ NV DOI — Fingerprinting Info ↗',steps:[
-    {n:1,t:'<strong>Apply through NIPR or Sircon</strong> — after submitting your application, you\'ll receive a confirmation email with a link to download your personal <strong>Fingerprint Authorization Form</strong>.'},
-    {n:2,t:'<strong>Download the Fingerprint Background Waiver</strong> using the button below, fill it out, and attach it to your Sircon application.'},
-    {n:3,t:'<strong>Take both forms</strong> — your Authorization Form (from email) and your completed Background Waiver — to an <strong>approved Nevada fingerprint vendor</strong>. Visit the NV DOI Fingerprinting Info page (button below) for the current vendor list.'},
-    {n:4,t:'<strong>After your appointment</strong>, upload your completed forms to your Sircon application or the NIPR Attachment Warehouse.'},
+  'nevada':{type:'other',buttons:[
+    {url:'https://hub.app.nipr.com/my-nipr/frontend/identify-licensee',label:'📝 Apply on NIPR ↗',style:'primary'},
+    {url:'https://doi.nv.gov/uploadedFiles/doinvgov/Content/Licensing/Fingerprints_and_Background_Reports/DOI%20Fingerprint%20Background%20Waiver%205.13.25.pdf',label:'📋 Download Background Waiver ↗',style:'secondary'},
+    {url:'https://doi.nv.gov/Licensing/Fingerprints_and_Background_Reports/',label:'🏛️ NV DOI — Fingerprinting Info ↗',style:'secondary'}
+  ],steps:[
+    {n:1,t:'<strong>Submit your Nevada license application</strong> through NIPR using the Apply on NIPR button below — after submission, you\'ll receive a confirmation email with a link to download your personal <strong>Fingerprint Authorization Form</strong>.'},
+    {n:2,t:'<strong>Download and complete the Fingerprint Background Waiver</strong> using the button below, then attach it to your NIPR application.'},
+    {n:3,t:'<strong>Take both forms</strong> — your Authorization Form (from email) and your completed Background Waiver — to an <strong>approved Nevada fingerprint vendor</strong>. The NV DOI Fingerprinting Info button below has the current vendor list.'},
+    {n:4,t:'<strong>After your appointment</strong>, upload your completed forms to your NIPR Attachment Warehouse or Sircon application.'},
     {n:5,t:'Background check processing takes approximately <strong>3 weeks</strong>. Fingerprints are valid for one year.'}
-  ],note:'Nevada uses its own state-approved fingerprint vendors — not IdentoGO. Apply first, download your Authorization Form from the confirmation email, and bring both forms to an approved NV vendor. Fee varies by vendor.'},
+  ],note:'Nevada uses its own state-approved fingerprint vendors — not IdentoGO. Apply first through NIPR, download your Authorization Form from the confirmation email, and bring both forms to an approved NV vendor. Fee varies by vendor.'},
   'texas':{type:'identogo_apply',scheduleUrl:'https://uenroll.identogo.com/',scheduleBtnLabel:'📍 Go to IdentoGO ↗',doiUrl:'https://www.tdi.texas.gov/agent/fingerprinting-process.html',doiBtnLabel:'🏛️ TDI Fingerprinting Process ↗',steps:[
     {n:1,t:'<strong>Submit your license application</strong> through the TDI Fingerprinting Process page (button below) — TDI will email you a unique IdentoGO service code after your application is registered.'},
     {n:2,t:'<strong>Check your email</strong> for your unique IdentoGO code from TDI — do not go to IdentoGO until you receive it.'},
@@ -593,20 +597,24 @@ const FP_DATA = {
     {n:4,t:'<strong>Bring a valid government-issued photo ID</strong> to your appointment.'},
     {n:5,t:'<strong>Your fingerprints are submitted electronically</strong> to the FBI and TDI automatically.'}
   ],note:'Texas emails a unique IdentoGO service code after you apply. Submit your application at TDI first — do not go to IdentoGO before receiving your code.'},
-  'washington':{type:'identogo_apply',scheduleUrl:'https://uenroll.identogo.com/',scheduleBtnLabel:'📍 Go to IdentoGO ↗',doiUrl:'https://www.insurance.wa.gov/producers-adjusters/licensing/get-licensed/fingerprint-requirements',doiBtnLabel:'🏛️ WA OIC Fingerprint Requirements ↗',steps:[
-    {n:1,t:'<strong>Submit your license application</strong> through NIPR — note your <strong>OIC or NIPR transaction number</strong> from your confirmation email. Review the WA OIC Fingerprint Requirements (button below) for full details.'},
-    {n:2,t:'<strong>Schedule at IdentoGO</strong> (button above) — when prompted, select <strong>"Washington Office of the Insurance Commissioner"</strong> as the agency and enter your OIC or NIPR transaction number.'},
-    {n:3,t:'<strong>Visit an IdentoGO center</strong> — there are 30+ locations across Washington state. Fee is <strong>$49.00</strong> total.'},
-    {n:4,t:'<strong>Bring a valid government-issued photo ID</strong> to your appointment.'},
-    {n:5,t:'<strong>Your fingerprints are transmitted electronically</strong> to the WA OIC — no separate mailing needed. Contact IdentoGO at <strong>888-771-5097</strong> for scheduling help.'}
+  'washington':{type:'identogo_apply',buttons:[
+    {url:'https://hub.app.nipr.com/my-nipr/frontend/identify-licensee',label:'📝 Apply on NIPR ↗',style:'primary'},
+    {url:'https://www.insurance.wa.gov/producers-adjusters/licensing/get-licensed/fingerprint-requirements',label:'🏛️ WA OIC Fingerprint Requirements ↗',style:'secondary'},
+    {url:'https://uenroll.identogo.com/',label:'📍 Go to IdentoGO ↗',style:'secondary'}
+  ],steps:[
+    {n:1,t:'<strong>Submit your Washington license application</strong> through NIPR using the Apply on NIPR button below — note your <strong>OIC or NIPR transaction number</strong> from your confirmation email.'},
+    {n:2,t:'<strong>Review the WA OIC fingerprint requirements</strong> for current process details and IdentoGO scheduling info.'},
+    {n:3,t:'<strong>Schedule at IdentoGO</strong> — select <strong>"Washington Office of the Insurance Commissioner"</strong> as the agency and enter your OIC or NIPR transaction number.'},
+    {n:4,t:'<strong>Visit an IdentoGO center</strong> — 30+ locations in Washington state. Fee: <strong>$49.00</strong>.'},
+    {n:5,t:'<strong>Your fingerprints are transmitted electronically</strong> to the WA OIC — no mailing needed. Contact IdentoGO at <strong>888-771-5097</strong> for scheduling help.'}
   ],note:'Washington requires you to apply first through NIPR, then use your OIC/NIPR transaction number at IdentoGO. Select "Washington Office of Insurance Commissioner" when scheduling. Fee: $49.'},
-  'wyoming':{type:'other',scheduleUrl:'https://doi.wyo.gov/licensing/producers',scheduleBtnLabel:'🏛️ WY DOI — Producer Licensing ↗',steps:[
-    {n:1,t:'<strong>Submit your license application</strong> to the Wyoming Department of Insurance (button below) — <strong>do NOT get fingerprinted before applying.</strong>'},
-    {n:2,t:'<strong>After your application is received</strong>, the WY DOI will mail you a fingerprint packet containing fingerprint cards and instructions. The fingerprinting fee is <strong>$39</strong>.'},
+  'wyoming':{type:'other',scheduleUrl:'https://www.sircon.com/products/apply.jsp',scheduleBtnLabel:'📝 Apply on Sircon ↗',doiUrl:'https://doi.wyo.gov/licensing/producers',doiBtnLabel:'🏛️ WY DOI — Producer Licensing ↗',steps:[
+    {n:1,t:'<strong>Submit your Wyoming license application</strong> through Sircon using the Apply button below — <strong>do NOT get fingerprinted before your application is on file.</strong>'},
+    {n:2,t:'<strong>After the WY DOI receives your application</strong>, they will mail you a fingerprint packet containing fingerprint cards and instructions. The fingerprinting fee is <strong>$39</strong>.'},
     {n:3,t:'<strong>Complete your fingerprint cards</strong> as directed in the packet and return them to the WY DOI per the included instructions.'},
     {n:4,t:'Background check processing typically takes <strong>2–3 weeks</strong> from receipt of your fingerprint cards.'},
-    {n:5,t:'Questions? Call the WY DOI Producer Licensing division at <strong>(307) 777-7319</strong>.'}
-  ],note:'Wyoming uses a mail-in fingerprint card process — not IdentoGO or a third-party vendor. Apply first; the DOI mails your fingerprint packet. Fee: $39. Processing: 2–3 weeks. Questions: (307) 777-7319.'},
+    {n:5,t:'Questions? Contact the WY DOI Producer Licensing division at <strong>(307) 777-7319</strong>.'}
+  ],note:'Wyoming uses a mail-in fingerprint card process — not IdentoGO. Apply through Sircon first; the WY DOI mails your fingerprint packet. Fee: $39. Processing: 2–3 weeks. Questions: (307) 777-7319.'},
   // ── FIELDPRINT ────────────────────────────────────────────────────────────
   'alabama':{type:'fieldprint',scheduleUrl:'https://www.fieldprintusa.com/',scheduleBtnLabel:'📍 Schedule on Fieldprint ↗',steps:[
     {n:1,t:'<strong>Call Fieldprint at 877-614-4422</strong> to obtain your Alabama insurance producer Fieldprint code before scheduling an appointment.'},
@@ -628,12 +636,16 @@ const FP_DATA = {
     {n:3,t:'<strong>Bring a valid government-issued photo ID</strong> to your appointment.'},
     {n:4,t:'<strong>Your fingerprints are submitted electronically</strong> to the Hawaii Insurance Division automatically.'}
   ],note:'Hawaii uses Fieldprint with code HI-DCCA-INS. Results go to the Hawaii Insurance Division (DCCA).'},
-  'iowa':{type:'fieldprint',code:'FPIADOI',scheduleUrl:'https://fieldprintiowa.com/individuals',scheduleBtnLabel:'📍 Schedule on Fieldprint Iowa ↗',doiUrl:'https://iid.iowa.gov/producer-fingerprinting-and-criminal-history-checks',doiBtnLabel:'🏛️ Iowa IID — Fingerprinting Info ↗',steps:[
-    {n:1,t:'<strong>Submit your license application</strong> through NIPR — your <strong>IID Fieldprint Code</strong> (shown above) and your National Producer Number (NPN) will be included in your NIPR confirmation email. If you need to retrieve them later: log into nipr.com → Order History → view your application → download the detailed receipt.'},
-    {n:2,t:'<strong>Create an account at Fieldprint Iowa</strong> (button below) using the Fieldprint code shown above and your NPN, then schedule your appointment.'},
+  'iowa':{type:'fieldprint',code:'FPIADOI',buttons:[
+    {url:'https://hub.app.nipr.com/my-nipr/frontend/identify-licensee',label:'📝 Apply on NIPR ↗',style:'primary'},
+    {url:'https://fieldprintiowa.com/individuals',label:'📍 Schedule on Fieldprint Iowa ↗',style:'secondary'},
+    {url:'https://iid.iowa.gov/producer-fingerprinting-and-criminal-history-checks',label:'🏛️ Iowa IID — Fingerprinting Info ↗',style:'secondary'}
+  ],steps:[
+    {n:1,t:'<strong>Submit your Iowa license application</strong> through NIPR using the Apply button below — your <strong>IID Fieldprint Code</strong> (shown above) and National Producer Number (NPN) will be in your confirmation email. (To retrieve later: nipr.com → Order History → view application → download detailed receipt.)'},
+    {n:2,t:'<strong>Create an account at Fieldprint Iowa</strong> using the Fieldprint code shown above and your NPN, then schedule your appointment.'},
     {n:3,t:'<strong>Attend your appointment</strong> with your appointment number and two valid government-issued IDs. Fee: <strong>$34.35</strong> at Iowa locations or $36.35 outside Iowa.'},
     {n:4,t:'<strong>Results arrive in 3–5 business days</strong> and are transmitted electronically to the Iowa Insurance Division (IID). Questions? Contact Fieldprint Iowa at <strong>877-614-4364</strong> or iowadoi@fieldprint.com.'}
-  ],note:'Iowa emails your IID Fieldprint Code (FPIADOI) in your NIPR confirmation when you apply. Apply first, then schedule at fieldprintiowa.com using that code. Fee: $34.35 in Iowa. Questions: IID fingerprinting info button above.'},
+  ],note:'Iowa emails your IID Fieldprint Code (FPIADOI) in your NIPR confirmation when you apply. Apply first through NIPR, then schedule at fieldprintiowa.com. Fee: $34.35 in Iowa. Questions: IID fingerprinting info button above.'},
   'oregon':{type:'fieldprint',code:'FPORDeptConsumerBusServDAS',scheduleUrl:'https://fieldprintoregon.com/',scheduleBtnLabel:'📍 Schedule on Fieldprint Oregon ↗',steps:[
     {n:1,t:'<strong>Tap the button below</strong> to go to Fieldprint Oregon. Enter your Fieldprint code (shown above) to find the Oregon insurance fingerprinting service.'},
     {n:2,t:'<strong>Create an account or sign in</strong> and schedule an appointment at a nearby Fieldprint Oregon location.'},
@@ -646,13 +658,18 @@ const FP_DATA = {
     {n:3,t:'<strong>Bring a valid government-issued photo ID</strong> to your appointment.'},
     {n:4,t:'<strong>Your fingerprints are submitted electronically</strong> to the Virginia Bureau of Insurance automatically.'}
   ],note:'Virginia uses Fieldprint with code FPVABOIProducer. Results go to the Virginia Bureau of Insurance (State Corporation Commission).'},
-  'district-of-columbia':{type:'fieldprint',scheduleUrl:'https://fieldprintdc.com/',scheduleBtnLabel:'📍 Schedule on Fieldprint DC ↗',doiUrl:'https://disb.dc.gov/publication/fingerprinting-requirements',doiBtnLabel:'🏛️ DC DISB — Fingerprinting Requirements ↗',steps:[
-    {n:1,t:'<strong>Submit your DC resident insurance license application</strong> through NIPR after passing your exam — you must apply before scheduling fingerprinting.'},
-    {n:2,t:'<strong>Review the DC DISB fingerprinting requirements</strong> (button below) for current instructions. Contact DISB at <strong>(202) 727-8000</strong> or <strong>disb.insurancelicensing@dc.gov</strong> for your Fieldprint code if not provided in your application confirmation.'},
-    {n:3,t:'<strong>Schedule your appointment</strong> at Fieldprint DC (button above). Fee: <strong>$31.50</strong>.'},
+  'district-of-columbia':{type:'fieldprint',buttons:[
+    {url:'https://www.pearsonvue.com/us/en/dc/insurance.html',label:'📝 Schedule DC Licensing Exam ↗',style:'primary'},
+    {url:'https://hub.app.nipr.com/my-nipr/frontend/identify-licensee',label:'📝 Apply on NIPR ↗',style:'secondary'},
+    {url:'https://fieldprintdc.com/',label:'📍 Schedule on Fieldprint DC ↗',style:'secondary'},
+    {url:'https://disb.dc.gov/publication/fingerprinting-requirements',label:'🏛️ DC DISB — Fingerprinting Requirements ↗',style:'secondary'}
+  ],steps:[
+    {n:1,t:'<strong>Schedule and pass your DC insurance licensing exam</strong> at a Pearson VUE test center using the button below.'},
+    {n:2,t:'<strong>Submit your DC resident license application</strong> through NIPR using the Apply button below — you must have passed the exam before applying.'},
+    {n:3,t:'<strong>Schedule your Fieldprint DC fingerprinting appointment</strong> using the Fieldprint DC button below. Fee: <strong>$31.50</strong>. Contact DC DISB at (202) 727-8000 or disb.insurancelicensing@dc.gov if you need your Fieldprint code.'},
     {n:4,t:'<strong>Bring a valid government-issued photo ID</strong> to your Fieldprint appointment.'},
     {n:5,t:'<strong>Your fingerprints are submitted electronically</strong> to DC DISB automatically after your appointment.'}
-  ],note:'Washington D.C. uses Fieldprint DC at fieldprintdc.com. You must apply first before scheduling fingerprinting. Fee: $31.50. Contact DC DISB at (202) 727-8000 or disb.insurancelicensing@dc.gov for your Fieldprint code.'},
+  ],note:'Washington D.C. uses Fieldprint DC at fieldprintdc.com. Pass your exam first, then apply through NIPR before scheduling fingerprinting. Fee: $31.50. Contact DC DISB at (202) 727-8000 or disb.insurancelicensing@dc.gov.'},
   'wisconsin':{type:'fieldprint',code:'FPWIOCIInsurance',scheduleUrl:'https://fieldprintwisconsin.com/',scheduleBtnLabel:'📍 Schedule on Fieldprint Wisconsin ↗',steps:[
     {n:1,t:'<strong>Tap the button below</strong> to go to Fieldprint Wisconsin. Enter your Fieldprint code (shown above) to find the Wisconsin OCI fingerprinting service.'},
     {n:2,t:'<strong>Create an account or sign in</strong> and schedule an appointment at a nearby Fieldprint Wisconsin location.'},
@@ -665,7 +682,7 @@ const FP_DATA = {
     {n:2,t:'<strong>Schedule an appointment</strong> at any of 800+ CLS locations statewide through the portal. CDI ORI: <strong>A0042</strong> · OCA: <strong>1000</strong>.'},
     {n:3,t:'<strong>Bring your Payment ID (or QR code) and a valid photo ID</strong> to your appointment. Total fee: <strong>$74</strong> ($17 FBI + $32 DOJ + $25 CLS service fee).'},
     {n:4,t:'<strong>After your appointment</strong>, CLS transmits your prints electronically to CA DOJ and FBI. You\'ll receive an ATI number to track your background check status.'}
-  ],note:'California uses Capital Live Scan (CLS) as its exclusive CDI vendor — not IdentoGO or Fieldprint. CDI ORI: A0042, OCA: 1000. Total fee: $74. Register at applicantservices.com/CADOI first.',doiUrl:'https://www.insurance.ca.gov/0200-industry/0200-prod-licensing/0100-applicant-info/0300-ca-fingerprint/',doiBtnLabel:'🏛️ CDI Fingerprint Requirements ↗',doiBtnIsPrimary:true},
+  ],note:'California uses Capital Live Scan (CLS) as its exclusive CDI vendor — not IdentoGO or Fieldprint. CDI ORI: A0042, OCA: 1000. Total fee: $74. Register at applicantservices.com/CADOI first.',doiUrl:'https://www.insurance.ca.gov/0200-industry/0200-prod-licensing/0100-applicant-info/0300-ca-fingerprint/',doiBtnLabel:'🏛️ CDI Fingerprint Requirements ↗'},
   'idaho':{type:'other',code:'InsID-FPELC',codeLabel:'Your Exam Center Code',scheduleUrl:'https://home.pearsonvue.com/idoi',scheduleBtnLabel:'📍 Schedule at Pearson VUE ↗',steps:[
     {n:1,t:'<strong>Tap the button below</strong> to go to the Pearson VUE site for Idaho DOI licensing. Use the code shown above when prompted at the exam center.'},
     {n:2,t:'<strong>Schedule an appointment</strong> at a Pearson VUE exam center near you.'},
@@ -684,12 +701,17 @@ const FP_DATA = {
     {n:3,t:'<strong>Bring a valid government-issued photo ID</strong> to your PSI exam appointment.'},
     {n:4,t:'<strong>Your fingerprints are automatically submitted</strong> to the Minnesota Commerce Department after your exam session.'}
   ],note:'Minnesota captures fingerprints at PSI exam centers during the licensing exam — no separate fingerprinting appointment is needed. Bring your ID to the exam.'},
-  'north-carolina':{type:'other',scheduleUrl:'https://www.ncdoi.gov/licensees/agent-and-adjuster-licensing/become-insurance-agent-or-adjuster/resident-fingerprint-requirements',scheduleBtnLabel:'🏛️ NC DOI — Fingerprint Requirements ↗',doiUrl:'https://www.ncdoi.gov/documents/agent-services/live-scan-locations/open',doiBtnLabel:'📍 NC Live Scan Locations ↗',steps:[
-    {n:1,t:'<strong>Submit your resident license application</strong> through NIPR — the <strong>$38 criminal history check fee</strong> is paid within NIPR at time of application. Watch for a NIPR email with your fingerprinting instructions and required SBI forms.'},
-    {n:2,t:'<strong>Review the NC DOI fingerprint requirements</strong> (button below) for full step-by-step instructions. You\'ll need the <strong>SBI Electronic Fingerprint Submission Release of Information Form</strong> and the <strong>Authority for Release of Information Form</strong>.'},
-    {n:3,t:'<strong>Visit a county sheriff\'s office or authorized NC Live Scan location</strong> (locations button below) within <strong>30 days</strong> of applying. A law enforcement officer will certify your forms after submitting prints electronically to the SBI.'},
-    {n:4,t:'<strong>Submit your certified SBI forms</strong> back via NIPR per the instructions in your email. Processing takes 5 business days to 2 weeks.'},
-    {n:5,t:'Questions? Contact NCDOI Agent Services at <strong>919-807-6800</strong> or toll-free <strong>855-408-1212</strong>.'}
+  'north-carolina':{type:'other',buttons:[
+    {url:'https://home.pearsonvue.com/ncdoi',label:'📝 Schedule NC Licensing Exam ↗',style:'primary'},
+    {url:'https://hub.app.nipr.com/my-nipr/frontend/identify-licensee',label:'📝 Apply on NIPR ↗',style:'secondary'},
+    {url:'https://www.ncdoi.gov/licensees/agent-and-adjuster-licensing/become-insurance-agent-or-adjuster/resident-fingerprint-requirements',label:'🏛️ NC DOI — Fingerprint Requirements ↗',style:'secondary'},
+    {url:'https://www.ncdoi.gov/documents/agent-services/live-scan-locations/open',label:'📍 NC Live Scan Locations ↗',style:'secondary'}
+  ],steps:[
+    {n:1,t:'<strong>Schedule and pass your North Carolina insurance licensing exam</strong> at a Pearson VUE test center using the button below.'},
+    {n:2,t:'<strong>Submit your resident license application</strong> through NIPR using the Apply button below — the <strong>$38 criminal history check fee</strong> is paid within NIPR. Watch for a NIPR email with your fingerprinting instructions and required SBI forms.'},
+    {n:3,t:'<strong>Review the NC DOI fingerprint requirements</strong> for full step-by-step instructions. You\'ll need the <strong>SBI Electronic Fingerprint Submission Release of Information Form</strong> and the <strong>Authority for Release of Information Form</strong>.'},
+    {n:4,t:'<strong>Visit a county sheriff\'s office or authorized NC Live Scan location</strong> within <strong>30 days</strong> of applying. A law enforcement officer will certify your forms after submitting prints electronically to the SBI.'},
+    {n:5,t:'<strong>Submit your certified SBI forms</strong> back via NIPR per your email instructions. Processing: 5 business days to 2 weeks. Questions: NCDOI Agent Services <strong>919-807-6800</strong> or <strong>855-408-1212</strong>.'}
   ],note:'North Carolina requires electronic Live Scan fingerprinting within 30 days of applying. $38 fee is paid within NIPR. Visit any county sheriff\'s office or authorized Live Scan location. Non-residents are exempt.'},
   'north-dakota':{type:'other',scheduleUrl:'https://candidate.psiexams.com/',scheduleBtnLabel:'📍 Schedule at PSI ↗',steps:[
     {n:1,t:'<strong>Register for your licensing exam</strong> through PSI — fingerprints are captured at PSI test centers.'},
@@ -869,6 +891,7 @@ function openFpInfo(slug, name){
   } else if(type === 'identogo_apply'){
     // DOI button (apply/get form first) renders BEFORE the IdentoGO schedule button
     const doiBtn = d.doiUrl ? secondaryBtn(d.doiUrl, d.doiBtnLabel) : '';
+    const btns = d.buttons ? d.buttons.map(b=>b.style==='primary'?primaryBtn(b.url,b.label):secondaryBtn(b.url,b.label)).join('') : `${doiBtn}${primaryBtn(d.scheduleUrl, d.scheduleBtnLabel)}`;
     html = `
       <div style="background:linear-gradient(135deg,#0a7a8e,#00b4d8);border-radius:var(--radius);padding:20px;margin-bottom:16px;box-shadow:0 4px 20px rgba(10,122,142,0.4);">
         <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
@@ -877,8 +900,7 @@ function openFpInfo(slug, name){
         </div>
         <div style="display:flex;flex-direction:column;gap:14px;">${stepsHtml(d.steps)}</div>
       </div>
-      ${doiBtn}
-      ${primaryBtn(d.scheduleUrl, d.scheduleBtnLabel)}
+      ${btns}
       ${noteCard(d.note)}`;
 
   } else if(type === 'fieldprint'){
@@ -886,6 +908,7 @@ function openFpInfo(slug, name){
     // DOI button (get code first) renders BEFORE Fieldprint schedule button
     const doiBtn = d.doiUrl ? secondaryBtn(d.doiUrl, d.doiBtnLabel) : '';
     const step2Btn = d.step2Url ? primaryBtn(d.step2Url, d.step2BtnLabel, '#e67e22') : '';
+    const btns = d.buttons ? d.buttons.map(b=>b.style==='primary'?primaryBtn(b.url,b.label,'#e67e22'):secondaryBtn(b.url,b.label)).join('') : `${doiBtn}${primaryBtn(d.scheduleUrl, d.scheduleBtnLabel, '#e67e22')}${step2Btn}`;
     html = `
       <div style="background:linear-gradient(135deg,#7a4a0a,#d4820a);border-radius:var(--radius);padding:20px;margin-bottom:16px;box-shadow:0 4px 20px rgba(122,74,10,0.4);">
         <div style="display:flex;align-items:center;gap:10px;margin-bottom:${d.code?'12px':'16px'};">
@@ -895,14 +918,13 @@ function openFpInfo(slug, name){
         ${badge}
         <div style="display:flex;flex-direction:column;gap:14px;">${stepsHtml(d.steps)}</div>
       </div>
-      ${doiBtn}
-      ${primaryBtn(d.scheduleUrl, d.scheduleBtnLabel, '#e67e22')}
-      ${step2Btn}
+      ${btns}
       ${noteCard(d.note)}`;
 
   } else if(type === 'other'){
     const badge = d.code ? codeBadge(d.code, d.codeLabel||'Your Agency Code') : '';
     const doiBtn = d.doiUrl ? (d.doiBtnIsPrimary ? primaryBtn(d.doiUrl, d.doiBtnLabel) : secondaryBtn(d.doiUrl, d.doiBtnLabel)) : '';
+    const btns = d.buttons ? d.buttons.map(b=>b.style==='primary'?primaryBtn(b.url,b.label):secondaryBtn(b.url,b.label)).join('') : `${primaryBtn(d.scheduleUrl, d.scheduleBtnLabel)}${doiBtn}`;
     html = `
       <div style="background:linear-gradient(135deg,#0a7a8e,#00b4d8);border-radius:var(--radius);padding:20px;margin-bottom:16px;box-shadow:0 4px 20px rgba(10,122,142,0.4);">
         <div style="display:flex;align-items:center;gap:10px;margin-bottom:${d.code?'12px':'16px'};">
@@ -912,8 +934,7 @@ function openFpInfo(slug, name){
         ${badge}
         <div style="display:flex;flex-direction:column;gap:14px;">${stepsHtml(d.steps)}</div>
       </div>
-      ${primaryBtn(d.scheduleUrl, d.scheduleBtnLabel)}
-      ${doiBtn}
+      ${btns}
       ${noteCard(d.note)}`;
 
   } else {
