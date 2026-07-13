@@ -482,7 +482,7 @@ function openState(slug){
 function filterStates(q){
   q = q.toLowerCase().trim();
   document.querySelectorAll('#stateGrid .state-btn').forEach(b =>
-    b.classList.toggle('hidden', !q || !b.dataset.name.includes(q))
+    b.classList.toggle('hidden', !q || !b.dataset.name.startsWith(q))
   );
 }
 
@@ -830,7 +830,7 @@ function buildFpStateGrid(){
 function filterFpStates(q){
   q = q.toLowerCase().trim();
   document.querySelectorAll('#fpStateGrid .state-btn').forEach(b =>
-    b.classList.toggle('hidden', !q || !b.dataset.name.includes(q))
+    b.classList.toggle('hidden', !q || !b.dataset.name.startsWith(q))
   );
 }
 
