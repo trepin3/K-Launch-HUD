@@ -147,7 +147,7 @@
     <div class="home-hero">
       <span class="home-hero-icon">🛡️</span>
       <div class="home-title">Welcome to Launch HUD</div>
-      <div class="home-sub">Your gateway to building a life insurance career with The Wolsey Organization</div>
+      <div class="home-sub">Your gateway to building a life insurance career</div>
     </div>
     <div class="home-question">Are you currently licensed?</div>
     <button class="choice-card primary" onclick="show('licensedView')">
@@ -225,6 +225,12 @@
         <span class="tile-icon">🎓</span>
         <div class="tile-title">Pre-Licensing Course</div>
         <div class="tile-sub">Start your state's required education</div>
+      </button>
+      <button class="hud-tile span2" onclick="openModal('fpStateModal')" style="border-color:#0a7a8e;background:linear-gradient(135deg,rgba(10,122,142,0.08),rgba(10,122,142,0.02));">
+        <span class="tile-arrow" style="color:#0a7a8e;">›</span>
+        <span class="tile-icon">🖐️</span>
+        <div class="tile-title" style="color:#0a7a8e;">Get Fingerprinted</div>
+        <div class="tile-sub">Find your state's requirements &amp; schedule your appointment</div>
       </button>
       <button class="hud-tile purple span2" onclick="openModal('whyModal')">
         <span class="tile-arrow">›</span>
@@ -363,6 +369,36 @@
   </div>
 </div>
 
+<!-- ── FINGERPRINT STATE SELECTOR MODAL ─────────── -->
+<div id="fpStateModal" class="modal-overlay">
+  <div class="modal-wrap">
+    <div class="modal-header">
+      <button class="modal-back" onclick="closeModal('fpStateModal')">←</button>
+      <div class="modal-title">🖐️ Get Fingerprinted</div>
+    </div>
+    <div class="modal-body">
+      <div style="background:linear-gradient(135deg,#0a7a8e,#00b4d8);border-radius:var(--radius);padding:20px;margin-bottom:16px;box-shadow:0 4px 20px rgba(10,122,142,0.4);">
+        <div style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,0.7);margin-bottom:6px;">🖐️ Fingerprinting</div>
+        <div style="font-size:20px;font-weight:800;color:#fff;letter-spacing:-0.3px;margin-bottom:6px;">Select Your State</div>
+        <div style="font-size:14px;color:rgba(255,255,255,0.88);line-height:1.5;margin-bottom:16px;">Search for your state to see fingerprinting instructions and schedule your appointment.</div>
+        <input class="state-search" type="text" placeholder="🔍  Search your state…" oninput="filterFpStates(this.value)" style="background:#fff;border:none;color:#1d1d1f;font-size:17px;padding:16px 18px;border-radius:12px;box-shadow:0 4px 16px rgba(0,0,0,0.2);margin-bottom:0;font-weight:600;">
+      </div>
+      <div class="state-grid" id="fpStateGrid"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── FINGERPRINT INFO MODAL ────────────────────── -->
+<div id="fpInfoModal" class="modal-overlay">
+  <div class="modal-wrap">
+    <div class="modal-header">
+      <button class="modal-back" onclick="closeModal('fpInfoModal');openModal('fpStateModal')">←</button>
+      <div class="modal-title" id="fpInfoTitle">🖐️ Fingerprinting</div>
+    </div>
+    <div class="modal-body" id="fpInfoBody"></div>
+  </div>
+</div>
+
 <script>
 // ── AGENT CONFIG (change this for K vs J version) ──────────────────────────
 const AGENT = {
@@ -407,7 +443,7 @@ function openModal(id){
 function closeModal(id){
   const m = document.getElementById(id);
   if(m) m.style.display = 'none';
-  const anyOpen = ['discoveryModal','checklistModal','stateModal','whyModal']
+  const anyOpen = ['discoveryModal','checklistModal','stateModal','whyModal','fpStateModal','fpInfoModal']
     .some(mid => { const el = document.getElementById(mid); return el && el.style.display === 'block'; });
   if(!anyOpen) document.body.style.overflow = '';
 }
@@ -435,7 +471,7 @@ const STATES = [
 
 function buildStateGrid(){
   document.getElementById('stateGrid').innerHTML = STATES.map(st =>
-    `<button class="state-btn" onclick="openState('${st.s}')" data-name="${st.n.toLowerCase()}">${st.n}</button>`
+    `<button class="state-btn hidden" onclick="openState('${st.s}')" data-name="${st.n.toLowerCase()}">${st.n}</button>`
   ).join('');
 }
 
@@ -445,15 +481,447 @@ function openState(slug){
 
 function filterStates(q){
   q = q.toLowerCase().trim();
-  document.querySelectorAll('.state-btn').forEach(b =>
+  document.querySelectorAll('#stateGrid .state-btn').forEach(b =>
     b.classList.toggle('hidden', !q || !b.dataset.name.includes(q))
   );
+}
+
+// ── FINGERPRINT DATA ───────────────────────────────────────────────────────
+const FP_DATA = {
+  // ── IDENTOGO WITH KNOWN SERVICE CODE ──────────────────────────────────────
+  'delaware':{type:'identogo_code',code:'27S46Z',scheduleUrl:'https://uenroll.identogo.com/',scheduleBtnLabel:'📍 Schedule on IdentoGO ↗',steps:[
+    {n:1,t:'<strong>Tap the button below</strong> to open IdentoGO and enter Service Code <strong>27S46Z</strong> when the site asks for it.'},
+    {n:2,t:'<strong>Schedule an appointment</strong> at a nearby IdentoGO location. Fee is approximately $85.'},
+    {n:3,t:'<strong>Bring a valid government-issued photo ID</strong> (driver\'s license or passport) to your appointment.'},
+    {n:4,t:'<strong>Your fingerprints are submitted electronically</strong> to the FBI and Delaware DOI — no separate submission needed.'}
+  ],note:'Results are forwarded directly to the Delaware Department of Insurance. Processing typically takes 3–6 weeks.'},
+  'florida':{type:'identogo_code',code:null,scheduleUrl:'https://uenroll.identogo.com/workflows/1F02D2',scheduleBtnLabel:'📍 Schedule Florida Fingerprinting ↗',steps:[
+    {n:1,t:'<strong>Tap the button below</strong> — it goes directly to Florida\'s insurance fingerprinting service on IdentoGO. No service code needed.'},
+    {n:2,t:'<strong>Create an account or sign in</strong> to IdentoGO and schedule an appointment at a nearby location. Fees are typically $45–$65.'},
+    {n:3,t:'<strong>Bring a valid government-issued photo ID</strong> (driver\'s license or passport) to your appointment.'},
+    {n:4,t:'<strong>Your fingerprints are submitted electronically</strong> to the FDLE and Florida Department of Financial Services automatically.'}
+  ],note:'Florida uses a direct IdentoGO workflow URL rather than a universal service code. Results are forwarded to the Florida Department of Financial Services. Processing typically takes 3–6 weeks.'},
+  'georgia':{type:'identogo_code',code:'2TGJ6B',scheduleUrl:'https://uenroll.identogo.com/',scheduleBtnLabel:'📍 Schedule on IdentoGO ↗',steps:[
+    {n:1,t:'<strong>Tap the button below</strong> to open IdentoGO and enter Service Code <strong>2TGJ6B</strong> when the site asks for it.'},
+    {n:2,t:'<strong>Schedule an appointment</strong> at a nearby IdentoGO location. Fees are typically $35–$65.'},
+    {n:3,t:'<strong>Bring a valid government-issued photo ID</strong> to your appointment.'},
+    {n:4,t:'<strong>Your fingerprints are submitted electronically</strong> to the FBI and Georgia DOI — no separate submission needed.'}
+  ],note:'Georgia requires fingerprinting for resident producer license applicants only. Results go directly to the Georgia Office of Insurance and Safety Fire Commissioner.'},
+  'louisiana':{type:'identogo_code',code:'27N339',scheduleUrl:'https://uenroll.identogo.com/',scheduleBtnLabel:'📍 Schedule on IdentoGO ↗',steps:[
+    {n:1,t:'<strong>Tap the button below</strong> to open IdentoGO and enter Service Code <strong>27N339</strong> when the site asks for it.'},
+    {n:2,t:'<strong>Schedule an appointment</strong> at a nearby IdentoGO location. Fees are typically $35–$65.'},
+    {n:3,t:'<strong>Bring a valid government-issued photo ID</strong> to your appointment.'},
+    {n:4,t:'<strong>Your fingerprints are submitted electronically</strong> to the FBI and Louisiana DOI automatically.'}
+  ],note:'Results are forwarded directly to the Louisiana Department of Insurance. Processing typically takes 3–6 weeks.'},
+  'montana':{type:'identogo_code',code:'MT920050Z',scheduleUrl:'https://uenroll.identogo.com/',scheduleBtnLabel:'📍 Schedule on IdentoGO ↗',steps:[
+    {n:1,t:'<strong>Tap the button below</strong> to open IdentoGO and enter Service Code <strong>MT920050Z</strong> when the site asks for it.'},
+    {n:2,t:'<strong>Select "MT State Auditor"</strong> as the agency — this is the correct option for Montana insurance producers.'},
+    {n:3,t:'<strong>Schedule an appointment</strong> at a nearby IdentoGO location.'},
+    {n:4,t:'<strong>Bring a valid government-issued photo ID</strong> to your appointment.'},
+    {n:5,t:'<strong>Your fingerprints are submitted electronically</strong> to the FBI and Montana DOI automatically.'}
+  ],note:'Results are forwarded to the Montana Office of the Commissioner of Securities and Insurance. Processing typically takes 3–6 weeks.'},
+  'new-jersey':{type:'identogo_code',code:'2F16Y3',scheduleUrl:'https://uenroll.identogo.com/',scheduleBtnLabel:'📍 Schedule on IdentoGO ↗',steps:[
+    {n:1,t:'<strong>Tap the button below</strong> to open IdentoGO and enter Service Code <strong>2F16Y3</strong> for Producer License applicants.'},
+    {n:2,t:'<strong>Schedule an appointment</strong> at a nearby IdentoGO location. Fees are typically $35–$65.'},
+    {n:3,t:'<strong>Bring a valid government-issued photo ID</strong> to your appointment.'},
+    {n:4,t:'<strong>Your fingerprints are submitted electronically</strong> to the FBI and NJ DOI automatically.'}
+  ],note:'Code 2F16Y3 is for Producer License applicants. Results go to the NJ Department of Banking and Insurance. Processing typically takes 3–6 weeks.'},
+  'new-mexico':{type:'identogo_code',code:'2BH27J',scheduleUrl:'https://uenroll.identogo.com/',scheduleBtnLabel:'📍 Schedule on IdentoGO ↗',steps:[
+    {n:1,t:'<strong>Tap the button below</strong> to open IdentoGO and enter Service Code <strong>2BH27J</strong> when the site asks for it.'},
+    {n:2,t:'<strong>Schedule an appointment</strong> at a nearby IdentoGO location. Fees are typically $35–$65.'},
+    {n:3,t:'<strong>Bring a valid government-issued photo ID</strong> to your appointment.'},
+    {n:4,t:'<strong>Your fingerprints are submitted electronically</strong> to the FBI and NM OSI automatically.'}
+  ],note:'Results are forwarded to the New Mexico Office of Superintendent of Insurance. Processing typically takes 3–6 weeks.'},
+  'new-york':{type:'identogo_code',code:'1544H9',scheduleUrl:'https://uenroll.identogo.com/',scheduleBtnLabel:'📍 Schedule on IdentoGO ↗',steps:[
+    {n:1,t:'<strong>Tap the button below</strong> to open IdentoGO and enter Service Code <strong>1544H9</strong> when the site asks for it.'},
+    {n:2,t:'<strong>Schedule an appointment</strong> at a nearby IdentoGO location. Fees are typically $35–$65.'},
+    {n:3,t:'<strong>Bring a valid government-issued photo ID</strong> to your appointment.'},
+    {n:4,t:'<strong>Your fingerprints are submitted electronically</strong> to the FBI and NY DFS automatically.'}
+  ],note:'Service code 1544H9 is for insurance employee/producer applicants. Results go to the NY Department of Financial Services. Processing typically takes 3–6 weeks.'},
+  'pennsylvania':{type:'identogo_code',code:'1KGBGJ',scheduleUrl:'https://uenroll.identogo.com/',scheduleBtnLabel:'📍 Schedule on IdentoGO ↗',steps:[
+    {n:1,t:'<strong>Wait until after you pass your licensing exam</strong> before registering — Pennsylvania requires exam passage first.'},
+    {n:2,t:'<strong>Tap the button below</strong> to open IdentoGO and enter Service Code <strong>1KGBGJ</strong> when the site asks for it.'},
+    {n:3,t:'<strong>Schedule an appointment</strong> at a nearby IdentoGO location.'},
+    {n:4,t:'<strong>Bring a valid government-issued photo ID</strong> to your appointment.'},
+    {n:5,t:'<strong>Your fingerprints are submitted electronically</strong> to the FBI and PA DOI automatically.'}
+  ],note:'Important: Do not register for fingerprinting until after passing your licensing exam. Results go to the Pennsylvania Insurance Department.'},
+  'south-carolina':{type:'identogo_code',code:'SC920124Z',scheduleUrl:'https://uenroll.identogo.com/',scheduleBtnLabel:'📍 Schedule on IdentoGO ↗',steps:[
+    {n:1,t:'<strong>Tap the button below</strong> to open IdentoGO and enter Service Code <strong>SC920124Z</strong> when the site asks for it.'},
+    {n:2,t:'<strong>Schedule an appointment</strong> at a nearby IdentoGO location. Fees are typically $35–$65.'},
+    {n:3,t:'<strong>Bring a valid government-issued photo ID</strong> to your appointment.'},
+    {n:4,t:'<strong>Your fingerprints are submitted electronically</strong> for both FBI and South Carolina SLED background checks.'}
+  ],note:'South Carolina runs both a federal FBI check and a state SLED (Law Enforcement Division) check. Results go directly to the SC Department of Insurance.'},
+  'tennessee':{type:'identogo_code',code:'TN920680Z',scheduleUrl:'https://uenroll.identogo.com/',scheduleBtnLabel:'📍 Schedule on IdentoGO ↗',steps:[
+    {n:1,t:'<strong>Tap the button below</strong> to open IdentoGO and enter Service Code <strong>TN920680Z</strong> when the site asks for it.'},
+    {n:2,t:'<strong>Select "TN Department of Commerce &amp; Insurance — Insurance Producers"</strong> as the agency.'},
+    {n:3,t:'<strong>Schedule an appointment</strong> at a nearby IdentoGO location.'},
+    {n:4,t:'<strong>Bring a valid government-issued photo ID</strong> to your appointment.'},
+    {n:5,t:'<strong>Your fingerprints are submitted electronically</strong> to the FBI and TN DOI automatically.'}
+  ],note:'Results are forwarded to the Tennessee Department of Commerce & Insurance. Processing typically takes 3–6 weeks.'},
+  'west-virginia':{type:'identogo_code',code:'228NS5',scheduleUrl:'https://uenroll.identogo.com/',scheduleBtnLabel:'📍 Schedule on IdentoGO ↗',steps:[
+    {n:1,t:'<strong>Tap the button below</strong> to open IdentoGO and enter Service Code <strong>228NS5</strong> when the site asks for it.'},
+    {n:2,t:'<strong>Schedule an appointment</strong> at a nearby IdentoGO location. Fees are typically $35–$65.'},
+    {n:3,t:'<strong>Bring a valid government-issued photo ID</strong> to your appointment.'},
+    {n:4,t:'<strong>Your fingerprints are submitted electronically</strong> to the FBI and WV OIC automatically.'}
+  ],note:'Results are forwarded to the West Virginia Offices of the Insurance Commissioner. Processing typically takes 3–6 weeks.'},
+  // ── IDENTOGO — CODE ISSUED AFTER APPLICATION ──────────────────────────────
+  'alaska':{type:'identogo_apply',scheduleUrl:'https://uenroll.identogo.com/',scheduleBtnLabel:'📍 Go to IdentoGO ↗',steps:[
+    {n:1,t:'<strong>Call IdentoGO at 866-761-8069</strong> — Alaska issues per-applicant service codes by phone rather than publishing a universal code.'},
+    {n:2,t:'<strong>Request the Alaska Division of Insurance fingerprinting service</strong> and receive your personal service code.'},
+    {n:3,t:'<strong>Use your code at IdentoGO</strong> (button below) to schedule an appointment at a nearby location.'},
+    {n:4,t:'<strong>Bring a valid government-issued photo ID</strong> to your appointment.'},
+    {n:5,t:'<strong>Your fingerprints are submitted electronically</strong> to the FBI and Alaska DOI automatically.'}
+  ],note:'Alaska provides per-applicant IdentoGO service codes by phone. Have your license application details ready when you call IdentoGO at 866-761-8069.'},
+  'missouri':{type:'identogo_apply',scheduleUrl:'https://machs.mo.gov/',scheduleBtnLabel:'🏛️ Register at MACHS (MO) ↗',steps:[
+    {n:1,t:'<strong>Tap the button below</strong> to register at MACHS (Missouri Automated Criminal History Site) — the state\'s fingerprint authorization portal.'},
+    {n:2,t:'<strong>Register and complete payment</strong> (approximately $41.95). MACHS will route your fingerprint request to IdentoGO.'},
+    {n:3,t:'<strong>Schedule your IdentoGO appointment</strong> using the instructions provided after MACHS registration.'},
+    {n:4,t:'<strong>Bring a valid government-issued photo ID</strong> to your appointment.'},
+    {n:5,t:'<strong>Your fingerprints are submitted electronically</strong> to the Missouri DOI through the state system.'}
+  ],note:'Missouri uses its own MACHS portal to authorize fingerprinting before connecting you to IdentoGO. Register at MACHS first — do not go directly to IdentoGO.'},
+  'nevada':{type:'identogo_apply',scheduleUrl:'https://uenroll.identogo.com/',scheduleBtnLabel:'📍 Go to IdentoGO ↗',steps:[
+    {n:1,t:'<strong>Submit your license application</strong> through NIPR or Sircon and obtain your application/transaction ID.'},
+    {n:2,t:'<strong>Download and complete</strong> the Fingerprint Authorization Form from the Nevada Division of Insurance website.'},
+    {n:3,t:'<strong>Submit the authorization form</strong> (with your NIPR/Sircon ID) to the Nevada DOI — they will authorize your fingerprinting.'},
+    {n:4,t:'<strong>Schedule your IdentoGO appointment</strong> using the code/instructions provided by the Nevada DOI.'},
+    {n:5,t:'<strong>Bring a valid government-issued photo ID</strong> to your appointment.'}
+  ],note:'Nevada requires a Fingerprint Authorization Form to be submitted to the DOI before you can schedule fingerprinting. Contact the Nevada Division of Insurance for the current form.'},
+  'texas':{type:'identogo_apply',scheduleUrl:'https://uenroll.identogo.com/',scheduleBtnLabel:'📍 Go to IdentoGO ↗',steps:[
+    {n:1,t:'<strong>Submit your license application</strong> through the Texas Department of Insurance (TDI) licensing portal.'},
+    {n:2,t:'<strong>TDI will email you a unique IdentoGO service code</strong> after your application is registered — check your email after applying.'},
+    {n:3,t:'<strong>Use your code at IdentoGO</strong> (button below) to schedule an appointment at a nearby location.'},
+    {n:4,t:'<strong>Bring a valid government-issued photo ID</strong> to your appointment.'},
+    {n:5,t:'<strong>Your fingerprints are submitted electronically</strong> to the FBI and TDI automatically.'}
+  ],note:'Texas provides unique IdentoGO service codes by email after you submit your application. You must apply first — do not go to IdentoGO before receiving your code.'},
+  'washington':{type:'identogo_apply',scheduleUrl:'https://uenroll.identogo.com/',scheduleBtnLabel:'📍 Go to IdentoGO ↗',steps:[
+    {n:1,t:'<strong>Submit your license application</strong> through NIPR and note your transaction number.'},
+    {n:2,t:'<strong>Go to IdentoGO</strong> (button below) and search for <strong>"WA Office of the Insurance Commissioner"</strong> as the agency.'},
+    {n:3,t:'<strong>Use your NIPR transaction number</strong> as your reference when scheduling — this links your fingerprints to your application.'},
+    {n:4,t:'<strong>Schedule an appointment</strong> at a nearby IdentoGO location.'},
+    {n:5,t:'<strong>Bring a valid government-issued photo ID</strong> to your appointment.'}
+  ],note:'Washington requires you to apply first and use your NIPR transaction number at IdentoGO. Results go to the WA Office of the Insurance Commissioner.'},
+  'wyoming':{type:'identogo_apply',scheduleUrl:'https://uenroll.identogo.com/',scheduleBtnLabel:'📍 Go to IdentoGO ↗',steps:[
+    {n:1,t:'<strong>Submit your license application</strong> to the Wyoming Department of Insurance.'},
+    {n:2,t:'<strong>The Wyoming DOI will mail you a fingerprinting packet</strong> with your personal IdentoGO service code and instructions.'},
+    {n:3,t:'<strong>Use your code at IdentoGO</strong> to schedule an appointment at a nearby location.'},
+    {n:4,t:'<strong>Bring a valid government-issued photo ID</strong> to your appointment.'},
+    {n:5,t:'<strong>Your fingerprints are submitted electronically</strong> to the FBI and Wyoming DOI automatically.'}
+  ],note:'Wyoming mails a fingerprinting packet to applicants — allow time for mail delivery before scheduling. Results go to the Wyoming Department of Insurance.'},
+  // ── FIELDPRINT ────────────────────────────────────────────────────────────
+  'alabama':{type:'fieldprint',scheduleUrl:'https://www.fieldprintusa.com/',scheduleBtnLabel:'📍 Schedule on Fieldprint ↗',steps:[
+    {n:1,t:'<strong>Tap the button below</strong> to go to the Fieldprint scheduling site.'},
+    {n:2,t:'<strong>Create an account or sign in,</strong> then search for the Alabama Department of Insurance fingerprinting service.'},
+    {n:3,t:'<strong>Schedule an appointment</strong> at a nearby Fieldprint location.'},
+    {n:4,t:'<strong>Bring a valid government-issued photo ID</strong> to your appointment.'},
+    {n:5,t:'<strong>Your fingerprints are submitted electronically</strong> to the Alabama DOI automatically.'}
+  ],note:'Alabama uses Fieldprint (not IdentoGO) for insurance license fingerprinting. Results go to the Alabama Department of Insurance.'},
+  'arizona':{type:'fieldprint',scheduleUrl:'https://psp.azdps.gov/',scheduleBtnLabel:'🏛️ Step 1: AZ DPS Portal ↗',step2Url:'https://fieldprintarizona.com/',step2BtnLabel:'📍 Step 2: Schedule Fieldprint ↗',steps:[
+    {n:1,t:'<strong>Step 1 — AZ DPS Portal:</strong> Tap "Step 1" below to open the Arizona DPS Public Safety Portal. Enter ORI code <strong>INS-055.A</strong> and pay the $22.44 state fee.'},
+    {n:2,t:'<strong>You\'ll receive a Reference Number</strong> starting with the letter "A" — save this, you\'ll need it for Step 2.'},
+    {n:3,t:'<strong>Step 2 — Schedule Fieldprint:</strong> Tap "Step 2" below and use your Reference Number to schedule a fingerprinting appointment at a Fieldprint Arizona location.'},
+    {n:4,t:'<strong>Bring a valid government-issued photo ID</strong> and your Reference Number to your Fieldprint appointment.'},
+    {n:5,t:'<strong>Your fingerprints are submitted electronically</strong> to the Arizona DOI after processing.'}
+  ],note:'Arizona has a unique two-step process: first pay at AZ DPS (ORI: INS-055.A, $22.44) to get a Reference Number, then schedule at Fieldprint Arizona using that number.'},
+  'hawaii':{type:'fieldprint',scheduleUrl:'https://fieldprinthawaii.com/',scheduleBtnLabel:'📍 Schedule on Fieldprint Hawaii ↗',steps:[
+    {n:1,t:'<strong>Tap the button below</strong> to go to Fieldprint Hawaii. Use Fieldprint code <strong>HI-DCCA-INS</strong> to find the insurance fingerprinting service.'},
+    {n:2,t:'<strong>Create an account or sign in</strong> and schedule an appointment at a nearby Fieldprint Hawaii location.'},
+    {n:3,t:'<strong>Bring a valid government-issued photo ID</strong> to your appointment.'},
+    {n:4,t:'<strong>Your fingerprints are submitted electronically</strong> to the Hawaii Insurance Division automatically.'}
+  ],note:'Hawaii uses Fieldprint with code HI-DCCA-INS. Results go to the Hawaii Insurance Division (DCCA).'},
+  'iowa':{type:'fieldprint',scheduleUrl:'https://www.fieldprintusa.com/',scheduleBtnLabel:'📍 Schedule on Fieldprint ↗',steps:[
+    {n:1,t:'<strong>Submit your license application</strong> through NIPR first — the Iowa Insurance Division (IID) will email you your Fieldprint code after receiving your application.'},
+    {n:2,t:'<strong>Use your Fieldprint code</strong> at the Fieldprint site (button below) to schedule an appointment.'},
+    {n:3,t:'<strong>Schedule an appointment</strong> at a nearby Fieldprint location.'},
+    {n:4,t:'<strong>Bring a valid government-issued photo ID</strong> to your appointment.'},
+    {n:5,t:'<strong>Your fingerprints are submitted electronically</strong> to the Iowa Insurance Division automatically.'}
+  ],note:'Iowa emails your Fieldprint code after you submit your license application. Apply first through NIPR, then watch for the email from the Iowa Insurance Division.'},
+  'oregon':{type:'fieldprint',scheduleUrl:'https://fieldprintoregon.com/',scheduleBtnLabel:'📍 Schedule on Fieldprint Oregon ↗',steps:[
+    {n:1,t:'<strong>Tap the button below</strong> to go to Fieldprint Oregon. Use code <strong>FPORDeptConsumerBusServDAS</strong> to find the Oregon insurance fingerprinting service.'},
+    {n:2,t:'<strong>Create an account or sign in</strong> and schedule an appointment at a nearby Fieldprint Oregon location.'},
+    {n:3,t:'<strong>Bring a valid government-issued photo ID</strong> to your appointment.'},
+    {n:4,t:'<strong>Your fingerprints are submitted electronically</strong> to the Oregon DOI automatically.'}
+  ],note:'Oregon uses Fieldprint with code FPORDeptConsumerBusServDAS. Results go to the Oregon Department of Consumer and Business Services (Insurance Division).'},
+  'virginia':{type:'fieldprint',scheduleUrl:'https://fieldprintvirginia.com/',scheduleBtnLabel:'📍 Schedule on Fieldprint Virginia ↗',steps:[
+    {n:1,t:'<strong>Tap the button below</strong> to go to Fieldprint Virginia. Use code <strong>FPVABOIProducer</strong> to find the Virginia insurance producer fingerprinting service.'},
+    {n:2,t:'<strong>Create an account or sign in</strong> and schedule an appointment at a nearby Fieldprint Virginia location.'},
+    {n:3,t:'<strong>Bring a valid government-issued photo ID</strong> to your appointment.'},
+    {n:4,t:'<strong>Your fingerprints are submitted electronically</strong> to the Virginia Bureau of Insurance automatically.'}
+  ],note:'Virginia uses Fieldprint with code FPVABOIProducer. Results go to the Virginia Bureau of Insurance (State Corporation Commission).'},
+  'district-of-columbia':{type:'fieldprint',scheduleUrl:'https://www.fieldprintusa.com/',scheduleBtnLabel:'📍 Schedule on Fieldprint ↗',steps:[
+    {n:1,t:'<strong>Tap the button below</strong> to go to Fieldprint and search for the Washington D.C. Department of Insurance fingerprinting service.'},
+    {n:2,t:'<strong>Create an account or sign in</strong> and schedule an appointment at a nearby Fieldprint location.'},
+    {n:3,t:'<strong>Bring a valid government-issued photo ID</strong> to your appointment.'},
+    {n:4,t:'<strong>Your fingerprints are submitted electronically</strong> to the DC DOI automatically.'}
+  ],note:'Washington D.C. uses Fieldprint for insurance license fingerprinting. Results go to the DC Department of Insurance, Securities and Banking (DISB).'},
+  'wisconsin':{type:'fieldprint',scheduleUrl:'https://fieldprintwisconsin.com/',scheduleBtnLabel:'📍 Schedule on Fieldprint Wisconsin ↗',steps:[
+    {n:1,t:'<strong>Tap the button below</strong> to go to Fieldprint Wisconsin. Use code <strong>FPWIOCIInsurance</strong> to find the Wisconsin OCI fingerprinting service.'},
+    {n:2,t:'<strong>Create an account or sign in</strong> and schedule an appointment at a nearby Fieldprint Wisconsin location.'},
+    {n:3,t:'<strong>Bring a valid government-issued photo ID</strong> to your appointment.'},
+    {n:4,t:'<strong>Your fingerprints are submitted electronically</strong> to the Wisconsin OCI automatically.'}
+  ],note:'Wisconsin uses Fieldprint with code FPWIOCIInsurance. Results go to the Wisconsin Office of the Commissioner of Insurance (OCI).'},
+  // ── OTHER VENDOR ──────────────────────────────────────────────────────────
+  'california':{type:'other',scheduleUrl:'https://oag.ca.gov/fingerprints/locations',scheduleBtnLabel:'📍 Find Live Scan Locations (CA DOJ) ↗',steps:[
+    {n:1,t:'<strong>Download the Live Scan Request Form</strong> from the California Department of Insurance (CDI) — search "CDI Live Scan form" or call CDI at 1-800-967-9331.'},
+    {n:2,t:'<strong>Find a Live Scan location</strong> near you using the button below. The ORI code for CDI insurance applicants is <strong>A0248</strong>.'},
+    {n:3,t:'<strong>Bring your completed Live Scan form and a valid photo ID</strong> to your appointment. Fees are typically $49–$75 depending on location.'},
+    {n:4,t:'<strong>Your fingerprints are submitted electronically</strong> to the CA Department of Justice (DOJ) and CDI — no separate mailing needed.'}
+  ],note:'California uses a state-specific Live Scan system — not IdentoGO or Fieldprint. ORI code: A0248. You must bring the official CDI Live Scan request form to your appointment.',doiUrl:'https://www.insurance.ca.gov/',doiBtnLabel:'🏛️ CA Dept of Insurance ↗'},
+  'idaho':{type:'other',scheduleUrl:'https://home.pearsonvue.com/idoi',scheduleBtnLabel:'📍 Schedule at Pearson VUE ↗',steps:[
+    {n:1,t:'<strong>Tap the button below</strong> to go to the Pearson VUE site for Idaho DOI licensing.'},
+    {n:2,t:'<strong>Use code InsID-FPELC</strong> at a Pearson VUE exam center to identify the Idaho insurance licensing fingerprinting service.'},
+    {n:3,t:'<strong>Schedule an appointment</strong> at a Pearson VUE exam center near you.'},
+    {n:4,t:'<strong>Bring a valid government-issued photo ID</strong> to your appointment.'},
+    {n:5,t:'<strong>Your fingerprints are submitted electronically</strong> to the Idaho DOI automatically.'}
+  ],note:'Idaho uses Pearson VUE exam centers for fingerprinting rather than IdentoGO or Fieldprint. Results go to the Idaho Department of Insurance.'},
+  'michigan':{type:'other',scheduleUrl:'https://www.michigan.gov/msp/divisions/cjic/biometrics',scheduleBtnLabel:'📍 Find MSP Live Scan Locations ↗',steps:[
+    {n:1,t:'<strong>Tap the button below</strong> to find Michigan State Police (MSP) authorized Live Scan vendors near you.'},
+    {n:2,t:'<strong>Contact the Michigan DIFS</strong> (Department of Insurance and Financial Services) to obtain the required Fingerprint Request Form before your appointment.'},
+    {n:3,t:'<strong>Bring your DIFS form and a valid photo ID</strong> to your MSP-certified Live Scan appointment.'},
+    {n:4,t:'<strong>Your fingerprints are submitted electronically</strong> to the Michigan State Police and forwarded to DIFS.'}
+  ],note:'Michigan uses MSP-certified Live Scan vendors. Contact the Michigan Department of Insurance and Financial Services (DIFS) for the required fingerprint request form before your appointment.'},
+  'minnesota':{type:'other',scheduleUrl:'https://candidate.psiexams.com/',scheduleBtnLabel:'📍 Schedule at PSI ↗',steps:[
+    {n:1,t:'<strong>Register for your licensing exam</strong> through PSI — fingerprints are captured at the PSI exam site on the day you take your exam.'},
+    {n:2,t:'<strong>No separate fingerprint appointment needed</strong> — PSI captures your fingerprints as part of the testing process.'},
+    {n:3,t:'<strong>Bring a valid government-issued photo ID</strong> to your PSI exam appointment.'},
+    {n:4,t:'<strong>Your fingerprints are automatically submitted</strong> to the Minnesota Commerce Department after your exam session.'}
+  ],note:'Minnesota captures fingerprints at PSI exam centers during the licensing exam — no separate fingerprinting appointment is needed. Bring your ID to the exam.'},
+  'north-carolina':{type:'other',scheduleUrl:'https://www.ncdoi.gov/',scheduleBtnLabel:'📍 NC DOI — Get Instructions ↗',steps:[
+    {n:1,t:'<strong>Submit your license application</strong> through NIPR — the NCDOI will email you fingerprinting instructions and an authorization letter.'},
+    {n:2,t:'<strong>Take your authorization letter</strong> to an SBI-approved law enforcement agency or fingerprinting vendor. Fee is approximately $38.'},
+    {n:3,t:'<strong>Bring a valid government-issued photo ID</strong> to your appointment.'},
+    {n:4,t:'<strong>Submit your completed fingerprint cards</strong> per the instructions in your NCDOI authorization letter.'}
+  ],note:'North Carolina emails fingerprinting instructions after you submit your application. The fee is approximately $38. Contact the NC Department of Insurance for the current list of approved vendors.'},
+  'north-dakota':{type:'other',scheduleUrl:'https://candidate.psiexams.com/',scheduleBtnLabel:'📍 Schedule at PSI ↗',steps:[
+    {n:1,t:'<strong>Register for your licensing exam</strong> through PSI — fingerprints are captured at PSI test centers.'},
+    {n:2,t:'<strong>Pay the fingerprinting fees:</strong> BCI background check is $41.25 and PSI processing fee is $29 (~$70.25 total).'},
+    {n:3,t:'<strong>Bring a valid government-issued photo ID</strong> to your PSI exam appointment.'},
+    {n:4,t:'<strong>Your fingerprints are submitted</strong> to the North Dakota BCI for processing and forwarded to the ND Insurance Department.'}
+  ],note:'North Dakota uses PSI exam centers for fingerprinting. Total fees: ~$70.25 ($41.25 BCI + $29 PSI processing). Results go to the ND Insurance Department.'},
+  'ohio':{type:'other',scheduleUrl:'https://www.nationalwebcheck.com/',scheduleBtnLabel:'📍 Schedule at National WebCheck ↗',steps:[
+    {n:1,t:'<strong>Tap the button below</strong> to go to National WebCheck. Use agency code <strong>BQE445</strong> for Ohio Department of Insurance fingerprinting.'},
+    {n:2,t:'<strong>Select "Request delivery to OH DOI"</strong> (or equivalent) — make sure your results go directly to the Ohio Department of Insurance.'},
+    {n:3,t:'<strong>Schedule an appointment</strong> at a National WebCheck location near you.'},
+    {n:4,t:'<strong>Bring a valid government-issued photo ID</strong> to your appointment.'},
+    {n:5,t:'BCI + FBI + vendor fees are capped at approximately <strong>$72.25 total.</strong>'}
+  ],note:'Ohio uses National WebCheck with agency code BQE445. Ensure results are directed to the Ohio Department of Insurance. Total fees typically capped at ~$72.25.'},
+  'utah':{type:'other',scheduleUrl:'https://www.prometric.com/utah-insurance',scheduleBtnLabel:'📍 Schedule at Prometric ↗',steps:[
+    {n:1,t:'<strong>Tap the button below</strong> to schedule at Prometric — Utah captures fingerprints at Prometric test centers as part of the licensing process.'},
+    {n:2,t:'<strong>Schedule your appointment</strong> at a Prometric location. The total fee is approximately $38.'},
+    {n:3,t:'<strong>Bring a valid government-issued photo ID</strong> to your appointment.'},
+    {n:4,t:'<strong>Your fingerprints are submitted electronically</strong> to the Utah Insurance Department automatically.'}
+  ],note:'Utah uses Prometric centers for fingerprinting (done as part of the licensing process). Total fee is approximately $38. Results go to the Utah Insurance Department.'},
+  // ── NO FINGERPRINTING REQUIRED ────────────────────────────────────────────
+  'arkansas':{type:'none',steps:[
+    {n:1,t:'Arkansas does <strong>not</strong> require fingerprinting for a Life &amp; Health insurance producer license.'},
+    {n:2,t:'A <strong>state criminal background check</strong> is required ($25 fee via the Arkansas Insurance Department system).'},
+    {n:3,t:'Contact the Arkansas Insurance Department for instructions on submitting your background check request.'}
+  ],note:'Arkansas requires a state background check rather than fingerprinting. The fee is approximately $25.'},
+  'colorado':{type:'none',steps:[
+    {n:1,t:'Colorado does <strong>not</strong> require fingerprinting or a background check for a Life &amp; Health insurance producer license.'},
+    {n:2,t:'Complete your pre-licensing education, pass your exam, and submit your application through NIPR or Sircon.'}
+  ],note:'Colorado has no fingerprinting requirement for insurance producers — one of the least burdensome states for new agents.'},
+  'connecticut':{type:'none',steps:[
+    {n:1,t:'Connecticut does <strong>not</strong> require fingerprinting for a standard insurance producer license.'},
+    {n:2,t:'Complete your pre-licensing education, pass your exam, and submit your application through NIPR.'}
+  ],note:'Connecticut has no fingerprinting requirement for standard insurance producers.'},
+  'illinois':{type:'none',steps:[
+    {n:1,t:'Illinois does <strong>not</strong> require fingerprinting for standard Life &amp; Health insurance producers.'},
+    {n:2,t:'Note: Public Adjusters and certain other license types do require fingerprinting — but Life &amp; Health producers do not.'},
+    {n:3,t:'Complete your pre-licensing education, pass your exam, and apply through NIPR.'}
+  ],note:'Fingerprinting is only required for Illinois Public Adjusters — not for Life & Health insurance producers.'},
+  'indiana':{type:'none',steps:[
+    {n:1,t:'Indiana does <strong>not</strong> require fingerprinting for a Life &amp; Health insurance producer license.'},
+    {n:2,t:'Complete your pre-licensing education, pass your exam, and submit your application through NIPR.'}
+  ],note:'Indiana has no fingerprinting requirement for insurance producers.'},
+  'kansas':{type:'none',steps:[
+    {n:1,t:'Kansas requires <strong>in-office fingerprinting only</strong> — at the Kansas Insurance Department (KID) office in Topeka or at DCF locations.'},
+    {n:2,t:'<strong>Contact the Kansas Insurance Department</strong> directly at (785) 296-3071 to schedule your in-person fingerprinting appointment.'},
+    {n:3,t:'This is <strong>not</strong> done through IdentoGO or Fieldprint — you must visit an approved KID or DCF location.'}
+  ],note:'Kansas fingerprinting is only available in-person at KID Topeka offices or DCF locations. Call the Kansas Insurance Department at (785) 296-3071 to schedule.'},
+  'kentucky':{type:'none',steps:[
+    {n:1,t:'Kentucky does <strong>not</strong> require fingerprinting — a name-based criminal history check is used instead.'},
+    {n:2,t:'The Kentucky Department of Insurance runs the background check as part of your license application review.'},
+    {n:3,t:'No separate action needed — complete your pre-licensing education, pass your exam, and apply through NIPR.'}
+  ],note:'Kentucky uses a name-based criminal history check conducted by the KY DOI — no fingerprinting appointment needed.'},
+  'maine':{type:'none',steps:[
+    {n:1,t:'Maine does <strong>not</strong> currently require fingerprinting for a Life &amp; Health insurance producer license.'},
+    {n:2,t:'Complete your pre-licensing education, pass your exam, and apply through NIPR.'},
+    {n:3,t:'Verify current requirements with the Maine Bureau of Insurance before submitting your application.'}
+  ],note:'Maine has no fingerprinting requirement for insurance producers. Confirm with the Maine Bureau of Insurance for the most current requirements.'},
+  'maryland':{type:'none',steps:[
+    {n:1,t:'Maryland does <strong>not</strong> require fingerprinting for a standard Life &amp; Health insurance producer license.'},
+    {n:2,t:'Complete your pre-licensing education, pass your exam, and apply through NIPR or the Maryland Insurance Administration.'}
+  ],note:'Maryland has no fingerprinting requirement for standard insurance producers.'},
+  'massachusetts':{type:'none',steps:[
+    {n:1,t:'Massachusetts does <strong>not</strong> require fingerprinting for a Life &amp; Health insurance producer license.'},
+    {n:2,t:'Complete your pre-licensing education, pass your exam, and apply through NIPR.'}
+  ],note:'Massachusetts has no fingerprinting requirement for insurance producers.'},
+  'mississippi':{type:'none',steps:[
+    {n:1,t:'Mississippi does <strong>not</strong> require fingerprinting for Life &amp; Health insurance producers.'},
+    {n:2,t:'Note: Bail bond agents do require fingerprinting — but Life &amp; Health producers do not.'},
+    {n:3,t:'Complete your pre-licensing education, pass your exam, and apply through NIPR.'}
+  ],note:'Fingerprinting is only required for Mississippi bail bond agents — not for Life & Health insurance producers.'},
+  'nebraska':{type:'none',steps:[
+    {n:1,t:'Nebraska does <strong>not</strong> require fingerprinting for a Life &amp; Health insurance producer license.'},
+    {n:2,t:'Complete your pre-licensing education, pass your exam, and apply through NIPR.'}
+  ],note:'Nebraska has no fingerprinting requirement for insurance producers.'},
+  'new-hampshire':{type:'none',steps:[
+    {n:1,t:'New Hampshire does <strong>not</strong> require fingerprinting for a Life &amp; Health insurance producer license.'},
+    {n:2,t:'Complete your pre-licensing education, pass your exam, and apply through NIPR.'}
+  ],note:'New Hampshire has no fingerprinting requirement for insurance producers.'},
+  'oklahoma':{type:'none',steps:[
+    {n:1,t:'Oklahoma does <strong>not</strong> require fingerprinting for a Life &amp; Health insurance producer license.'},
+    {n:2,t:'Complete your pre-licensing education, pass your exam, and apply through NIPR.'}
+  ],note:'Oklahoma has no fingerprinting requirement for insurance producers.'},
+  'rhode-island':{type:'none',steps:[
+    {n:1,t:'Rhode Island uses a <strong>name-based BCI check</strong> rather than fingerprinting for insurance producers.'},
+    {n:2,t:'Request a BCI (Background Criminal Investigation) check through the Rhode Island Attorney General\'s office.'},
+    {n:3,t:'Fees are approximately <strong>$5 (state) + $35 (national) = $40 total.</strong>'}
+  ],note:'Rhode Island requires a name-based BCI check (not fingerprinting). Fees ~$40 total. Contact the RI Attorney General\'s office to request your BCI check.'},
+  'south-dakota':{type:'none',steps:[
+    {n:1,t:'South Dakota does <strong>not</strong> require fingerprinting for a Life &amp; Health insurance producer license.'},
+    {n:2,t:'Complete your pre-licensing education, pass your exam, and apply through NIPR.'}
+  ],note:'South Dakota has no fingerprinting requirement for insurance producers.'},
+  'vermont':{type:'none',steps:[
+    {n:1,t:'Vermont does <strong>not</strong> require fingerprinting for a Life &amp; Health insurance producer license.'},
+    {n:2,t:'Complete your pre-licensing education, pass your exam, and apply through NIPR.'}
+  ],note:'Vermont has no fingerprinting requirement for insurance producers.'}
+};
+
+function buildFpStateGrid(){
+  document.getElementById('fpStateGrid').innerHTML = STATES.map(st =>
+    `<button class="state-btn hidden" onclick="openFpInfo('${st.s}','${st.n.replace(/'/g,"\\'")}',this)" data-name="${st.n.toLowerCase()}">${st.n}</button>`
+  ).join('');
+}
+
+function filterFpStates(q){
+  q = q.toLowerCase().trim();
+  document.querySelectorAll('#fpStateGrid .state-btn').forEach(b =>
+    b.classList.toggle('hidden', !q || !b.dataset.name.includes(q))
+  );
+}
+
+function openFpInfo(slug, name){
+  const d = FP_DATA[slug];
+  const type = d ? d.type : 'default';
+  document.getElementById('fpInfoTitle').textContent = `🖐️ ${name} — Fingerprinting`;
+
+  function stepsHtml(steps, textColor){
+    return steps.map(s=>`
+      <div style="display:flex;gap:12px;align-items:flex-start;">
+        <span style="width:28px;height:28px;min-width:28px;border-radius:50%;background:rgba(255,255,255,0.22);color:#fff;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;margin-top:2px;">${s.n}</span>
+        <div style="font-size:15px;color:${textColor||'#fff'};line-height:1.55;">${s.t}</div>
+      </div>`).join('');
+  }
+
+  function noteCard(note){
+    return `<div style="background:var(--card);border-radius:var(--radius);padding:16px;border:1px solid var(--border);">
+      <div style="font-size:11px;font-weight:800;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">📋 Good to Know</div>
+      <div style="font-size:14px;color:var(--text);line-height:1.55;">${note}</div>
+    </div>`;
+  }
+
+  function primaryBtn(url, label, bg){
+    return `<a href="${url}" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:center;gap:8px;padding:16px;border-radius:var(--radius-sm);background:${bg||'var(--primary)'};color:#fff;font-size:16px;font-weight:800;text-decoration:none;margin-bottom:12px;">${label}</a>`;
+  }
+
+  let html = '';
+
+  if(type === 'none'){
+    html = `
+      <div style="background:linear-gradient(135deg,#0a7a3e,#00b852);border-radius:var(--radius);padding:20px;margin-bottom:16px;box-shadow:0 4px 20px rgba(10,122,62,0.4);">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
+          <span style="font-size:28px;">✅</span>
+          <div style="font-size:18px;font-weight:800;color:#fff;letter-spacing:-0.3px;">No Fingerprinting Required in ${name}</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:14px;">${stepsHtml(d.steps)}</div>
+      </div>
+      ${noteCard(d.note)}`;
+
+  } else if(type === 'identogo_code'){
+    const codeBadge = d.code ? `
+      <div style="background:rgba(0,0,0,0.25);border-radius:10px;padding:12px 16px;margin-bottom:16px;display:flex;align-items:center;gap:12px;">
+        <span style="font-size:20px;">🔑</span>
+        <div>
+          <div style="font-size:10px;font-weight:800;color:rgba(255,255,255,0.7);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:4px;">Your Service Code</div>
+          <div style="font-size:24px;font-weight:900;color:#fff;letter-spacing:4px;font-family:monospace;">${d.code}</div>
+        </div>
+      </div>` : '';
+    html = `
+      <div style="background:linear-gradient(135deg,#0a7a8e,#00b4d8);border-radius:var(--radius);padding:20px;margin-bottom:16px;box-shadow:0 4px 20px rgba(10,122,142,0.4);">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:${d.code?'12px':'16px'};">
+          <span style="font-size:28px;">🖐️</span>
+          <div style="font-size:18px;font-weight:800;color:#fff;letter-spacing:-0.3px;">How to Get Fingerprinted in ${name}</div>
+        </div>
+        ${codeBadge}
+        <div style="display:flex;flex-direction:column;gap:14px;">${stepsHtml(d.steps)}</div>
+      </div>
+      ${primaryBtn(d.scheduleUrl, d.scheduleBtnLabel)}
+      ${noteCard(d.note)}`;
+
+  } else if(type === 'identogo_apply'){
+    html = `
+      <div style="background:linear-gradient(135deg,#0a7a8e,#00b4d8);border-radius:var(--radius);padding:20px;margin-bottom:16px;box-shadow:0 4px 20px rgba(10,122,142,0.4);">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
+          <span style="font-size:28px;">🖐️</span>
+          <div style="font-size:18px;font-weight:800;color:#fff;letter-spacing:-0.3px;">How to Get Fingerprinted in ${name}</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:14px;">${stepsHtml(d.steps)}</div>
+      </div>
+      ${primaryBtn(d.scheduleUrl, d.scheduleBtnLabel)}
+      ${noteCard(d.note)}`;
+
+  } else if(type === 'fieldprint'){
+    const step2Btn = d.step2Url ? primaryBtn(d.step2Url, d.step2BtnLabel, '#e67e22') : '';
+    html = `
+      <div style="background:linear-gradient(135deg,#7a4a0a,#d4820a);border-radius:var(--radius);padding:20px;margin-bottom:16px;box-shadow:0 4px 20px rgba(122,74,10,0.4);">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
+          <span style="font-size:28px;">🖐️</span>
+          <div style="font-size:18px;font-weight:800;color:#fff;letter-spacing:-0.3px;">How to Get Fingerprinted in ${name}</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:14px;">${stepsHtml(d.steps)}</div>
+      </div>
+      ${primaryBtn(d.scheduleUrl, d.scheduleBtnLabel, '#e67e22')}
+      ${step2Btn}
+      ${noteCard(d.note)}`;
+
+  } else if(type === 'other'){
+    const doiBtn = d.doiUrl ? `<a href="${d.doiUrl}" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:center;gap:8px;padding:16px;border-radius:var(--radius-sm);background:var(--card);border:1.5px solid var(--border);color:var(--text);font-size:16px;font-weight:800;text-decoration:none;margin-bottom:12px;">${d.doiBtnLabel}</a>` : '';
+    html = `
+      <div style="background:linear-gradient(135deg,#0a7a8e,#00b4d8);border-radius:var(--radius);padding:20px;margin-bottom:16px;box-shadow:0 4px 20px rgba(10,122,142,0.4);">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
+          <span style="font-size:28px;">🖐️</span>
+          <div style="font-size:18px;font-weight:800;color:#fff;letter-spacing:-0.3px;">How to Get Fingerprinted in ${name}</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:14px;">${stepsHtml(d.steps)}</div>
+      </div>
+      ${primaryBtn(d.scheduleUrl, d.scheduleBtnLabel)}
+      ${doiBtn}
+      ${noteCard(d.note)}`;
+
+  } else {
+    // Fallback for any unmatched state
+    html = `
+      <div style="background:linear-gradient(135deg,#0a7a8e,#00b4d8);border-radius:var(--radius);padding:20px;margin-bottom:16px;box-shadow:0 4px 20px rgba(10,122,142,0.4);">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
+          <span style="font-size:28px;">🖐️</span>
+          <div style="font-size:18px;font-weight:800;color:#fff;letter-spacing:-0.3px;">Fingerprinting in ${name}</div>
+        </div>
+        <div style="font-size:15px;color:#fff;line-height:1.55;">Contact your state Department of Insurance for fingerprinting requirements and instructions specific to ${name}.</div>
+      </div>
+      ${primaryBtn('https://uenroll.identogo.com/', '📍 IdentoGO (General) ↗')}`;
+  }
+
+  document.getElementById('fpInfoBody').innerHTML = html;
+  closeModal('fpStateModal');
+  openModal('fpInfoModal');
 }
 
 // ── INIT ───────────────────────────────────────────────────────────────────
 document.getElementById('ctaAgentName').textContent = AGENT.name;
 document.getElementById('ctaAgentNameUnlicensed').textContent = AGENT.name;
 buildStateGrid();
+buildFpStateGrid();
 show('homeView');
 </script>
 </body>
