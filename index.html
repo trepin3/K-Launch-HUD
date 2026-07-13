@@ -580,15 +580,17 @@ const FP_DATA = {
     {n:5,t:'<strong>Your fingerprints are submitted electronically</strong> to the Missouri DOI through the state system.'}
   ],note:'Missouri requires registration through MACHS (run by the Missouri State Highway Patrol) before connecting you to IdentoGO. Register at MACHS first — do not go directly to IdentoGO.'},
   'nevada':{type:'other',buttons:[
-    {url:'https://hub.app.nipr.com/my-nipr/frontend/identify-licensee',label:'📝 Apply on NIPR ↗',style:'primary'},
+    {url:'https://www.pearsonvue.com/us/en/nv/insurance.html',label:'📝 Schedule NV Licensing Exam ↗',style:'primary'},
+    {url:'https://hub.app.nipr.com/my-nipr/frontend/identify-licensee',label:'📝 Apply on NIPR ↗',style:'secondary'},
     {url:'https://doi.nv.gov/uploadedFiles/doinvgov/Content/Licensing/Fingerprints_and_Background_Reports/DOI%20Fingerprint%20Background%20Waiver%205.13.25.pdf',label:'📋 Download Background Waiver ↗',style:'secondary'},
     {url:'https://doi.nv.gov/Licensing/Fingerprints_and_Background_Reports/',label:'🏛️ NV DOI — Fingerprinting Info ↗',style:'secondary'}
   ],steps:[
-    {n:1,t:'<strong>Submit your Nevada license application</strong> through NIPR using the Apply on NIPR button below — after submission, you\'ll receive a confirmation email with a link to download your personal <strong>Fingerprint Authorization Form</strong>.'},
-    {n:2,t:'<strong>Download and complete the Fingerprint Background Waiver</strong> using the button below, then attach it to your NIPR application.'},
-    {n:3,t:'<strong>Take both forms</strong> — your Authorization Form (from email) and your completed Background Waiver — to an <strong>approved Nevada fingerprint vendor</strong>. The NV DOI Fingerprinting Info button below has the current vendor list.'},
-    {n:4,t:'<strong>After your appointment</strong>, upload your completed forms to your NIPR Attachment Warehouse or Sircon application.'},
-    {n:5,t:'Background check processing takes approximately <strong>3 weeks</strong>. Fingerprints are valid for one year.'}
+    {n:1,t:'<strong>Schedule and pass your Nevada insurance licensing exam</strong> at a Pearson VUE test center using the button below.'},
+    {n:2,t:'<strong>Submit your Nevada license application</strong> through NIPR using the Apply on NIPR button below — after submission, you\'ll receive a confirmation email with a link to download your personal <strong>Fingerprint Authorization Form</strong>.'},
+    {n:3,t:'<strong>Download and complete the Fingerprint Background Waiver</strong> using the button below, then attach it to your NIPR application.'},
+    {n:4,t:'<strong>Take both forms</strong> — your Authorization Form (from email) and your completed Background Waiver — to an <strong>approved Nevada fingerprint vendor</strong>. The NV DOI Fingerprinting Info button below has the current vendor list.'},
+    {n:5,t:'<strong>After your appointment</strong>, upload your completed forms to your NIPR Attachment Warehouse or Sircon application.'},
+    {n:6,t:'Background check processing takes approximately <strong>3 weeks</strong>. Fingerprints are valid for one year.'}
   ],note:'Nevada uses its own state-approved fingerprint vendors — not IdentoGO. Apply first through NIPR, download your Authorization Form from the confirmation email, and bring both forms to an approved NV vendor. Fee varies by vendor.'},
   'texas':{type:'identogo_apply',scheduleUrl:'https://uenroll.identogo.com/',scheduleBtnLabel:'📍 Go to IdentoGO ↗',doiUrl:'https://www.tdi.texas.gov/agent/fingerprinting-process.html',doiBtnLabel:'🏛️ TDI Fingerprinting Process ↗',steps:[
     {n:1,t:'<strong>Submit your license application</strong> through the TDI Fingerprinting Process page (button below) — TDI will email you a unique IdentoGO service code after your application is registered.'},
@@ -598,22 +600,29 @@ const FP_DATA = {
     {n:5,t:'<strong>Your fingerprints are submitted electronically</strong> to the FBI and TDI automatically.'}
   ],note:'Texas emails a unique IdentoGO service code after you apply. Submit your application at TDI first — do not go to IdentoGO before receiving your code.'},
   'washington':{type:'identogo_apply',buttons:[
-    {url:'https://hub.app.nipr.com/my-nipr/frontend/identify-licensee',label:'📝 Apply on NIPR ↗',style:'primary'},
+    {url:'https://www.insurance.wa.gov/producers-adjusters/education/first-time-license/how-schedule-insurance-license-exam',label:'📝 Schedule WA Licensing Exam ↗',style:'primary'},
+    {url:'https://hub.app.nipr.com/my-nipr/frontend/identify-licensee',label:'📝 Apply on NIPR ↗',style:'secondary'},
     {url:'https://www.insurance.wa.gov/producers-adjusters/licensing/get-licensed/fingerprint-requirements',label:'🏛️ WA OIC Fingerprint Requirements ↗',style:'secondary'},
     {url:'https://uenroll.identogo.com/',label:'📍 Go to IdentoGO ↗',style:'secondary'}
   ],steps:[
-    {n:1,t:'<strong>Submit your Washington license application</strong> through NIPR using the Apply on NIPR button below — note your <strong>OIC or NIPR transaction number</strong> from your confirmation email.'},
-    {n:2,t:'<strong>Review the WA OIC fingerprint requirements</strong> for current process details and IdentoGO scheduling info.'},
-    {n:3,t:'<strong>Schedule at IdentoGO</strong> — select <strong>"Washington Office of the Insurance Commissioner"</strong> as the agency and enter your OIC or NIPR transaction number.'},
-    {n:4,t:'<strong>Visit an IdentoGO center</strong> — 30+ locations in Washington state. Fee: <strong>$49.00</strong>.'},
-    {n:5,t:'<strong>Your fingerprints are transmitted electronically</strong> to the WA OIC — no mailing needed. Contact IdentoGO at <strong>888-771-5097</strong> for scheduling help.'}
+    {n:1,t:'<strong>Schedule and pass your Washington insurance licensing exam</strong> through PSI Services using the button below.'},
+    {n:2,t:'<strong>Submit your Washington license application</strong> through NIPR using the Apply on NIPR button below — note your <strong>OIC or NIPR transaction number</strong> from your confirmation email.'},
+    {n:3,t:'<strong>Review the WA OIC fingerprint requirements</strong> for current process details and IdentoGO scheduling info.'},
+    {n:4,t:'<strong>Schedule at IdentoGO</strong> — select <strong>"Washington Office of the Insurance Commissioner"</strong> as the agency and enter your OIC or NIPR transaction number.'},
+    {n:5,t:'<strong>Visit an IdentoGO center</strong> — 30+ locations in Washington state. Fee: <strong>$49.00</strong>.'},
+    {n:6,t:'<strong>Your fingerprints are transmitted electronically</strong> to the WA OIC — no mailing needed. Contact IdentoGO at <strong>888-771-5097</strong> for scheduling help.'}
   ],note:'Washington requires you to apply first through NIPR, then use your OIC/NIPR transaction number at IdentoGO. Select "Washington Office of Insurance Commissioner" when scheduling. Fee: $49.'},
-  'wyoming':{type:'other',scheduleUrl:'https://www.sircon.com/products/apply.jsp',scheduleBtnLabel:'📝 Apply on Sircon ↗',doiUrl:'https://doi.wyo.gov/licensing/producers',doiBtnLabel:'🏛️ WY DOI — Producer Licensing ↗',steps:[
-    {n:1,t:'<strong>Submit your Wyoming license application</strong> through Sircon using the Apply button below — <strong>do NOT get fingerprinted before your application is on file.</strong>'},
-    {n:2,t:'<strong>After the WY DOI receives your application</strong>, they will mail you a fingerprint packet containing fingerprint cards and instructions. The fingerprinting fee is <strong>$39</strong>.'},
-    {n:3,t:'<strong>Complete your fingerprint cards</strong> as directed in the packet and return them to the WY DOI per the included instructions.'},
-    {n:4,t:'Background check processing typically takes <strong>2–3 weeks</strong> from receipt of your fingerprint cards.'},
-    {n:5,t:'Questions? Contact the WY DOI Producer Licensing division at <strong>(307) 777-7319</strong>.'}
+  'wyoming':{type:'other',buttons:[
+    {url:'https://www.pearsonvue.com/us/en/wy/insurance.html',label:'📝 Schedule WY Licensing Exam ↗',style:'primary'},
+    {url:'https://www.sircon.com/products/apply.jsp',label:'📝 Apply on Sircon ↗',style:'secondary'},
+    {url:'https://doi.wyo.gov/licensing/producers',label:'🏛️ WY DOI — Producer Licensing ↗',style:'secondary'}
+  ],steps:[
+    {n:1,t:'<strong>Schedule and pass your Wyoming insurance licensing exam</strong> at a Pearson VUE test center using the button below.'},
+    {n:2,t:'<strong>Submit your Wyoming license application</strong> through Sircon using the Apply button below — <strong>do NOT get fingerprinted before your application is on file.</strong>'},
+    {n:3,t:'<strong>After the WY DOI receives your application</strong>, they will mail you a fingerprint packet containing fingerprint cards and instructions. The fingerprinting fee is <strong>$39</strong>.'},
+    {n:4,t:'<strong>Complete your fingerprint cards</strong> as directed in the packet and return them to the WY DOI per the included instructions.'},
+    {n:5,t:'Background check processing typically takes <strong>2–3 weeks</strong> from receipt of your fingerprint cards.'},
+    {n:6,t:'Questions? Contact the WY DOI Producer Licensing division at <strong>(307) 777-7319</strong>.'}
   ],note:'Wyoming uses a mail-in fingerprint card process — not IdentoGO. Apply through Sircon first; the WY DOI mails your fingerprint packet. Fee: $39. Processing: 2–3 weeks. Questions: (307) 777-7319.'},
   // ── FIELDPRINT ────────────────────────────────────────────────────────────
   'alabama':{type:'fieldprint',scheduleUrl:'https://www.fieldprintusa.com/',scheduleBtnLabel:'📍 Schedule on Fieldprint ↗',steps:[
@@ -637,14 +646,16 @@ const FP_DATA = {
     {n:4,t:'<strong>Your fingerprints are submitted electronically</strong> to the Hawaii Insurance Division automatically.'}
   ],note:'Hawaii uses Fieldprint with code HI-DCCA-INS. Results go to the Hawaii Insurance Division (DCCA).'},
   'iowa':{type:'fieldprint',code:'FPIADOI',buttons:[
-    {url:'https://hub.app.nipr.com/my-nipr/frontend/identify-licensee',label:'📝 Apply on NIPR ↗',style:'primary'},
+    {url:'https://www.pearsonvue.com/us/en/ia/insurance.html',label:'📝 Schedule IA Licensing Exam ↗',style:'primary'},
+    {url:'https://hub.app.nipr.com/my-nipr/frontend/identify-licensee',label:'📝 Apply on NIPR ↗',style:'secondary'},
     {url:'https://fieldprintiowa.com/individuals',label:'📍 Schedule on Fieldprint Iowa ↗',style:'secondary'},
     {url:'https://iid.iowa.gov/producer-fingerprinting-and-criminal-history-checks',label:'🏛️ Iowa IID — Fingerprinting Info ↗',style:'secondary'}
   ],steps:[
-    {n:1,t:'<strong>Submit your Iowa license application</strong> through NIPR using the Apply button below — your <strong>IID Fieldprint Code</strong> (shown above) and National Producer Number (NPN) will be in your confirmation email. (To retrieve later: nipr.com → Order History → view application → download detailed receipt.)'},
-    {n:2,t:'<strong>Create an account at Fieldprint Iowa</strong> using the Fieldprint code shown above and your NPN, then schedule your appointment.'},
-    {n:3,t:'<strong>Attend your appointment</strong> with your appointment number and two valid government-issued IDs. Fee: <strong>$34.35</strong> at Iowa locations or $36.35 outside Iowa.'},
-    {n:4,t:'<strong>Results arrive in 3–5 business days</strong> and are transmitted electronically to the Iowa Insurance Division (IID). Questions? Contact Fieldprint Iowa at <strong>877-614-4364</strong> or iowadoi@fieldprint.com.'}
+    {n:1,t:'<strong>Schedule and pass your Iowa insurance licensing exam</strong> at a Pearson VUE test center using the button below.'},
+    {n:2,t:'<strong>Submit your Iowa license application</strong> through NIPR using the Apply button below — your <strong>IID Fieldprint Code</strong> (shown above) and National Producer Number (NPN) will be in your confirmation email. (To retrieve later: nipr.com → Order History → view application → download detailed receipt.)'},
+    {n:3,t:'<strong>Create an account at Fieldprint Iowa</strong> using the Fieldprint code shown above and your NPN, then schedule your appointment.'},
+    {n:4,t:'<strong>Attend your appointment</strong> with your appointment number and two valid government-issued IDs. Fee: <strong>$34.35</strong> at Iowa locations or $36.35 outside Iowa.'},
+    {n:5,t:'<strong>Results arrive in 3–5 business days</strong> and are transmitted electronically to the Iowa Insurance Division (IID). Questions? Contact Fieldprint Iowa at <strong>877-614-4364</strong> or iowadoi@fieldprint.com.'}
   ],note:'Iowa emails your IID Fieldprint Code (FPIADOI) in your NIPR confirmation when you apply. Apply first through NIPR, then schedule at fieldprintiowa.com. Fee: $34.35 in Iowa. Questions: IID fingerprinting info button above.'},
   'oregon':{type:'fieldprint',code:'FPORDeptConsumerBusServDAS',scheduleUrl:'https://fieldprintoregon.com/',scheduleBtnLabel:'📍 Schedule on Fieldprint Oregon ↗',steps:[
     {n:1,t:'<strong>Tap the button below</strong> to go to Fieldprint Oregon. Enter your Fieldprint code (shown above) to find the Oregon insurance fingerprinting service.'},
