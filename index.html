@@ -214,39 +214,38 @@
   <div class="dash-body">
     <div class="section-label">Your Path to Getting Licensed</div>
     <div class="tile-grid">
-      <button class="hud-tile success" onclick="openModal('checklistModal')">
-        <span class="tile-arrow">›</span>
-        <span class="tile-icon">✅</span>
-        <div class="tile-title">Licensing Checklist</div>
-        <div class="tile-sub">Step-by-step path to your license</div>
-      </button>
-      <button class="hud-tile primary" onclick="openModal('stateModal')">
+<button class="hud-tile primary span2" onclick="openModal('stateModal')">
         <span class="tile-arrow">›</span>
         <span class="tile-icon">🎓</span>
+        <div style="font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:1.2px;color:inherit;opacity:0.65;margin-bottom:3px;">Step 1</div>
         <div class="tile-title">Pre-Licensing Course</div>
         <div class="tile-sub">Start your state's required education</div>
       </button>
       <button class="hud-tile span2" onclick="openModal('examStateModal')" style="border-color:#6c3aed;background:linear-gradient(135deg,rgba(108,58,237,0.08),rgba(108,58,237,0.02));">
         <span class="tile-arrow" style="color:#6c3aed;">›</span>
         <span class="tile-icon">📝</span>
+        <div style="font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:1.2px;color:#6c3aed;opacity:0.65;margin-bottom:3px;">Step 2</div>
         <div class="tile-title" style="color:#6c3aed;">Book Licensing Exam</div>
         <div class="tile-sub">Find your state's exam provider, cost &amp; schedule your test</div>
       </button>
       <button class="hud-tile span2" onclick="openModal('fpStateModal')" style="border-color:#0a7a8e;background:linear-gradient(135deg,rgba(10,122,142,0.08),rgba(10,122,142,0.02));">
         <span class="tile-arrow" style="color:#0a7a8e;">›</span>
         <span class="tile-icon">🖐️</span>
+        <div style="font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:1.2px;color:#0a7a8e;opacity:0.65;margin-bottom:3px;">Step 3</div>
         <div class="tile-title" style="color:#0a7a8e;">Get Fingerprinted</div>
         <div class="tile-sub">Find your state's requirements &amp; schedule your appointment</div>
       </button>
       <button class="hud-tile span2" onclick="openModal('applyStateModal')" style="border-color:#c45a00;background:linear-gradient(135deg,rgba(196,90,0,0.08),rgba(196,90,0,0.02));">
         <span class="tile-arrow" style="color:#c45a00;">›</span>
         <span class="tile-icon">📋</span>
+        <div style="font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:1.2px;color:#c45a00;opacity:0.65;margin-bottom:3px;">Step 4</div>
         <div class="tile-title" style="color:#c45a00;">Apply For License</div>
         <div class="tile-sub">Find your state's application portal &amp; submit your license application</div>
       </button>
       <button class="hud-tile span2" onclick="openModal('discoveryModal')" style="border-color:#1d4ed8;background:linear-gradient(135deg,rgba(29,78,216,0.08),rgba(29,78,216,0.02));">
         <span class="tile-arrow" style="color:#1d4ed8;">›</span>
         <span class="tile-icon">📅</span>
+        <div style="font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:1.2px;color:#1d4ed8;opacity:0.65;margin-bottom:3px;">Step 5</div>
         <div class="tile-title" style="color:#1d4ed8;">Schedule Onboarding</div>
         <div class="tile-sub">Book a call with <span class="agent-name-inline"></span> to get started</div>
       </button>
@@ -287,49 +286,6 @@
   </div>
 </div>
 
-<!-- ── LICENSING CHECKLIST MODAL ─────────────────── -->
-<div id="checklistModal" class="modal-overlay">
-  <div class="modal-wrap">
-    <div class="modal-header">
-      <button class="modal-back" onclick="closeModal('checklistModal')">←</button>
-      <div class="modal-title">✅ Licensing Checklist</div>
-    </div>
-    <div class="modal-body">
-      <div class="info-banner">
-        <div class="info-banner-title">Your Path to a Life Insurance License</div>
-        <div class="info-banner-body">Follow these steps in order. Most people complete the process in 2–6 weeks.</div>
-      </div>
-      <ul class="checklist">
-        <li class="checklist-item">
-          <div class="c-num">1</div>
-          <div class="c-text"><strong>Complete Pre-Licensing Education</strong>Finish your state's required hours of life &amp; health insurance education. (Usually 20–40 hours depending on your state.) Use the Pre-Licensing Course button on the previous screen.</div>
-        </li>
-        <li class="checklist-item">
-          <div class="c-num">2</div>
-          <div class="c-text"><strong>Schedule &amp; Pass Your State Exam</strong>Register for your state's life &amp; health licensing exam through Pearson VUE or Prometric. Study your pre-licensing materials and pass with a 70% or higher.</div>
-        </li>
-        <li class="checklist-item">
-          <div class="c-num">3</div>
-          <div class="c-text"><strong>Complete Fingerprinting &amp; Background Check</strong>Most states require fingerprinting as part of your application. Schedule this at an approved location in your state.</div>
-        </li>
-        <li class="checklist-item">
-          <div class="c-num">4</div>
-          <div class="c-text"><strong>Apply for Your State License</strong>Submit your application through your state's Department of Insurance (NIPR.com works for most states) and pay the licensing fee.</div>
-        </li>
-        <li class="checklist-item">
-          <div class="c-num">5</div>
-          <div class="c-text"><strong>Complete Contracting with NAA</strong>Once licensed, submit your contracting paperwork with National Agents Alliance to get appointed with carriers.</div>
-        </li>
-        <li class="checklist-item">
-          <div class="c-num">6</div>
-          <div class="c-text"><strong>Book Your Onboarding Class &amp; Get Started</strong>Get plugged into your onboarding training, set up backoffice access, and start your first sales week.</div>
-        </li>
-      </ul>
-      <div style="margin-top:20px;">
-        <button class="full-btn primary" onclick="closeModal('checklistModal');openModal('stateModal')">🎓 Start Pre-Licensing Course →</button>
-      </div>
-    </div>
-  </div>
 </div>
 
 <!-- ── STATE SELECTOR MODAL ──────────────────────── -->
@@ -374,7 +330,6 @@
         <p>The only thing standing between you and that life is a licensing exam. <strong>And we will walk you through every single step to get there.</strong></p>
         <p>The question isn't whether you can do this. The question is — <strong>how soon do you want to start?</strong></p>
       </div>
-      <button class="full-btn primary" onclick="closeModal('whyModal');openModal('checklistModal')">✅ See How to Get Licensed →</button>
     </div>
   </div>
 </div>
@@ -513,7 +468,7 @@ function openModal(id){
 function closeModal(id){
   const m = document.getElementById(id);
   if(m) m.style.display = 'none';
-  const anyOpen = ['discoveryModal','checklistModal','stateModal','whyModal','fpStateModal','fpInfoModal','examStateModal','examInfoModal','applyStateModal','applyInfoModal']
+  const anyOpen = ['discoveryModal','stateModal','whyModal','fpStateModal','fpInfoModal','examStateModal','examInfoModal','applyStateModal','applyInfoModal']
     .some(mid => { const el = document.getElementById(mid); return el && el.style.display === 'block'; });
   if(!anyOpen) document.body.style.overflow = '';
 }
