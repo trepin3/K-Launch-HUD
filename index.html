@@ -238,7 +238,13 @@
         <div class="tile-title" style="color:#0a7a8e;">Get Fingerprinted</div>
         <div class="tile-sub">Find your state's requirements &amp; schedule your appointment</div>
       </button>
-      <button class="hud-tile purple span2" onclick="openModal('whyModal')">
+      <button class="hud-tile span2" onclick="openModal('applyStateModal')" style="border-color:#c45a00;background:linear-gradient(135deg,rgba(196,90,0,0.08),rgba(196,90,0,0.02));">
+        <span class="tile-arrow" style="color:#c45a00;">›</span>
+        <span class="tile-icon">📋</span>
+        <div class="tile-title" style="color:#c45a00;">Apply For License</div>
+        <div class="tile-sub">Find your state's application portal &amp; submit your license application</div>
+      </button>
+            <button class="hud-tile purple span2" onclick="openModal('whyModal')">
         <span class="tile-arrow">›</span>
         <span class="tile-icon">💡</span>
         <div class="tile-title">Why Get Licensed?</div>
@@ -435,6 +441,36 @@
   </div>
 </div>
 
+<!-- ── APPLY STATE SELECTOR MODAL ────────────────── -->
+<div id="applyStateModal" class="modal-overlay">
+  <div class="modal-wrap">
+    <div class="modal-header">
+      <button class="modal-back" onclick="closeModal('applyStateModal')">←</button>
+      <div class="modal-title">📋 Apply For License</div>
+    </div>
+    <div class="modal-body">
+      <div style="background:linear-gradient(135deg,#7c2d00,#c45a00);border-radius:var(--radius);padding:20px;margin-bottom:16px;box-shadow:0 4px 20px rgba(196,90,0,0.4);">
+        <div style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,0.7);margin-bottom:6px;">📋 License Application</div>
+        <div style="font-size:20px;font-weight:800;color:#fff;letter-spacing:-0.3px;margin-bottom:6px;">Select Your State</div>
+        <div style="font-size:14px;color:rgba(255,255,255,0.88);line-height:1.5;margin-bottom:16px;">Search your state to get a direct link to apply for your Life &amp; Health insurance producer license.</div>
+        <input class="state-search" type="text" placeholder="🔍  Search your state…" oninput="filterApplyStates(this.value)" style="background:#fff;border:none;color:#1d1d1f;font-size:17px;padding:16px 18px;border-radius:12px;box-shadow:0 4px 16px rgba(0,0,0,0.2);margin-bottom:0;font-weight:600;">
+      </div>
+      <div class="state-grid" id="applyStateGrid"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── APPLY INFO MODAL ───────────────────────────── -->
+<div id="applyInfoModal" class="modal-overlay">
+  <div class="modal-wrap">
+    <div class="modal-header">
+      <button class="modal-back" onclick="closeModal('applyInfoModal');openModal('applyStateModal')">←</button>
+      <div class="modal-title" id="applyInfoTitle">📋 Apply For License</div>
+    </div>
+    <div class="modal-body" id="applyInfoBody"></div>
+  </div>
+</div>
+
 <script>
 // ── AGENT CONFIG (change this for K vs J version) ──────────────────────────
 const AGENT = {
@@ -479,7 +515,7 @@ function openModal(id){
 function closeModal(id){
   const m = document.getElementById(id);
   if(m) m.style.display = 'none';
-  const anyOpen = ['discoveryModal','checklistModal','stateModal','whyModal','fpStateModal','fpInfoModal','examStateModal','examInfoModal']
+  const anyOpen = ['discoveryModal','checklistModal','stateModal','whyModal','fpStateModal','fpInfoModal','examStateModal','examInfoModal','applyStateModal','applyInfoModal']
     .some(mid => { const el = document.getElementById(mid); return el && el.style.display === 'block'; });
   if(!anyOpen) document.body.style.overflow = '';
 }
@@ -1111,12 +1147,122 @@ function openExamInfo(slug, name){
   openModal('examInfoModal');
 }
 
+
+const APPLICATION_DATA = {
+  'alabama':{portal:'NIPR',url:'https://pdb.nipr.com/my-nipr/frontend/identify-licensee'},
+  'alaska':{portal:'NIPR',url:'https://pdb.nipr.com/my-nipr/frontend/identify-licensee'},
+  'arizona':{portal:'NIPR',url:'https://pdb.nipr.com/my-nipr/frontend/identify-licensee'},
+  'arkansas':{portal:'NIPR',url:'https://pdb.nipr.com/my-nipr/frontend/identify-licensee'},
+  'california':{portal:'NIPR',url:'https://pdb.nipr.com/my-nipr/frontend/identify-licensee',note:'California accepts both NIPR and Sircon. Log in to NIPR LicenseHub, select California, and choose the Life &amp; Health Producer license. CDI typically processes applications within a few business days after your background check clears.'},
+  'colorado':{portal:'NIPR',url:'https://pdb.nipr.com/my-nipr/frontend/identify-licensee'},
+  'connecticut':{portal:'NIPR',url:'https://pdb.nipr.com/my-nipr/frontend/identify-licensee'},
+  'delaware':{portal:'NIPR',url:'https://pdb.nipr.com/my-nipr/frontend/identify-licensee'},
+  'district-of-columbia':{portal:'NIPR',url:'https://pdb.nipr.com/my-nipr/frontend/identify-licensee'},
+  'florida':{portal:'NIPR',url:'https://pdb.nipr.com/my-nipr/frontend/identify-licensee',note:'Submit your application through NIPR LicenseHub. After submitting, Florida also requires you to set up a MyProfile account at the FL DFS portal (dice.fldfs.com) to upload supporting documents and track your application status — this is a mandatory second step unique to Florida.'},
+  'georgia':{portal:'Sircon',url:'https://www.sircon.com/ComplianceExpress/LicenseApplications/index.jsp?nonSscrb=Y&sscrbid=9028',note:'Georgia resident applications must go through Sircon — NIPR is not available for Georgia resident transactions. Create a Sircon account and select the Life &amp; Health Producer license for Georgia.'},
+  'hawaii':{portal:'NIPR',url:'https://pdb.nipr.com/my-nipr/frontend/identify-licensee'},
+  'idaho':{portal:'NIPR',url:'https://pdb.nipr.com/my-nipr/frontend/identify-licensee'},
+  'illinois':{portal:'NIPR',url:'https://pdb.nipr.com/my-nipr/frontend/identify-licensee'},
+  'indiana':{portal:'NIPR',url:'https://pdb.nipr.com/my-nipr/frontend/identify-licensee'},
+  'iowa':{portal:'NIPR',url:'https://pdb.nipr.com/my-nipr/frontend/identify-licensee'},
+  'kansas':{portal:'NIPR',url:'https://pdb.nipr.com/my-nipr/frontend/identify-licensee'},
+  'kentucky':{portal:'NIPR',url:'https://pdb.nipr.com/my-nipr/frontend/identify-licensee',note:'Submit your application through NIPR LicenseHub. After 24 hours, you can manage your application documents and track status through the Kentucky DOI eServices portal at insurance.ky.gov.'},
+  'louisiana':{portal:'NIPR',url:'https://pdb.nipr.com/my-nipr/frontend/identify-licensee'},
+  'maine':{portal:'NIPR',url:'https://pdb.nipr.com/my-nipr/frontend/identify-licensee'},
+  'maryland':{portal:'NIPR',url:'https://pdb.nipr.com/my-nipr/frontend/identify-licensee'},
+  'massachusetts':{portal:'NIPR',url:'https://pdb.nipr.com/my-nipr/frontend/identify-licensee'},
+  'michigan':{portal:'NIPR',url:'https://pdb.nipr.com/my-nipr/frontend/identify-licensee'},
+  'minnesota':{portal:'NIPR',url:'https://pdb.nipr.com/my-nipr/frontend/identify-licensee'},
+  'mississippi':{portal:'NIPR',url:'https://pdb.nipr.com/my-nipr/frontend/identify-licensee'},
+  'missouri':{portal:'NIPR',url:'https://pdb.nipr.com/my-nipr/frontend/identify-licensee'},
+  'montana':{portal:'NIPR',url:'https://pdb.nipr.com/my-nipr/frontend/identify-licensee'},
+  'nebraska':{portal:'NIPR',url:'https://pdb.nipr.com/my-nipr/frontend/identify-licensee'},
+  'nevada':{portal:'Sircon',url:'https://www.sircon.com/ComplianceExpress/LicenseApplications/index.jsp?1=0&lid=lp_nevada0&sscrbid=9020&path=nevada',note:'Nevada DOI directs all resident producers to apply through Sircon — not NIPR. Create a Sircon account and select the Life &amp; Health Producer license for Nevada.'},
+  'new-hampshire':{portal:'NIPR',url:'https://pdb.nipr.com/my-nipr/frontend/identify-licensee'},
+  'new-jersey':{portal:'NIPR',url:'https://pdb.nipr.com/my-nipr/frontend/identify-licensee'},
+  'new-mexico':{portal:'NIPR',url:'https://pdb.nipr.com/my-nipr/frontend/identify-licensee'},
+  'new-york':{portal:'NY LINX (DFS)',url:'https://myportal.dfs.ny.gov/nylinxext/',note:'New York uses its own NY LINX portal through the Department of Financial Services — NIPR is not used for NY resident applications. You will need to create a DFS ID and set up multi-factor authentication (Google or Microsoft Authenticator) before accessing the portal. Plan a few extra days for account setup.'},
+  'north-carolina':{portal:'NIPR',url:'https://pdb.nipr.com/my-nipr/frontend/identify-licensee'},
+  'north-dakota':{portal:'NIPR',url:'https://pdb.nipr.com/my-nipr/frontend/identify-licensee'},
+  'ohio':{portal:'NIPR',url:'https://pdb.nipr.com/my-nipr/frontend/identify-licensee'},
+  'oklahoma':{portal:'NIPR',url:'https://pdb.nipr.com/my-nipr/frontend/identify-licensee'},
+  'oregon':{portal:'NIPR',url:'https://pdb.nipr.com/my-nipr/frontend/identify-licensee'},
+  'pennsylvania':{portal:'NIPR',url:'https://pdb.nipr.com/my-nipr/frontend/identify-licensee'},
+  'rhode-island':{portal:'NIPR',url:'https://pdb.nipr.com/my-nipr/frontend/identify-licensee'},
+  'south-carolina':{portal:'NIPR',url:'https://pdb.nipr.com/my-nipr/frontend/identify-licensee'},
+  'south-dakota':{portal:'NIPR',url:'https://pdb.nipr.com/my-nipr/frontend/identify-licensee'},
+  'tennessee':{portal:'NIPR',url:'https://pdb.nipr.com/my-nipr/frontend/identify-licensee'},
+  'texas':{portal:'NIPR',url:'https://pdb.nipr.com/my-nipr/frontend/identify-licensee'},
+  'utah':{portal:'NIPR',url:'https://pdb.nipr.com/my-nipr/frontend/identify-licensee'},
+  'vermont':{portal:'NIPR',url:'https://pdb.nipr.com/my-nipr/frontend/identify-licensee'},
+  'virginia':{portal:'NIPR',url:'https://pdb.nipr.com/my-nipr/frontend/identify-licensee'},
+  'washington':{portal:'NIPR',url:'https://pdb.nipr.com/my-nipr/frontend/identify-licensee'},
+  'west-virginia':{portal:'NIPR',url:'https://pdb.nipr.com/my-nipr/frontend/identify-licensee'},
+  'wisconsin':{portal:'NIPR',url:'https://pdb.nipr.com/my-nipr/frontend/identify-licensee'},
+  'wyoming':{portal:'NIPR',url:'https://pdb.nipr.com/my-nipr/frontend/identify-licensee'}
+};
+
+function buildApplyStateGrid(){
+  document.getElementById('applyStateGrid').innerHTML = STATES.map(st =>
+    `<button class="state-btn hidden" onclick="openApplyInfo('${st.s}','${st.n.replace(/'/g,"\\'")}',this)" data-name="${st.n.toLowerCase()}">${st.n}</button>`
+  ).join('');
+}
+
+function filterApplyStates(q){
+  q = q.toLowerCase().trim();
+  document.querySelectorAll('#applyStateGrid .state-btn').forEach(b =>
+    b.classList.toggle('hidden', !q || !b.dataset.name.startsWith(q))
+  );
+}
+
+function openApplyInfo(slug, name){
+  const d = APPLICATION_DATA[slug] || {portal:'NIPR',url:'https://pdb.nipr.com/my-nipr/frontend/identify-licensee'};
+  const {portal, url, note} = d;
+  document.getElementById('applyInfoTitle').textContent = `📋 ${name} — Apply For License`;
+
+  function stepsHtml(steps){
+    return steps.map(s=>`
+      <div style="display:flex;gap:12px;align-items:flex-start;">
+        <span style="width:28px;height:28px;min-width:28px;border-radius:50%;background:rgba(255,255,255,0.22);color:#fff;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;margin-top:2px;">${s.n}</span>
+        <div style="font-size:15px;color:#fff;line-height:1.55;">${s.t}</div>
+      </div>`).join('');
+  }
+
+  const steps = [
+    {n:1,t:`<strong>Make sure you have passed your state exam</strong> before applying — most states require your exam score before they will process your application.`},
+    {n:2,t:`<strong>Create an account at ${portal}</strong> using the button below, then select <strong>Resident License Application</strong> for ${name}.`},
+    {n:3,t:`<strong>Complete the application</strong> — you'll need your SSN, contact info, and exam pass confirmation. Pay the state application fee when prompted.`},
+    {n:4,t:`<strong>Your license will be issued</strong> after your background check clears. Processing time varies by state — typically 1–5 business days.`}
+  ];
+
+  const noteText = note || `${name} insurance producer license applications are submitted through ${portal}. Create an account, select your state, and choose the Life &amp; Health Producer license type to begin your resident application.`;
+
+  const html = `
+    <div style="background:linear-gradient(135deg,#7c2d00,#c45a00);border-radius:var(--radius);padding:20px;margin-bottom:16px;box-shadow:0 4px 20px rgba(196,90,0,0.4);">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
+        <span style="font-size:28px;">📋</span>
+        <div style="font-size:18px;font-weight:800;color:#fff;letter-spacing:-0.3px;">How to Apply in ${name}</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px;">${stepsHtml(steps)}</div>
+    </div>
+    <a href="${url}" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:center;gap:8px;padding:16px;border-radius:var(--radius-sm);background:#c45a00;color:#fff;font-size:16px;font-weight:800;text-decoration:none;margin-bottom:12px;">📋 Apply at ${portal} ↗</a>
+    <div style="background:var(--card);border-radius:var(--radius);padding:16px;border:1px solid var(--border);">
+      <div style="font-size:11px;font-weight:800;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">📋 Good to Know</div>
+      <div style="font-size:14px;color:var(--text);line-height:1.55;">${noteText}</div>
+    </div>`;
+
+  document.getElementById('applyInfoBody').innerHTML = html;
+  closeModal('applyStateModal');
+  openModal('applyInfoModal');
+}
+
 // ── INIT ───────────────────────────────────────────────────────────────────
 document.getElementById('ctaAgentName').textContent = AGENT.name;
 document.getElementById('ctaAgentNameUnlicensed').textContent = AGENT.name;
 buildStateGrid();
 buildFpStateGrid();
 buildExamStateGrid();
+buildApplyStateGrid();
 show('homeView');
 </script>
 </body>
