@@ -226,6 +226,12 @@
         <div class="tile-title">Pre-Licensing Course</div>
         <div class="tile-sub">Start your state's required education</div>
       </button>
+      <button class="hud-tile span2" onclick="openModal('examStateModal')" style="border-color:#6c3aed;background:linear-gradient(135deg,rgba(108,58,237,0.08),rgba(108,58,237,0.02));">
+        <span class="tile-arrow" style="color:#6c3aed;">›</span>
+        <span class="tile-icon">📝</span>
+        <div class="tile-title" style="color:#6c3aed;">Book Licensing Exam</div>
+        <div class="tile-sub">Find your state's exam provider, cost &amp; schedule your test</div>
+      </button>
       <button class="hud-tile span2" onclick="openModal('fpStateModal')" style="border-color:#0a7a8e;background:linear-gradient(135deg,rgba(10,122,142,0.08),rgba(10,122,142,0.02));">
         <span class="tile-arrow" style="color:#0a7a8e;">›</span>
         <span class="tile-icon">🖐️</span>
@@ -399,6 +405,36 @@
   </div>
 </div>
 
+<!-- ── EXAM STATE SELECTOR MODAL ─────────────────── -->
+<div id="examStateModal" class="modal-overlay">
+  <div class="modal-wrap">
+    <div class="modal-header">
+      <button class="modal-back" onclick="closeModal('examStateModal')">←</button>
+      <div class="modal-title">📝 Book Licensing Exam</div>
+    </div>
+    <div class="modal-body">
+      <div style="background:linear-gradient(135deg,#2d0a6e,#7c3aed);border-radius:var(--radius);padding:20px;margin-bottom:16px;box-shadow:0 4px 20px rgba(108,58,237,0.4);">
+        <div style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,0.7);margin-bottom:6px;">📝 Licensing Exam</div>
+        <div style="font-size:20px;font-weight:800;color:#fff;letter-spacing:-0.3px;margin-bottom:6px;">Select Your State</div>
+        <div style="font-size:14px;color:rgba(255,255,255,0.88);line-height:1.5;margin-bottom:16px;">Search your state to see exam provider, cost, and a direct link to schedule your Life &amp; Health exam.</div>
+        <input class="state-search" type="text" placeholder="🔍  Search your state…" oninput="filterExamStates(this.value)" style="background:#fff;border:none;color:#1d1d1f;font-size:17px;padding:16px 18px;border-radius:12px;box-shadow:0 4px 16px rgba(0,0,0,0.2);margin-bottom:0;font-weight:600;">
+      </div>
+      <div class="state-grid" id="examStateGrid"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── EXAM INFO MODAL ────────────────────────────── -->
+<div id="examInfoModal" class="modal-overlay">
+  <div class="modal-wrap">
+    <div class="modal-header">
+      <button class="modal-back" onclick="closeModal('examInfoModal');openModal('examStateModal')">←</button>
+      <div class="modal-title" id="examInfoTitle">📝 Book Licensing Exam</div>
+    </div>
+    <div class="modal-body" id="examInfoBody"></div>
+  </div>
+</div>
+
 <script>
 // ── AGENT CONFIG (change this for K vs J version) ──────────────────────────
 const AGENT = {
@@ -443,7 +479,7 @@ function openModal(id){
 function closeModal(id){
   const m = document.getElementById(id);
   if(m) m.style.display = 'none';
-  const anyOpen = ['discoveryModal','checklistModal','stateModal','whyModal','fpStateModal','fpInfoModal']
+  const anyOpen = ['discoveryModal','checklistModal','stateModal','whyModal','fpStateModal','fpInfoModal','examStateModal','examInfoModal']
     .some(mid => { const el = document.getElementById(mid); return el && el.style.display === 'block'; });
   if(!anyOpen) document.body.style.overflow = '';
 }
@@ -966,11 +1002,121 @@ function openFpInfo(slug, name){
   openModal('fpInfoModal');
 }
 
+// ── EXAM DATA ──────────────────────────────────────────────────────────────
+const EXAM_DATA = {
+  'alabama':{provider:'Pearson VUE',url:'https://www.pearsonvue.com/us/en/al/insurance.html',fee:'~$53'},
+  'alaska':{provider:'Pearson VUE',url:'https://www.pearsonvue.com/us/en/ak/insurance.html',fee:'~$75'},
+  'arizona':{provider:'Pearson VUE',url:'https://www.pearsonvue.com/us/en/az/insurance.html',fee:'~$52'},
+  'arkansas':{provider:'Pearson VUE',url:'https://www.pearsonvue.com/us/en/ar/insurance.html',fee:'~$73'},
+  'california':{provider:'PSI',url:'https://candidate.psiexams.com/',fee:'~$62',note:'California insurance exams are administered by PSI. Search for "California Department of Insurance" on the PSI scheduling portal. Fee is approximately $62. Pass with a 70% or higher.'},
+  'colorado':{provider:'Pearson VUE',url:'https://www.pearsonvue.com/us/en/co/insurance.html',fee:'~$45'},
+  'connecticut':{provider:'Pearson VUE',url:'https://www.pearsonvue.com/us/en/ct/insurance.html',fee:'~$61'},
+  'delaware':{provider:'Pearson VUE',url:'https://www.pearsonvue.com/us/en/de/insurance.html',fee:'~$85'},
+  'district-of-columbia':{provider:'Pearson VUE',url:'https://www.pearsonvue.com/us/en/dc/insurance.html',fee:'~$50'},
+  'florida':{provider:'Pearson VUE',url:'https://www.pearsonvue.com/us/en/fl/insurance.html',fee:'~$44',note:'Florida charges approximately $44 for the Life & Health combo exam. Pass score is 70%. Your score report is issued immediately and transmitted electronically to the Florida DFS.'},
+  'georgia':{provider:'Pearson VUE',url:'https://www.pearsonvue.com/us/en/ga/insurance.html',fee:'~$63'},
+  'hawaii':{provider:'Pearson VUE',url:'https://www.pearsonvue.com/us/en/hi/insurance.html',fee:'~$76'},
+  'idaho':{provider:'Pearson VUE',url:'https://home.pearsonvue.com/idoi',fee:'~$75'},
+  'illinois':{provider:'PSI',url:'https://candidate.psiexams.com/',fee:'~$62',note:'Illinois insurance exams are administered by PSI. Search for "Illinois Department of Insurance" on the PSI scheduling portal. Fee is approximately $62. Pass with a 70% or higher.'},
+  'indiana':{provider:'Pearson VUE',url:'https://www.pearsonvue.com/us/en/in/insurance.html',fee:'~$52'},
+  'iowa':{provider:'Pearson VUE',url:'https://www.pearsonvue.com/us/en/ia/insurance.html',fee:'~$47'},
+  'kansas':{provider:'Pearson VUE',url:'https://www.pearsonvue.com/us/en/ks/insurance.html',fee:'~$52'},
+  'kentucky':{provider:'Pearson VUE',url:'https://www.pearsonvue.com/us/en/ky/insurance.html',fee:'~$36'},
+  'louisiana':{provider:'Pearson VUE',url:'https://www.pearsonvue.com/us/en/la/insurance.html',fee:'~$50'},
+  'maine':{provider:'Pearson VUE',url:'https://www.pearsonvue.com/us/en/me/insurance.html',fee:'~$82'},
+  'maryland':{provider:'PSI',url:'https://candidate.psiexams.com/',fee:'~$52',note:'Maryland insurance exams are administered by PSI. Search for "Maryland Insurance Administration" on the PSI scheduling portal. Fee is approximately $52. Pass with a 70% or higher.'},
+  'massachusetts':{provider:'Pearson VUE',url:'https://www.pearsonvue.com/us/en/ma/insurance.html',fee:'~$85'},
+  'michigan':{provider:'Pearson VUE',url:'https://www.pearsonvue.com/us/en/mi/insurance.html',fee:'~$38'},
+  'minnesota':{provider:'PSI',url:'https://candidate.psiexams.com/',fee:'~$66',note:'Minnesota insurance exams are administered by PSI. Fingerprints are captured at the PSI test center on the same day as your exam — no separate fingerprinting appointment needed. Fee is approximately $66.'},
+  'mississippi':{provider:'PSI',url:'https://candidate.psiexams.com/',fee:'~$40',note:'Mississippi insurance exams are administered by PSI. Search for "Mississippi Insurance Department" on the PSI scheduling portal. Fee is approximately $40. Pass with a 70% or higher.'},
+  'missouri':{provider:'Pearson VUE',url:'https://www.pearsonvue.com/us/en/mo/insurance.html',fee:'~$51'},
+  'montana':{provider:'Pearson VUE',url:'https://www.pearsonvue.com/us/en/mt/insurance.html',fee:'~$50'},
+  'nebraska':{provider:'Pearson VUE',url:'https://www.pearsonvue.com/us/en/ne/insurance.html',fee:'~$50'},
+  'nevada':{provider:'Pearson VUE',url:'https://www.pearsonvue.com/us/en/nv/insurance.html',fee:'~$55 (single) / ~$65 (combo)',note:'Nevada charges $55 for a single exam line or $65 for a Life & Health combo exam covering both lines. Pass score is 80% — higher than most states. Fingerprinting is handled separately after you apply through NIPR.'},
+  'new-hampshire':{provider:'Pearson VUE',url:'https://www.pearsonvue.com/us/en/nh/insurance.html',fee:'~$65'},
+  'new-jersey':{provider:'Pearson VUE',url:'https://www.pearsonvue.com/us/en/nj/insurance.html',fee:'~$48'},
+  'new-mexico':{provider:'Pearson VUE',url:'https://www.pearsonvue.com/us/en/nm/insurance.html',fee:'~$49'},
+  'new-york':{provider:'Pearson VUE',url:'https://www.pearsonvue.com/us/en/ny/insurance.html',fee:'~$78'},
+  'north-carolina':{provider:'Pearson VUE',url:'https://home.pearsonvue.com/ncdoi',fee:'~$49',note:'North Carolina charges approximately $49 for the Life & Health exam. Pass score is 70%. Fingerprinting is done separately through a Live Scan location within 30 days of applying — use the Get Fingerprinted button on the dashboard.'},
+  'north-dakota':{provider:'PSI',url:'https://candidate.psiexams.com/',fee:'~$50',note:'North Dakota insurance exams are administered by PSI. Fingerprints are also captured at PSI test centers. BCI background check fee (~$41.25) and PSI processing fee (~$29) are paid separately. Pass with a 70% or higher.'},
+  'ohio':{provider:'Pearson VUE',url:'https://www.pearsonvue.com/us/en/oh/insurance.html',fee:'~$44'},
+  'oklahoma':{provider:'Pearson VUE',url:'https://www.pearsonvue.com/us/en/ok/insurance.html',fee:'~$55'},
+  'oregon':{provider:'Pearson VUE',url:'https://www.pearsonvue.com/us/en/or/insurance.html',fee:'~$75'},
+  'pennsylvania':{provider:'Pearson VUE',url:'https://www.pearsonvue.com/us/en/pa/insurance.html',fee:'~$72',note:'Pennsylvania requires you to pass your exam before registering for fingerprinting. Do not get fingerprinted before your exam. Pass score is 70%. Fee is approximately $72.'},
+  'rhode-island':{provider:'Pearson VUE',url:'https://www.pearsonvue.com/us/en/ri/insurance.html',fee:'~$85'},
+  'south-carolina':{provider:'Pearson VUE',url:'https://www.pearsonvue.com/us/en/sc/insurance.html',fee:'~$49'},
+  'south-dakota':{provider:'Pearson VUE',url:'https://www.pearsonvue.com/us/en/sd/insurance.html',fee:'~$50'},
+  'tennessee':{provider:'Pearson VUE',url:'https://www.pearsonvue.com/us/en/tn/insurance.html',fee:'~$56'},
+  'texas':{provider:'Pearson VUE',url:'https://www.pearsonvue.com/us/en/tx/insurance.html',fee:'~$43',note:'Texas charges approximately $43 for the Life & Health exam. Pass score is 70%. After passing, register your application through TDI — TDI will then email you a unique IdentoGO fingerprinting code to schedule your background check.'},
+  'utah':{provider:'Prometric',url:'https://www.prometric.com/utah-insurance',fee:'~$38',note:'Utah is one of few states that uses Prometric (not Pearson VUE or PSI) for insurance licensing exams. The exam is taken at Prometric centers and the fee is approximately $38. Pass with a 70% or higher.'},
+  'vermont':{provider:'Pearson VUE',url:'https://www.pearsonvue.com/us/en/vt/insurance.html',fee:'~$65'},
+  'virginia':{provider:'Pearson VUE',url:'https://www.pearsonvue.com/us/en/va/insurance.html',fee:'~$52'},
+  'washington':{provider:'PSI',url:'https://www.insurance.wa.gov/producers-adjusters/education/first-time-license/how-schedule-insurance-license-exam',fee:'~$35 (single) / ~$52 (combo)',note:'Washington uses PSI Services for exam delivery. A single-line exam (Life only or Health only) is approximately $35; the Life & Disability combo is approximately $52. The WA OIC scheduling page links directly to PSI registration. Pass score is 70%.'},
+  'west-virginia':{provider:'Pearson VUE',url:'https://www.pearsonvue.com/us/en/wv/insurance.html',fee:'~$50'},
+  'wisconsin':{provider:'Pearson VUE',url:'https://www.pearsonvue.com/us/en/wi/insurance.html',fee:'~$39'},
+  'wyoming':{provider:'Pearson VUE',url:'https://www.pearsonvue.com/us/en/wy/insurance.html',fee:'~$113',note:'Wyoming\'s exam fee of $113 is higher than most states because it covers a comprehensive assessment for the lines of authority you are applying for. Wyoming does not require pre-licensing education hours. Pass score is 70%.'}
+};
+
+function buildExamStateGrid(){
+  document.getElementById('examStateGrid').innerHTML = STATES.map(st =>
+    `<button class="state-btn hidden" onclick="openExamInfo('${st.s}','${st.n.replace(/'/g,"\\'")}',this)" data-name="${st.n.toLowerCase()}">${st.n}</button>`
+  ).join('');
+}
+
+function filterExamStates(q){
+  q = q.toLowerCase().trim();
+  document.querySelectorAll('#examStateGrid .state-btn').forEach(b =>
+    b.classList.toggle('hidden', !q || !b.dataset.name.startsWith(q))
+  );
+}
+
+function openExamInfo(slug, name){
+  const d = EXAM_DATA[slug] || {provider:'Pearson VUE',url:'https://home.pearsonvue.com/insurance',fee:'varies'};
+  const {provider, url, fee, note} = d;
+  document.getElementById('examInfoTitle').textContent = `📝 ${name} — Licensing Exam`;
+
+  function stepsHtml(steps){
+    return steps.map(s=>`
+      <div style="display:flex;gap:12px;align-items:flex-start;">
+        <span style="width:28px;height:28px;min-width:28px;border-radius:50%;background:rgba(255,255,255,0.22);color:#fff;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;margin-top:2px;">${s.n}</span>
+        <div style="font-size:15px;color:#fff;line-height:1.55;">${s.t}</div>
+      </div>`).join('');
+  }
+
+  const steps = [
+    {n:1,t:`<strong>Complete your pre-licensing education</strong> for ${name} before scheduling your exam — use the Pre-Licensing Course button on the dashboard.`},
+    {n:2,t:`<strong>Create an account at ${provider}</strong> using the button below and select the <strong>Life &amp; Health insurance exam</strong> for ${name}.`},
+    {n:3,t:`<strong>Choose a test center near you or take it online</strong> via remote proctoring from home. Exam fee: <strong>${fee}</strong>.`},
+    {n:4,t:`<strong>Pass with a 70% or higher</strong> to receive your score report. Bring a valid government-issued photo ID to any in-person appointment.`}
+  ];
+
+  const noteText = note || `${name} insurance licensing exams are administered by ${provider}. Exam fee is approximately ${fee}. Fees are subject to change — verify the current fee on the ${provider} website before scheduling. Your score report is issued immediately after you finish.`;
+
+  const html = `
+    <div style="background:linear-gradient(135deg,#2d0a6e,#7c3aed);border-radius:var(--radius);padding:20px;margin-bottom:16px;box-shadow:0 4px 20px rgba(108,58,237,0.4);">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
+        <span style="font-size:28px;">📝</span>
+        <div style="font-size:18px;font-weight:800;color:#fff;letter-spacing:-0.3px;">How to Book Your Exam in ${name}</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px;">${stepsHtml(steps)}</div>
+    </div>
+    <a href="${url}" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:center;gap:8px;padding:16px;border-radius:var(--radius-sm);background:#7c3aed;color:#fff;font-size:16px;font-weight:800;text-decoration:none;margin-bottom:12px;">📝 Schedule at ${provider} ↗</a>
+    <div style="background:var(--card);border-radius:var(--radius);padding:16px;border:1px solid var(--border);">
+      <div style="font-size:11px;font-weight:800;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">📋 Good to Know</div>
+      <div style="font-size:14px;color:var(--text);line-height:1.55;">${noteText}</div>
+    </div>`;
+
+  document.getElementById('examInfoBody').innerHTML = html;
+  closeModal('examStateModal');
+  openModal('examInfoModal');
+}
+
 // ── INIT ───────────────────────────────────────────────────────────────────
 document.getElementById('ctaAgentName').textContent = AGENT.name;
 document.getElementById('ctaAgentNameUnlicensed').textContent = AGENT.name;
 buildStateGrid();
 buildFpStateGrid();
+buildExamStateGrid();
 show('homeView');
 </script>
 </body>
