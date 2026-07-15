@@ -244,22 +244,20 @@
         <div class="tile-title" style="color:#c45a00;">Apply For License</div>
         <div class="tile-sub">Find your state's application portal &amp; submit your license application</div>
       </button>
-            <button class="hud-tile purple span2" onclick="openModal('whyModal')">
+      <button class="hud-tile span2" onclick="openModal('discoveryModal')" style="border-color:#1d4ed8;background:linear-gradient(135deg,rgba(29,78,216,0.08),rgba(29,78,216,0.02));">
+        <span class="tile-arrow" style="color:#1d4ed8;">›</span>
+        <span class="tile-icon">📅</span>
+        <div class="tile-title" style="color:#1d4ed8;">Schedule Onboarding</div>
+        <div class="tile-sub">Book a call with <span class="agent-name-inline"></span> to get started</div>
+      </button>
+                  <button class="hud-tile purple span2" onclick="openModal('whyModal')">
         <span class="tile-arrow">›</span>
         <span class="tile-icon">💡</span>
         <div class="tile-title">Why Get Licensed?</div>
         <div class="tile-sub">Discover what this opportunity could mean for your life</div>
       </button>
     </div>
-    <div class="section-label">Have Questions?</div>
-    <button class="cta-tile" onclick="openModal('discoveryModal')">
-      <div class="cta-icon">📅</div>
-      <div class="cta-info">
-        <div class="cta-title">Book a Discovery Call</div>
-        <div class="cta-sub">Talk to <span id="ctaAgentNameUnlicensed"></span> — get your questions answered</div>
-      </div>
-      <span class="cta-arrow">›</span>
-    </button>
+
   </div>
 </div>
 
@@ -1258,7 +1256,7 @@ function openApplyInfo(slug, name){
 
 // ── INIT ───────────────────────────────────────────────────────────────────
 document.getElementById('ctaAgentName').textContent = AGENT.name;
-document.getElementById('ctaAgentNameUnlicensed').textContent = AGENT.name;
+document.querySelectorAll('.agent-name-inline').forEach(el => el.textContent = AGENT.name);
 buildStateGrid();
 buildFpStateGrid();
 buildExamStateGrid();
