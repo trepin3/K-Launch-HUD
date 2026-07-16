@@ -477,7 +477,7 @@
 </div>
 
 <!-- OUR PRODUCTION MODAL -->
-<div id="ourProductionModal" class="modal-overlay">
+<div id="ourProductionModal" class="modal-overlay" style="z-index:200;transform:translateZ(0);-webkit-transform:translateZ(0);">
   <div class="modal-wrap">
     <div class="modal-header">
       <button class="modal-back" onclick="closeModal('ourProductionModal')">←</button>
@@ -684,6 +684,9 @@ function toggleTheme(){
 
 // ── VIEWS ──────────────────────────────────────────────────────────────────
 function show(id){
+  ['discoveryModal','stateModal','whyModal','fpStateModal','fpInfoModal','examStateModal','examInfoModal','applyStateModal','applyInfoModal','ourProductionModal']
+    .forEach(function(mid){ var el = document.getElementById(mid); if(el) el.style.display='none'; });
+  document.body.style.overflow = '';
   document.querySelectorAll('.view').forEach(v => v.style.display = 'none');
   document.getElementById(id).style.display = 'block';
   window.scrollTo(0,0);
