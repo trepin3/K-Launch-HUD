@@ -125,6 +125,36 @@
     .info-banner-title{font-size:14px;font-weight:800;color:var(--text);margin-bottom:6px;}
     .info-banner-body{font-size:13px;color:var(--text-secondary);line-height:1.5;}
 
+
+    /* PROOF CAROUSEL */
+    .proof-section{margin-top:20px;}
+    .proof-section-label{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:1.2px;color:rgba(255,255,255,0.5);margin-bottom:10px;text-align:center;}
+    .proof-carousel-outer{position:relative;display:flex;align-items:center;gap:8px;}
+    .proof-carousel-viewport{flex:1;overflow:hidden;border-radius:10px;background:#111;}
+    .proof-carousel-track{display:flex;transition:transform 0.35s ease;will-change:transform;}
+    .proof-slide{min-width:100%;position:relative;}
+    .proof-img{width:100%;height:auto;display:block;}
+    .proof-slide-bar{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:rgba(0,0,0,0.7);backdrop-filter:blur(4px);}
+    .proof-cat-label{font-size:12px;font-weight:700;color:#fff;}
+    .proof-see-all-btn{font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;border:1px solid rgba(255,255,255,0.4);background:rgba(255,255,255,0.12);color:#fff;cursor:pointer;transition:background 0.15s;font-family:inherit;}
+    .proof-see-all-btn:hover{background:rgba(255,255,255,0.22);}
+    .proof-nav-btn{background:rgba(20,20,40,0.75);border:1px solid rgba(255,255,255,0.2);color:#fff;font-size:26px;width:34px;height:34px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;padding:0;line-height:1;transition:background 0.15s;font-family:inherit;}
+    .proof-nav-btn:hover{background:rgba(50,50,80,0.9);}
+    .proof-dots{display:flex;gap:7px;justify-content:center;margin-top:10px;}
+    .proof-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.25);cursor:pointer;transition:background 0.2s;}
+    .proof-dot.active{background:#fff;}
+    /* GALLERY MODAL */
+    #proofGalleryModal{position:fixed;inset:0;background:rgba(0,0,0,0.88);display:none;align-items:center;justify-content:center;z-index:3000;padding:16px;}
+    .proof-gallery-box{background:#12122a;border-radius:14px;width:100%;max-width:820px;overflow:hidden;display:flex;flex-direction:column;max-height:90vh;}
+    .proof-gallery-header{display:flex;align-items:center;gap:12px;padding:14px 18px;border-bottom:1px solid rgba(255,255,255,0.1);flex-shrink:0;}
+    .proof-gallery-back{background:none;border:1px solid rgba(255,255,255,0.3);color:#fff;font-size:16px;padding:5px 12px;border-radius:8px;cursor:pointer;font-family:inherit;font-weight:700;}
+    .proof-gallery-title{flex:1;font-size:16px;font-weight:800;color:#fff;margin:0;}
+    .proof-gallery-counter{font-size:13px;color:rgba(255,255,255,0.55);font-weight:600;}
+    .proof-gallery-outer{display:flex;align-items:center;gap:6px;padding:12px;flex:1;min-height:0;}
+    .proof-gallery-viewport{flex:1;overflow:hidden;border-radius:8px;}
+    .proof-gallery-track{display:flex;transition:transform 0.3s ease;will-change:transform;}
+    .proof-gallery-slide{min-width:100%;}
+    .proof-gallery-slide img{width:100%;height:auto;display:block;}
     @media(max-width:400px){
       .tile-grid{grid-template-columns:1fr;}
     }
@@ -334,6 +364,78 @@
         <p>One licensing exam stands between you and that life. <strong>We'll walk you through every step.</strong></p>
         <p>The question is <strong>how soon do you want to start?</strong></p>
       </div>
+      <!-- PROOF CAROUSEL -->
+      <div class="proof-section">
+        <div class="proof-section-label">Real Producer Results</div>
+        <div class="proof-carousel-outer">
+          <button class="proof-nav-btn" onclick="shiftProof(-1)">&#8249;</button>
+          <div class="proof-carousel-viewport">
+            <div class="proof-carousel-track" id="proofTrack">
+              <div class="proof-slide">
+                <img src="./Img/WklySubmit15.png" class="proof-img" alt="Weekly Submitted" loading="lazy">
+                <div class="proof-slide-bar">
+                  <span class="proof-cat-label">Weekly Submitted</span>
+                  <button class="proof-see-all-btn" onclick="openProofGallery('wkly')">See All</button>
+                </div>
+              </div>
+              <div class="proof-slide">
+                <img src="./Img/TopSubmit19.png" class="proof-img" alt="Top 5 Weekly Submitted" loading="lazy">
+                <div class="proof-slide-bar">
+                  <span class="proof-cat-label">Top 5 Weekly Submitted</span>
+                  <button class="proof-see-all-btn" onclick="openProofGallery('t5submit')">See All</button>
+                </div>
+              </div>
+              <div class="proof-slide">
+                <img src="./Img/Top5Paycheck24.png" class="proof-img" alt="Top 5 Weekly Paychecks" loading="lazy">
+                <div class="proof-slide-bar">
+                  <span class="proof-cat-label">Top 5 Weekly Paychecks</span>
+                  <button class="proof-see-all-btn" onclick="openProofGallery('paycheck')">See All</button>
+                </div>
+              </div>
+              <div class="proof-slide">
+                <img src="./Img/Top5YTD.png" class="proof-img" alt="Top 5 YTD" loading="lazy">
+                <div class="proof-slide-bar">
+                  <span class="proof-cat-label">Top 5 YTD</span>
+                  <button class="proof-see-all-btn" onclick="openProofGallery('ytd')">See All</button>
+                </div>
+              </div>
+              <div class="proof-slide">
+                <img src="./Img/Top5Annuity.png" class="proof-img" alt="Top 5 Annuity" loading="lazy">
+                <div class="proof-slide-bar">
+                  <span class="proof-cat-label">Top 5 Annuity</span>
+                  <button class="proof-see-all-btn" onclick="openProofGallery('annuity')">See All</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <button class="proof-nav-btn" onclick="shiftProof(1)">&#8250;</button>
+        </div>
+        <div class="proof-dots" id="proofDots">
+          <span class="proof-dot active" onclick="goProof(0)"></span>
+          <span class="proof-dot" onclick="goProof(1)"></span>
+          <span class="proof-dot" onclick="goProof(2)"></span>
+          <span class="proof-dot" onclick="goProof(3)"></span>
+          <span class="proof-dot" onclick="goProof(4)"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PROOF GALLERY MODAL -->
+<div id="proofGalleryModal">
+  <div class="proof-gallery-box">
+    <div class="proof-gallery-header">
+      <button class="proof-gallery-back" onclick="closeProofGallery()">&#8592; Back</button>
+      <div class="proof-gallery-title" id="proofGalleryTitle"></div>
+      <div class="proof-gallery-counter" id="proofGalleryCounter"></div>
+    </div>
+    <div class="proof-gallery-outer">
+      <button class="proof-nav-btn" onclick="shiftGallery(-1)">&#8249;</button>
+      <div class="proof-gallery-viewport">
+        <div class="proof-gallery-track" id="proofGalleryTrack"></div>
+      </div>
+      <button class="proof-nav-btn" onclick="shiftGallery(1)">&#8250;</button>
     </div>
   </div>
 </div>
@@ -1221,6 +1323,83 @@ buildFpStateGrid();
 buildExamStateGrid();
 buildApplyStateGrid();
 show('homeView');
+
+// -- PROOF CAROUSEL ---------------------------------------------------------
+var proofIdx = 0;
+var galleryIdx = 0;
+var currentGalleryKey = null;
+
+var PROOF_GALLERIES = {
+  wkly: {
+    title: 'Weekly Submitted',
+    images: ['WklySubmit15','WklySubmit5','WklySubmit10','WklySubmit23','WklySubmit20','WklySubmit13','WklySubmit19','WklySubmit4','WklySubmit6','WklySubmit9','WklySubmit7','WklySubmit18','WklySubmit8','WklySubmit16','WklySubmit2','WklySubmit17','WklySubmit','WklySubmit25','WklySubmit12','WklySubmit21','WklySubmit11','WklySubmit24','WklySubmit22','WklySubmit3','WklySubmit14']
+  },
+  t5submit: {
+    title: 'Top 5 Weekly Submitted',
+    images: ['TopSubmit19','Top5Submit15','Top5Submit5','Top5Submit4','Top5Submit','Top5Submit2','Top5Submit3','Top5Submit6','Top5Submit7','Top5Submit8','Top5Submit9','Top5Submit10','Top5Submit11','Top5Submit12','Top5Submit13','Top5Submit14','Top5Submit16','Top5Submit17','Top5Submit18','Top5Submit20','Top5Submit21','Top5Submit22','Top5Submit23','Top5Submit24','Top5Submit25']
+  },
+  paycheck: {
+    title: 'Top 5 Weekly Paychecks',
+    images: ['Top5Paycheck24','Top5Paycheck25','Top5Paycheck13','Top5Paycheck7','Top5Paycheck15','Top5Paycheck8','Top5Paycheck11','Top5Paycheck20','Top5Paycheck19','Top5Paycheck9','Top5Paycheck','Top5Paycheck16','Top5Paycheck17','Top5Paycheck22','Top5Paycheck4','Top5Paycheck23','Top5Paycheck6','Top5Paycheck2','Top5paycheck3','Top5Paycheck10','Top5Paycheck14','Top5Paycheck18','Top5Paycheck5','Top5Paycheck12','Top5Paycheck21']
+  },
+  ytd: {
+    title: 'Top 5 YTD',
+    images: ['Top5YTD']
+  },
+  annuity: {
+    title: 'Top 5 Annuity',
+    images: ['Top5Annuity']
+  }
+};
+
+function shiftProof(dir) {
+  proofIdx = (proofIdx + dir + 5) % 5;
+  updateProofCarousel();
+}
+
+function goProof(idx) {
+  proofIdx = idx;
+  updateProofCarousel();
+}
+
+function updateProofCarousel() {
+  var track = document.getElementById('proofTrack');
+  if(track) track.style.transform = 'translateX(-' + (proofIdx * 100) + '%)';
+  document.querySelectorAll('.proof-dot').forEach(function(d, i){ d.classList.toggle('active', i === proofIdx); });
+}
+
+function openProofGallery(key) {
+  currentGalleryKey = key;
+  galleryIdx = 0;
+  var data = PROOF_GALLERIES[key];
+  document.getElementById('proofGalleryTitle').textContent = data.title;
+  var track = document.getElementById('proofGalleryTrack');
+  track.innerHTML = data.images.map(function(img){
+    return '<div class="proof-gallery-slide"><img src="./Img/' + img + '.png" alt="' + data.title + '" loading="lazy"></div>';
+  }).join('');
+  updateGallery();
+  document.getElementById('proofGalleryModal').style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+
+function closeProofGallery() {
+  document.getElementById('proofGalleryModal').style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+function shiftGallery(dir) {
+  var len = PROOF_GALLERIES[currentGalleryKey].images.length;
+  galleryIdx = (galleryIdx + dir + len) % len;
+  updateGallery();
+}
+
+function updateGallery() {
+  var len = PROOF_GALLERIES[currentGalleryKey].images.length;
+  var track = document.getElementById('proofGalleryTrack');
+  if(track) track.style.transform = 'translateX(-' + (galleryIdx * 100) + '%)';
+  document.getElementById('proofGalleryCounter').textContent = (galleryIdx + 1) + ' / ' + len;
+}
+
 </script>
 </body>
 </html>
