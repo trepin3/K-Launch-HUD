@@ -149,7 +149,7 @@
     .proof-see-all-btn:hover{background:rgba(255,255,255,0.22);}
     .proof-nav-btn{background:rgba(20,20,40,0.75);border:1px solid rgba(255,255,255,0.2);color:#fff;font-size:26px;width:34px;height:34px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;padding:0;line-height:1;transition:background 0.15s;font-family:inherit;}
     .proof-nav-btn:hover{background:rgba(50,50,80,0.9);}
-    .proof-dots{display:flex;gap:7px;justify-content:center;margin-top:10px;}
+    .proof-dots{display:flex;gap:7px;justify-content:center;margin-top:10px;margin-bottom:16px;}
     .proof-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.25);cursor:pointer;transition:background 0.2s;}
     .proof-dot.active{background:#fff;}
     /* GALLERY MODAL */
@@ -230,6 +230,15 @@
         <div class="tile-title">Top Carrier Contracts</div>
         <div class="tile-sub">Commission rates &amp; payout breakdown</div>
       </a>
+    </div>
+    <div class="section-label">Explore the Opportunity</div>
+    <div class="tile-grid">
+      <button class="hud-tile purple span2" onclick="openModal('ourProductionModal')">
+        <span class="tile-arrow">›</span>
+        <span class="tile-icon">📈</span>
+        <div class="tile-title">Our Production</div>
+        <div class="tile-sub">Real results from our team — see what's possible</div>
+      </button>
     </div>
     <div class="section-label">Next Step</div>
     <button class="cta-tile" onclick="openModal('discoveryModal')">
@@ -369,7 +378,7 @@
                 <div class="proof-slide-bar">
                   <span class="proof-cat-label">Top 5 Weekly Submitted</span>
                   <div class="proof-slide-actions">
-                    <button class="proof-expand-btn" onclick="openProofLightbox('./Img/TopSubmit19.png')" title="Fullscreen">&#10021;</button>
+                    <button class="proof-expand-btn" onclick="openProofLightbox('./Img/TopSubmit19.png')" title="Fullscreen">&#10021; Fullscreen</button>
                     <button class="proof-see-all-btn" onclick="openProofGallery('t5submit')">See All</button>
                   </div>
                 </div>
@@ -379,7 +388,7 @@
                 <div class="proof-slide-bar">
                   <span class="proof-cat-label">Weekly Submitted</span>
                   <div class="proof-slide-actions">
-                    <button class="proof-expand-btn" onclick="openProofLightbox('./Img/WklySubmit15.png')" title="Fullscreen">&#10021;</button>
+                    <button class="proof-expand-btn" onclick="openProofLightbox('./Img/WklySubmit15.png')" title="Fullscreen">&#10021; Fullscreen</button>
                     <button class="proof-see-all-btn" onclick="openProofGallery('wkly')">See All</button>
                   </div>
                 </div>
@@ -389,7 +398,7 @@
                 <div class="proof-slide-bar">
                   <span class="proof-cat-label">Top 5 Weekly Paychecks</span>
                   <div class="proof-slide-actions">
-                    <button class="proof-expand-btn" onclick="openProofLightbox('./Img/Top5Paycheck24.png')" title="Fullscreen">&#10021;</button>
+                    <button class="proof-expand-btn" onclick="openProofLightbox('./Img/Top5Paycheck24.png')" title="Fullscreen">&#10021; Fullscreen</button>
                     <button class="proof-see-all-btn" onclick="openProofGallery('paycheck')">See All</button>
                   </div>
                 </div>
@@ -399,7 +408,7 @@
                 <div class="proof-slide-bar">
                   <span class="proof-cat-label">Top 5 YTD</span>
                   <div class="proof-slide-actions">
-                    <button class="proof-expand-btn" onclick="openProofLightbox('./Img/Top5YTD.png')" title="Fullscreen">&#10021;</button>
+                    <button class="proof-expand-btn" onclick="openProofLightbox('./Img/Top5YTD.png')" title="Fullscreen">&#10021; Fullscreen</button>
                     <button class="proof-see-all-btn" onclick="openProofGallery('ytd')">See All</button>
                   </div>
                 </div>
@@ -409,7 +418,7 @@
                 <div class="proof-slide-bar">
                   <span class="proof-cat-label">Top 5 Annuity</span>
                   <div class="proof-slide-actions">
-                    <button class="proof-expand-btn" onclick="openProofLightbox('./Img/Top5Annuity.png')" title="Fullscreen">&#10021;</button>
+                    <button class="proof-expand-btn" onclick="openProofLightbox('./Img/Top5Annuity.png')" title="Fullscreen">&#10021; Fullscreen</button>
                     <button class="proof-see-all-btn" onclick="openProofGallery('annuity')">See All</button>
                   </div>
                 </div>
@@ -467,6 +476,102 @@
   </div>
 </div>
 
+<!-- OUR PRODUCTION MODAL -->
+<div id="ourProductionModal" class="modal-overlay">
+  <div class="modal-wrap">
+    <div class="modal-header">
+      <button class="modal-back" onclick="closeModal('ourProductionModal')">←</button>
+      <div class="modal-title">📈 Our Production</div>
+    </div>
+    <div class="modal-body">
+      <div class="proof-section">
+        <div class="proof-section-label">Real Producer Results</div>
+        <div class="proof-carousel-outer">
+          <button class="proof-nav-btn" onclick="shiftProd(-1)">&#8249;</button>
+          <div class="proof-carousel-viewport">
+            <div class="proof-carousel-track" id="prodTrack">
+              <div class="proof-slide">
+                <img src="./Img/TopSubmit19.png" class="proof-img proof-img-clickable" alt="Top 5 Weekly Submitted" loading="lazy" onclick="openProofLightbox(this.src)" title="Click to enlarge">
+                <div class="proof-slide-bar">
+                  <span class="proof-cat-label">Top 5 Weekly Submitted</span>
+                  <div class="proof-slide-actions">
+                    <button class="proof-expand-btn" onclick="openProofLightbox('./Img/TopSubmit19.png')" title="Fullscreen">&#10021; Fullscreen</button>
+                    <button class="proof-see-all-btn" onclick="openProofGallery('t5submit')">See All</button>
+                  </div>
+                </div>
+              </div>
+              <div class="proof-slide">
+                <img src="./Img/WklySubmit15.png" class="proof-img proof-img-clickable" alt="Weekly Submitted" loading="lazy" onclick="openProofLightbox(this.src)" title="Click to enlarge">
+                <div class="proof-slide-bar">
+                  <span class="proof-cat-label">Weekly Submitted</span>
+                  <div class="proof-slide-actions">
+                    <button class="proof-expand-btn" onclick="openProofLightbox('./Img/WklySubmit15.png')" title="Fullscreen">&#10021; Fullscreen</button>
+                    <button class="proof-see-all-btn" onclick="openProofGallery('wkly')">See All</button>
+                  </div>
+                </div>
+              </div>
+              <div class="proof-slide">
+                <img src="./Img/Top5Paycheck24.png" class="proof-img proof-img-clickable" alt="Top 5 Weekly Paychecks" loading="lazy" onclick="openProofLightbox(this.src)" title="Click to enlarge">
+                <div class="proof-slide-bar">
+                  <span class="proof-cat-label">Top 5 Weekly Paychecks</span>
+                  <div class="proof-slide-actions">
+                    <button class="proof-expand-btn" onclick="openProofLightbox('./Img/Top5Paycheck24.png')" title="Fullscreen">&#10021; Fullscreen</button>
+                    <button class="proof-see-all-btn" onclick="openProofGallery('paycheck')">See All</button>
+                  </div>
+                </div>
+              </div>
+              <div class="proof-slide">
+                <img src="./Img/Top5YTD.png" class="proof-img proof-img-clickable" alt="Top 5 YTD" loading="lazy" onclick="openProofLightbox(this.src)" title="Click to enlarge">
+                <div class="proof-slide-bar">
+                  <span class="proof-cat-label">Top 5 YTD</span>
+                  <div class="proof-slide-actions">
+                    <button class="proof-expand-btn" onclick="openProofLightbox('./Img/Top5YTD.png')" title="Fullscreen">&#10021; Fullscreen</button>
+                    <button class="proof-see-all-btn" onclick="openProofGallery('ytd')">See All</button>
+                  </div>
+                </div>
+              </div>
+              <div class="proof-slide">
+                <img src="./Img/Top5Annuity.png" class="proof-img proof-img-clickable" alt="Top 5 Annuity" loading="lazy" onclick="openProofLightbox(this.src)" title="Click to enlarge">
+                <div class="proof-slide-bar">
+                  <span class="proof-cat-label">Top 5 Annuity</span>
+                  <div class="proof-slide-actions">
+                    <button class="proof-expand-btn" onclick="openProofLightbox('./Img/Top5Annuity.png')" title="Fullscreen">&#10021; Fullscreen</button>
+                    <button class="proof-see-all-btn" onclick="openProofGallery('annuity')">See All</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <button class="proof-nav-btn" onclick="shiftProd(1)">&#8250;</button>
+        </div>
+        <div class="proof-dots" id="prodDots">
+          <span class="proof-dot active" onclick="goProd(0)"></span>
+          <span class="proof-dot" onclick="goProd(1)"></span>
+          <span class="proof-dot" onclick="goProd(2)"></span>
+          <span class="proof-dot" onclick="goProd(3)"></span>
+          <span class="proof-dot" onclick="goProd(4)"></span>
+        </div>
+      </div>
+      <div class="why-card">
+        <p><strong>You already got licensed.</strong> That took courage. Now let's build something with it.</p>
+        <p>The producers in this organization are not just agents. <strong>They are building agencies.</strong> Real teams. Real income. Real legacy.</p>
+        <p>This is not a gig. This is a <strong>vehicle</strong> — and we give you everything you need to drive it.</p>
+        <p>Here's what we hand you:</p>
+        <ul class="why-bullets">
+          <li>High quality, real-time leads — exclusive data, no recycled lists</li>
+          <li>Proprietary tech that automates your pipeline and follow-up</li>
+          <li>World-class training: Final Expense to Advanced Market Products to Estate Planning</li>
+          <li>1-on-1 coaching from producers who have built exactly what you want to build</li>
+          <li>Dedicated support staff for product knowledge and complex case design</li>
+          <li>A proven path to recruiting, developing, and leading your own team</li>
+          <li>The infrastructure to build and own your brokerage</li>
+        </ul>
+        <p>Most agents spend their entire career working <em>in</em> the business. We give you everything to work <strong>on</strong> it.</p>
+        <p>The question is <strong>how big do you want to build?</strong></p>
+      </div>
+    </div>
+  </div>
+</div>
 <!-- ── FINGERPRINT STATE SELECTOR MODAL ─────────── -->
 <div id="fpStateModal" class="modal-overlay">
   <div class="modal-wrap">
@@ -601,7 +706,7 @@ function openModal(id){
 function closeModal(id){
   const m = document.getElementById(id);
   if(m) m.style.display = 'none';
-  const anyOpen = ['discoveryModal','stateModal','whyModal','fpStateModal','fpInfoModal','examStateModal','examInfoModal','applyStateModal','applyInfoModal']
+  const anyOpen = ['discoveryModal','stateModal','whyModal','fpStateModal','fpInfoModal','examStateModal','examInfoModal','applyStateModal','applyInfoModal','ourProductionModal']
     .some(mid => { const el = document.getElementById(mid); return el && el.style.display === 'block'; });
   if(!anyOpen) document.body.style.overflow = '';
 }
@@ -1378,6 +1483,25 @@ var PROOF_GALLERIES = {
     images: ['Top5Annuity']
   }
 };
+
+
+var prodIdx = 0;
+
+function shiftProd(dir) {
+  prodIdx = (prodIdx + dir + 5) % 5;
+  updateProdCarousel();
+}
+
+function goProd(idx) {
+  prodIdx = idx;
+  updateProdCarousel();
+}
+
+function updateProdCarousel() {
+  var track = document.getElementById('prodTrack');
+  if(track) track.style.transform = 'translateX(-' + (prodIdx * 100) + '%)';
+  document.querySelectorAll('#prodDots .proof-dot').forEach(function(d, i){ d.classList.toggle('active', i === prodIdx); });
+}
 
 function shiftProof(dir) {
   proofIdx = (proofIdx + dir + 5) % 5;
