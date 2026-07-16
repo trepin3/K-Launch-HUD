@@ -169,7 +169,7 @@
     @media(max-width:400px){
       .tile-grid{grid-template-columns:1fr;}
     }
-    #ourProductionModal{position:fixed;top:0;left:0;right:0;bottom:0;z-index:2000;background:var(--bg);display:none;flex-direction:column;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+    #ourProductionModal{z-index:2500;}
   </style>
 </head>
 <body>
@@ -236,7 +236,7 @@
     </div>
     <div class="section-label">Explore the Opportunity</div>
     <div class="tile-grid">
-      <button class="hud-tile purple span2" onclick="openOurProductionModal()">
+      <button class="hud-tile purple span2" onclick="openModal('ourProductionModal')">
         <span class="tile-arrow">›</span>
         <span class="tile-icon">📈</span>
         <div class="tile-title">Our Production</div>
@@ -518,6 +518,10 @@ function show(id){
 
 // ── MODALS ─────────────────────────────────────────────────────────────────
 function openModal(id){
+  if(id === 'ourProductionModal'){
+    prodIdx = 0;
+    if(typeof updateProdCarousel==='function') updateProdCarousel();
+  }
   if(id === 'discoveryModal'){
     document.getElementById('modalAgentName').textContent = AGENT.name;
     document.getElementById('modalAgentNameCard').textContent = AGENT.name;
@@ -1199,18 +1203,8 @@ var PROOF_GALLERIES = {
 var prodIdx = 0;
 
 
-function openOurProductionModal() {
-  prodIdx = 0;
-  updateProdCarousel();
-  var m = document.getElementById('ourProductionModal');
-  m.style.display = 'flex';
-  m.scrollTop = 0;
-  document.body.style.overflow = 'hidden';
-}
-function closeOurProductionModal() {
-  document.getElementById('ourProductionModal').style.display = 'none';
-  document.body.style.overflow = '';
-}
+function openOurProductionModal() { openModal('ourProductionModal'); }
+function closeOurProductionModal() { closeModal('ourProductionModal'); }
 
 function shiftProd(dir) {
   prodIdx = (prodIdx + dir + 5) % 5;
@@ -1279,9 +1273,9 @@ function closeProofLightbox() {
 <!-- OUR PRODUCTION MODAL -->
 
 <!-- OUR PRODUCTION MODAL -->
-<div id="ourProductionModal">
+<div id="ourProductionModal" class="modal-overlay">
   <div class="hud-header">
-    <button class="back-btn" onclick="closeOurProductionModal()">← Back</button>
+    <button class="back-btn" onclick="closeModal('ourProductionModal')">← Back</button>
     <div class="logo-text">📈 <span>Our Production</span></div>
     <div style="width:34px;"></div>
   </div>
