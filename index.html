@@ -167,7 +167,7 @@
     @media(max-width:400px){
       .tile-grid{grid-template-columns:1fr;}
     }
-    #ourProductionModal{position:fixed;top:0;left:0;right:0;bottom:0;z-index:2000;background:rgba(0,0,0,0.55);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);display:none;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+    #ourProductionModal{position:static;background:var(--bg);}
   </style>
 </head>
 <body>
@@ -478,10 +478,10 @@
 </div>
 
 <!-- OUR PRODUCTION MODAL -->
-<div id="ourProductionModal">
+<div id="ourProductionModal" class="view">
   <div class="modal-wrap">
     <div class="modal-header">
-      <button class="modal-back" onclick="closeOurProductionModal()">←</button>
+      <button class="modal-back" onclick="show('licensedView')">← Back</button>
       <div class="modal-title">📈 Our Production</div>
     </div>
     <div class="modal-body">
@@ -687,8 +687,6 @@ function toggleTheme(){
 function show(id){
   ['discoveryModal','stateModal','whyModal','fpStateModal','fpInfoModal','examStateModal','examInfoModal','applyStateModal','applyInfoModal']
     .forEach(function(mid){ var el = document.getElementById(mid); if(el) el.style.display='none'; });
-  closeOurProductionModal();
-  document.body.style.overflow = '';
   document.querySelectorAll('.view').forEach(v => v.style.display = 'none');
   document.getElementById(id).style.display = 'block';
   window.scrollTo(0,0);
@@ -1496,14 +1494,10 @@ var prodIdx = 0;
 function openOurProductionModal() {
   prodIdx = 0;
   updateProdCarousel();
-  var m = document.getElementById('ourProductionModal');
-  m.style.display = 'block';
-  m.scrollTop = 0;
-  document.body.style.overflow = 'hidden';
+  show('ourProductionModal');
 }
 function closeOurProductionModal() {
-  document.getElementById('ourProductionModal').style.display = 'none';
-  document.body.style.overflow = '';
+  show('licensedView');
 }
 
 function shiftProd(dir) {
