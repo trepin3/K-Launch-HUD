@@ -134,6 +134,15 @@
     .proof-carousel-track{display:flex;transition:transform 0.35s ease;will-change:transform;}
     .proof-slide{min-width:100%;position:relative;}
     .proof-img{width:100%;height:auto;display:block;}
+    .proof-img-clickable{cursor:zoom-in;}
+    .proof-slide-bar{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:rgba(0,0,0,0.7);backdrop-filter:blur(4px);}
+    .proof-slide-actions{display:flex;gap:6px;align-items:center;}
+    .proof-expand-btn{font-size:13px;padding:4px 9px;border-radius:20px;border:1px solid rgba(255,255,255,0.4);background:rgba(255,255,255,0.12);color:#fff;cursor:pointer;transition:background 0.15s;font-family:inherit;line-height:1;}
+    .proof-expand-btn:hover{background:rgba(255,255,255,0.25);}
+    #proofLightboxModal{position:fixed;inset:0;background:rgba(0,0,0,0.96);display:none;align-items:center;justify-content:center;z-index:5000;padding:12px;}
+    .proof-lightbox-img{max-width:100%;max-height:92vh;object-fit:contain;border-radius:6px;display:block;}
+    .proof-lightbox-close{position:fixed;top:14px;right:18px;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.3);color:#fff;font-size:22px;width:42px;height:42px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:inherit;transition:background 0.15s;}
+    .proof-lightbox-close:hover{background:rgba(255,255,255,0.25);}
     .proof-slide-bar{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:rgba(0,0,0,0.7);backdrop-filter:blur(4px);}
     .proof-cat-label{font-size:12px;font-weight:700;color:#fff;}
     .proof-see-all-btn{font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;border:1px solid rgba(255,255,255,0.4);background:rgba(255,255,255,0.12);color:#fff;cursor:pointer;transition:background 0.15s;font-family:inherit;}
@@ -348,22 +357,6 @@
       <div class="modal-title">💡 Why Get Licensed?</div>
     </div>
     <div class="modal-body">
-      <div class="why-card">
-        <p><strong>Picture this.</strong> You wake up when you decide, work from anywhere, income limited only by your effort. No ceiling. No clock.</p>
-        <p>When a family loses someone they love, <strong>you become the person who shows up.</strong> You hand them a check that keeps the lights on. That's not just a career. That's a calling.</p>
-        <p>Most families are <strong>one emergency away from financial disaster.</strong> You can change that.</p>
-        <p>Your license unlocks:</p>
-        <ul class="why-bullets">
-          <li>Unlimited earning potential. Top agents earn $10K–$30K+ per month</li>
-          <li>True time freedom. Set your own schedule</li>
-          <li>Remote work. All you need is WiFi</li>
-          <li>Purpose-driven work protecting real families</li>
-          <li>Leads, training, and a team behind you from day one</li>
-          <li>A path to agency ownership and higher contracts</li>
-        </ul>
-        <p>One licensing exam stands between you and that life. <strong>We'll walk you through every step.</strong></p>
-        <p>The question is <strong>how soon do you want to start?</strong></p>
-      </div>
       <!-- PROOF CAROUSEL -->
       <div class="proof-section">
         <div class="proof-section-label">Real Producer Results</div>
@@ -372,38 +365,53 @@
           <div class="proof-carousel-viewport">
             <div class="proof-carousel-track" id="proofTrack">
               <div class="proof-slide">
-                <img src="./Img/WklySubmit15.png" class="proof-img" alt="Weekly Submitted" loading="lazy">
-                <div class="proof-slide-bar">
-                  <span class="proof-cat-label">Weekly Submitted</span>
-                  <button class="proof-see-all-btn" onclick="openProofGallery('wkly')">See All</button>
-                </div>
-              </div>
-              <div class="proof-slide">
-                <img src="./Img/TopSubmit19.png" class="proof-img" alt="Top 5 Weekly Submitted" loading="lazy">
+                <img src="./Img/TopSubmit19.png" class="proof-img proof-img-clickable" alt="Top 5 Weekly Submitted" loading="lazy" onclick="openProofLightbox(this.src)" title="Click to enlarge">
                 <div class="proof-slide-bar">
                   <span class="proof-cat-label">Top 5 Weekly Submitted</span>
-                  <button class="proof-see-all-btn" onclick="openProofGallery('t5submit')">See All</button>
+                  <div class="proof-slide-actions">
+                    <button class="proof-expand-btn" onclick="openProofLightbox('./Img/TopSubmit19.png')" title="Fullscreen">&#10021;</button>
+                    <button class="proof-see-all-btn" onclick="openProofGallery('t5submit')">See All</button>
+                  </div>
                 </div>
               </div>
               <div class="proof-slide">
-                <img src="./Img/Top5Paycheck24.png" class="proof-img" alt="Top 5 Weekly Paychecks" loading="lazy">
+                <img src="./Img/WklySubmit15.png" class="proof-img proof-img-clickable" alt="Weekly Submitted" loading="lazy" onclick="openProofLightbox(this.src)" title="Click to enlarge">
+                <div class="proof-slide-bar">
+                  <span class="proof-cat-label">Weekly Submitted</span>
+                  <div class="proof-slide-actions">
+                    <button class="proof-expand-btn" onclick="openProofLightbox('./Img/WklySubmit15.png')" title="Fullscreen">&#10021;</button>
+                    <button class="proof-see-all-btn" onclick="openProofGallery('wkly')">See All</button>
+                  </div>
+                </div>
+              </div>
+              <div class="proof-slide">
+                <img src="./Img/Top5Paycheck24.png" class="proof-img proof-img-clickable" alt="Top 5 Weekly Paychecks" loading="lazy" onclick="openProofLightbox(this.src)" title="Click to enlarge">
                 <div class="proof-slide-bar">
                   <span class="proof-cat-label">Top 5 Weekly Paychecks</span>
-                  <button class="proof-see-all-btn" onclick="openProofGallery('paycheck')">See All</button>
+                  <div class="proof-slide-actions">
+                    <button class="proof-expand-btn" onclick="openProofLightbox('./Img/Top5Paycheck24.png')" title="Fullscreen">&#10021;</button>
+                    <button class="proof-see-all-btn" onclick="openProofGallery('paycheck')">See All</button>
+                  </div>
                 </div>
               </div>
               <div class="proof-slide">
-                <img src="./Img/Top5YTD.png" class="proof-img" alt="Top 5 YTD" loading="lazy">
+                <img src="./Img/Top5YTD.png" class="proof-img proof-img-clickable" alt="Top 5 YTD" loading="lazy" onclick="openProofLightbox(this.src)" title="Click to enlarge">
                 <div class="proof-slide-bar">
                   <span class="proof-cat-label">Top 5 YTD</span>
-                  <button class="proof-see-all-btn" onclick="openProofGallery('ytd')">See All</button>
+                  <div class="proof-slide-actions">
+                    <button class="proof-expand-btn" onclick="openProofLightbox('./Img/Top5YTD.png')" title="Fullscreen">&#10021;</button>
+                    <button class="proof-see-all-btn" onclick="openProofGallery('ytd')">See All</button>
+                  </div>
                 </div>
               </div>
               <div class="proof-slide">
-                <img src="./Img/Top5Annuity.png" class="proof-img" alt="Top 5 Annuity" loading="lazy">
+                <img src="./Img/Top5Annuity.png" class="proof-img proof-img-clickable" alt="Top 5 Annuity" loading="lazy" onclick="openProofLightbox(this.src)" title="Click to enlarge">
                 <div class="proof-slide-bar">
                   <span class="proof-cat-label">Top 5 Annuity</span>
-                  <button class="proof-see-all-btn" onclick="openProofGallery('annuity')">See All</button>
+                  <div class="proof-slide-actions">
+                    <button class="proof-expand-btn" onclick="openProofLightbox('./Img/Top5Annuity.png')" title="Fullscreen">&#10021;</button>
+                    <button class="proof-see-all-btn" onclick="openProofGallery('annuity')">See All</button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -418,11 +426,30 @@
           <span class="proof-dot" onclick="goProof(4)"></span>
         </div>
       </div>
+      <div class="why-card">
+        <p><strong>Picture this.</strong> You wake up when you decide, work from anywhere, income limited only by your effort. No ceiling. No clock.</p>
+        <p>When a family loses someone they love, <strong>you become the person who shows up.</strong> You hand them a check that keeps the lights on. That's not just a career. That's a calling.</p>
+        <p>Most families are <strong>one emergency away from financial disaster.</strong> You can change that.</p>
+        <p>Your license unlocks:</p>
+        <ul class="why-bullets">
+          <li>Unlimited earning potential. Top agents earn $10K–30K+ per month</li>
+          <li>True time freedom. Set your own schedule</li>
+          <li>Remote work. All you need is WiFi</li>
+          <li>Purpose-driven work protecting real families</li>
+          <li>Leads, training, and a team behind you from day one</li>
+          <li>A path to agency ownership and higher contracts</li>
+        </ul>
+        <p>One licensing exam stands between you and that life. <strong>We'll walk you through every step.</strong></p>
+        <p>The question is <strong>how soon do you want to start?</strong></p>
+      </div>
     </div>
-  </div>
 </div>
 
-<!-- PROOF GALLERY MODAL -->
+
+<div id="proofLightboxModal" onclick="closeProofLightbox()">
+  <button class="proof-lightbox-close" onclick="event.stopPropagation();closeProofLightbox()">&#10005;</button>
+  <img id="proofLightboxImg" class="proof-lightbox-img" src="" alt="Fullscreen view" onclick="event.stopPropagation()">
+</div>
 <div id="proofGalleryModal">
   <div class="proof-gallery-box">
     <div class="proof-gallery-header">
@@ -1368,6 +1395,17 @@ function updateProofCarousel() {
   document.querySelectorAll('.proof-dot').forEach(function(d, i){ d.classList.toggle('active', i === proofIdx); });
 }
 
+
+function openProofLightbox(src) {
+  document.getElementById('proofLightboxImg').src = src;
+  document.getElementById('proofLightboxModal').style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+function closeProofLightbox() {
+  document.getElementById('proofLightboxModal').style.display = 'none';
+  document.body.style.overflow = '';
+}
+
 function openProofGallery(key) {
   currentGalleryKey = key;
   galleryIdx = 0;
@@ -1375,7 +1413,7 @@ function openProofGallery(key) {
   document.getElementById('proofGalleryTitle').textContent = data.title;
   var track = document.getElementById('proofGalleryTrack');
   track.innerHTML = data.images.map(function(img){
-    return '<div class="proof-gallery-slide"><img src="./Img/' + img + '.png" alt="' + data.title + '" loading="lazy"></div>';
+    return '<div class="proof-gallery-slide"><img src="./Img/' + img + '.png" class="proof-img-clickable" alt="' + data.title + '" loading="lazy" onclick="openProofLightbox(this.src)" title="Click to enlarge"></div>';
   }).join('');
   updateGallery();
   document.getElementById('proofGalleryModal').style.display = 'flex';
