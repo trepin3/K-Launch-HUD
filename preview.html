@@ -125,6 +125,11 @@
     .info-banner-title{font-size:14px;font-weight:800;color:var(--text);margin-bottom:6px;}
     .info-banner-body{font-size:13px;color:var(--text-secondary);line-height:1.5;}
 
+    .benefit-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:4px;}
+    .benefit-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:4px;}
+    .benefit-card-icon{font-size:22px;margin-bottom:2px;}
+    .benefit-card-title{font-size:13px;font-weight:800;color:var(--text);}
+    .benefit-card-sub{font-size:11px;color:var(--text-2);line-height:1.4;}
     @media(max-width:400px){
       .tile-grid{grid-template-columns:1fr;}
     }
@@ -241,6 +246,12 @@
         <span class="tile-icon">📈</span>
         <div class="tile-title">Our Production</div>
         <div class="tile-sub">Real results from our team — see what’s possible</div>
+      </button>
+      <button class="hud-tile success span2" onclick="openModal('whatYouGetModal')">
+        <span class="tile-arrow">&#x203A;</span>
+        <span class="tile-icon">&#127873;</span>
+        <div class="tile-title">What You Get</div>
+        <div class="tile-sub">Everything included when you join our organization</div>
       </button>
     </div>
     <div class="section-label">Next Step</div>
@@ -426,6 +437,104 @@
   </div>
 </div>
 
+<!-- WHAT YOU GET MODAL -->
+<div id="whatYouGetModal" class="modal-overlay">
+  <div class="modal-wrap">
+    <div class="modal-header">
+      <button class="modal-back" onclick="closeModal('whatYouGetModal')">&#8592;</button>
+      <div class="modal-title">&#127873; What You Get</div>
+    </div>
+    <div class="modal-body">
+      <div style="background:linear-gradient(135deg,#1a7a3a,#22c55e);border-radius:var(--radius);padding:16px 18px;margin-bottom:16px;">
+        <div style="font-size:15px;font-weight:800;color:#fff;margin-bottom:4px;">Everything Included</div>
+        <div style="font-size:13px;color:rgba(255,255,255,0.88);line-height:1.5;">From day one, here is everything that comes with you when you join our organization.</div>
+      </div>
+      <div class="benefit-grid">
+        <div class="benefit-card">
+          <div class="benefit-card-icon">&#128193;</div>
+          <div class="benefit-card-title">CRM</div>
+          <div class="benefit-card-sub">Track every lead and client in one place</div>
+        </div>
+        <div class="benefit-card">
+          <div class="benefit-card-icon">&#127919;</div>
+          <div class="benefit-card-title">Leads</div>
+          <div class="benefit-card-sub">Exclusive real time data, no recycled lists</div>
+        </div>
+        <div class="benefit-card">
+          <div class="benefit-card-icon">&#129309;</div>
+          <div class="benefit-card-title">Support Staff</div>
+          <div class="benefit-card-sub">Product knowledge and complex case help</div>
+        </div>
+        <div class="benefit-card">
+          <div class="benefit-card-icon">&#128203;</div>
+          <div class="benefit-card-title">Dynamic Script Tools</div>
+          <div class="benefit-card-sub">Proven scripts for every conversation</div>
+        </div>
+        <div class="benefit-card">
+          <div class="benefit-card-icon">&#9889;</div>
+          <div class="benefit-card-title">Quote Tools</div>
+          <div class="benefit-card-sub">Instant quotes across all carriers</div>
+        </div>
+        <div class="benefit-card">
+          <div class="benefit-card-icon">&#127891;</div>
+          <div class="benefit-card-title">Training Staff</div>
+          <div class="benefit-card-sub">Ongoing education from active producers</div>
+        </div>
+        <div class="benefit-card">
+          <div class="benefit-card-icon">&#127942;</div>
+          <div class="benefit-card-title">Coaching Staff</div>
+          <div class="benefit-card-sub">One on one coaching to accelerate your growth</div>
+        </div>
+        <div class="benefit-card">
+          <div class="benefit-card-icon">&#128200;</div>
+          <div class="benefit-card-title">Business Development</div>
+          <div class="benefit-card-sub">Strategy and resources to build your agency</div>
+        </div>
+        <div class="benefit-card">
+          <div class="benefit-card-icon">&#128640;</div>
+          <div class="benefit-card-title">Fast-Track Manager</div>
+          <div class="benefit-card-sub">Earn your way to leadership faster</div>
+        </div>
+        <div class="benefit-card">
+          <div class="benefit-card-icon">&#128176;</div>
+          <div class="benefit-card-title">Commissions</div>
+          <div class="benefit-card-sub">Advances, as-earned, and bonus pay. Three ways to get paid.</div>
+        </div>
+        <div class="benefit-card">
+          <div class="benefit-card-icon">&#128202;</div>
+          <div class="benefit-card-title">IPO Opportunity</div>
+          <div class="benefit-card-sub">Equity stake in the company&#39;s future</div>
+        </div>
+        <div class="benefit-card">
+          <div class="benefit-card-icon">&#9992;&#65039;</div>
+          <div class="benefit-card-title">Annual Trip</div>
+          <div class="benefit-card-sub">All expenses paid travel for top producers</div>
+        </div>
+        <div class="benefit-card">
+          <div class="benefit-card-icon">&#127968;</div>
+          <div class="benefit-card-title">Carriers</div>
+          <div class="benefit-card-sub">Access to top rated A+ insurance carriers</div>
+        </div>
+        <div class="benefit-card">
+          <div class="benefit-card-icon">&#128739;&#65039;</div>
+          <div class="benefit-card-title">Career Path</div>
+          <div class="benefit-card-sub">Clear path from agent to agency owner</div>
+        </div>
+        <div class="benefit-card">
+          <div class="benefit-card-icon">&#128179;</div>
+          <div class="benefit-card-title">Debt Solutions</div>
+          <div class="benefit-card-sub">Help clients tackle debt while building coverage</div>
+        </div>
+        <div class="benefit-card">
+          <div class="benefit-card-icon">&#127963;&#65039;</div>
+          <div class="benefit-card-title">Estate Planning</div>
+          <div class="benefit-card-sub">Advanced market products for high-value clients</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- ── FINGERPRINT STATE SELECTOR MODAL ─────────── -->
 <div id="fpStateModal" class="modal-overlay">
   <div class="modal-wrap">
@@ -510,6 +619,7 @@ function toggleTheme(){
 function show(id){
   if(typeof closeProofGallery==='function') closeProofGallery();
   if(typeof closeProofLightbox==='function') closeProofLightbox();
+  closeModal('whatYouGetModal');
   closeOurProductionModal();
   document.querySelectorAll('.view').forEach(v => v.style.display = 'none');
   document.getElementById(id).style.display = 'block';
@@ -537,7 +647,7 @@ function openModal(id){
 function closeModal(id){
   const m = document.getElementById(id);
   if(m) m.style.display = 'none';
-  const anyOpen = ['discoveryModal','checklistModal','stateModal','whyModal','fpStateModal','fpInfoModal','examStateModal','examInfoModal']
+  const anyOpen = ['discoveryModal','checklistModal','stateModal','whyModal','fpStateModal','fpInfoModal','examStateModal','examInfoModal','whatYouGetModal']
     .some(mid => { const el = document.getElementById(mid); return el && el.style.display === 'block'; });
   if(!anyOpen) document.body.style.overflow = '';
 }
